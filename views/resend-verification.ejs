@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richiedi Link di Verifica - MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Font Awesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2><i class="fas fa-brain"></i> Micro<span>Insight</span></h2>
+                <p>Richiedi un nuovo link di verifica</p>
+            </div>
+            
+            <!-- Messaggio di errore (se presente) -->
+            <% if (typeof message !== 'undefined' && message.length > 0) { %>
+                <div class="alert alert-danger">
+                    <%= message %>
+                </div>
+            <% } %>
+            
+            <!-- Messaggio di successo (se presente) -->
+            <% if (typeof success !== 'undefined' && success.length > 0) { %>
+                <div class="alert alert-success">
+                    <%= success %>
+                </div>
+            <% } %>
+            
+            <p class="auth-info">Inserisci il tuo indirizzo email per ricevere un nuovo link di verifica.</p>
+            
+            <form action="/resend-verification" method="POST" class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Invia Link di Verifica</button>
+            </form>
+            
+            <div class="auth-footer">
+                <a href="/login">Torna al login</a>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .auth-card {
+            width: 100%;
+            max-width: 480px;
+            background-color: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: 2rem;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-header h2 {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header h2 span {
+            color: var(--primary-color);
+        }
+        
+        .auth-info {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--gray-700);
+        }
+        
+        .auth-form {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+        
+        .input-icon .form-input {
+            padding-left: 3rem;
+        }
+        
+        .btn-block {
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+    </style>
+</body>
+</html>

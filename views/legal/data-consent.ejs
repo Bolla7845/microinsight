@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consenso al Trattamento Dati | MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span>
+            </a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/pacchetti" class="nav-link">Pacchetti</a></li>
+                    <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
+                    <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
+                    <li><a href="/#contact" class="nav-link">Contatti</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-header" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+        <div class="container">
+            <h1>Consenso al Trattamento Dati</h1>
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &gt;
+                <span>Consenso al Trattamento Dati</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container">
+            <div class="legal-container">
+                <div class="legal-sidebar">
+                    <div class="legal-nav">
+                        <h3>Documenti Legali</h3>
+                        <ul>
+                            <li><a href="/privacy-policy">Privacy Policy</a></li>
+                            <li><a href="/terms-of-service">Termini di Servizio</a></li>
+                            <li><a href="/cookie-policy">Cookie Policy</a></li>
+                            <li><a href="/data-consent" class="active">Consenso al Trattamento Dati</a></li>
+                        </ul>
+                    </div>
+                    <div class="last-updated">
+                        Ultimo aggiornamento: <%= new Date().toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                    </div>
+                </div>
+                <div class="legal-content">
+                    <h2>Informativa sul Consenso al Trattamento dei Dati</h2>
+                    <p>Il presente documento costituisce l'informativa sul consenso al trattamento dei dati personali di MicroInsight, in conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR) e altre leggi applicabili sulla protezione dei dati.</p>
+                    
+                    <div class="consent-alert">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p><strong>Importante:</strong> L'utilizzo di MicroInsight richiede il tuo consenso esplicito per l'elaborazione di dati personali, inclusi potenzialmente dati biometrici derivati dall'analisi delle immagini caricate. Ti preghiamo di leggere attentamente questa informativa prima di fornire il tuo consenso.</p>
+                    </div>
+                    
+                    <h3>1. Tipologie di Dati Raccolti</h3>
+                    <p>MicroInsight può raccogliere e trattare le seguenti categorie di dati personali:</p>
+                    <ul>
+                        <li><strong>Dati di identità e contatto</strong>: nome, indirizzo email, quando ti registri al nostro servizio.</li>
+                        <li><strong>Dati derivati dalle immagini</strong>: informazioni estratte dall'analisi delle immagini che carichi, che potrebbero includere dati sulle microespressioni facciali, caratteristiche del viso, e altre informazioni derivate dall'analisi delle immagini.</li>
+                        <li><strong>Dati di utilizzo</strong>: informazioni su come utilizzi il nostro servizio.</li>
+                        <li><strong>Dati tecnici</strong>: indirizzo IP, tipo di browser, dispositivo e sistema operativo.</li>
+                    </ul>
+                    
+                    <h3>2. Base Giuridica del Trattamento</h3>
+                    <p>Trattiamo i tuoi dati personali in base alle seguenti basi giuridiche:</p>
+                    <ul>
+                        <li><strong>Consenso esplicito</strong>: Per l'elaborazione dei dati derivati dalle immagini, che potrebbero essere considerati biometrici in alcune giurisdizioni, richiediamo il tuo consenso esplicito. Puoi revocare questo consenso in qualsiasi momento.</li>
+                        <li><strong>Esecuzione di un contratto</strong>: Per fornirti il servizio secondo i nostri Termini di Servizio.</li>
+                        <li><strong>Interessi legittimi</strong>: Per migliorare il nostro servizio e garantire la sicurezza.</li>
+                        <li><strong>Obblighi legali</strong>: Per adempiere agli obblighi di legge applicabili.</li>
+                    </ul>
+                    
+                    <h3>3. Modalità di Trattamento dei Dati</h3>
+                    <p>Le immagini che carichi sul nostro servizio vengono elaborate tramite algoritmi di intelligenza artificiale per:</p>
+                    <ul>
+                        <li>Analizzare le microespressioni facciali</li>
+                        <li>Creare profili psicologici</li>
+                        <li>Eseguire analisi dell'armocromia</li>
+                        <li>Fornire consulenza sull'immagine</li>
+                        <li>Condurre analisi evolutive</li>
+                    </ul>
+                    <p>È importante comprendere che:</p>
+                    <ul>
+                        <li>Le immagini caricate vengono archiviare sui nostri server per un periodo limitato</li>
+                        <li>I risultati dell'analisi vengono associati al tuo account</li>
+                        <li>I nostri algoritmi di IA non memorizzano le immagini come parte del loro apprendimento</li>
+                    </ul>
+                    
+                    <h3>4. Finalità del Trattamento</h3>
+                    <p>Utilizziamo i tuoi dati personali per le seguenti finalità:</p>
+                    <ul>
+                        <li>Fornirti i servizi di analisi richiesti</li>
+                        <li>Gestire il tuo account e l'autenticazione</li>
+                        <li>Migliorare e personalizzare il servizio</li>
+                        <li>Comunicare con te riguardo il servizio</li>
+                        <li>Garantire la sicurezza del nostro servizio</li>
+                        <li>Adempiere agli obblighi di legge</li>
+                    </ul>
+                    
+                    <h3>5. Condivisione dei Dati</h3>
+                    <p>Non condividiamo i tuoi dati personali con terze parti, salvo nei seguenti casi:</p>
+                    <ul>
+                        <li>Con fornitori di servizi che ci aiutano a fornire il servizio (es. hosting, analisi, elaborazione pagamenti)</li>
+                        <li>Con autorità di regolamentazione o governative quando richiesto dalla legge</li>
+                        <li>In caso di fusione, acquisizione o vendita di attività, i tuoi dati potrebbero essere trasferiti al nuovo proprietario</li>
+                    </ul>
+                    <p>Non vendiamo mai i tuoi dati personali a terze parti per finalità di marketing.</p>
+                    
+                    <h3>6. Conservazione dei Dati</h3>
+                    <p>Conserviamo i tuoi dati personali solo per il tempo necessario a raggiungere le finalità per cui li abbiamo raccolti:</p>
+                    <ul>
+                        <li>Le immagini caricate vengono conservate per 30 giorni dopo l'analisi</li>
+                        <li>I risultati dell'analisi vengono conservati per 1 anno o fino alla cancellazione del tuo account</li>
+                        <li>I dati dell'account vengono conservati finché mantieni un account attivo</li>
+                    </ul>
+                    
+                    <h3>7. I Tuoi Diritti</h3>
+                    <p>In conformità con il GDPR e altre leggi sulla protezione dei dati, hai i seguenti diritti:</p>
+                    <ul>
+                        <li><strong>Diritto di accesso</strong>: puoi richiedere una copia dei tuoi dati personali</li>
+                        <li><strong>Diritto di rettifica</strong>: puoi richiedere la correzione di dati inesatti</li>
+                        <li><strong>Diritto alla cancellazione</strong>: puoi richiedere la cancellazione dei tuoi dati</li>
+                        <li><strong>Diritto di limitazione del trattamento</strong>: puoi richiedere di limitare il trattamento dei tuoi dati</li>
+                        <li><strong>Diritto alla portabilità dei dati</strong>: puoi richiedere il trasferimento dei tuoi dati</li>
+                        <li><strong>Diritto di opposizione</strong>: puoi opporti al trattamento dei tuoi dati</li>
+                        <li><strong>Diritto di revoca del consenso</strong>: puoi revocare il tuo consenso in qualsiasi momento</li>
+                    </ul>
+                    <p>Per esercitare questi diritti, visita la tua area personale o contattaci utilizzando i recapiti forniti di seguito.</p>
+                    
+                    <h3>8. Sicurezza dei Dati</h3>
+                    <p>Adottiamo misure di sicurezza tecniche e organizzative appropriate per proteggere i tuoi dati personali, tra cui:</p>
+                    <ul>
+                        <li>Crittografia dei dati in transito e a riposo</li>
+                        <li>Controlli di accesso rigorosi</li>
+                        <li>Backup regolari</li>
+                        <li>Monitoraggio della sicurezza</li>
+                    </ul>
+                    
+                    <h3>9. Trasferimenti Internazionali</h3>
+                    <p>I tuoi dati vengono archiviati principalmente all'interno dell'Unione Europea. Nel caso in cui i tuoi dati vengano trasferiti fuori dallo Spazio Economico Europeo (SEE), adottiamo misure appropriate per garantire che i tuoi dati siano protetti in conformità con la legislazione applicabile.</p>
+                    
+                    <h3>10. Come fornire o revocare il consenso</h3>
+                    <p>Quando utilizzi MicroInsight, ti verrà richiesto di fornire il tuo consenso esplicito in diversi momenti:</p>
+                    <ul>
+                        <li>Durante la registrazione</li>
+                        <li>Prima di caricare immagini per l'analisi</li>
+                        <li>Prima di utilizzare nuove funzionalità che richiedono ulteriori dati</li>
+                    </ul>
+                    
+                    <p>Puoi revocare il tuo consenso in qualsiasi momento:</p>
+                    <ul>
+                        <li>Tramite la sezione "Impostazioni Privacy" nella tua area personale</li>
+                        <li>Contattandoci direttamente utilizzando i recapiti forniti di seguito</li>
+                        <li>Eliminando il tuo account, che comporterà la cancellazione di tutti i tuoi dati</li>
+                    </ul>
+                    
+                    <h3>11. Minori</h3>
+                    <p>Il nostro servizio non è destinato a persone di età inferiore ai 16 anni. Non raccogliamo consapevolmente dati personali da minori di 16 anni. Se sei un genitore o tutore e ritieni che tuo figlio ci abbia fornito dati personali, ti preghiamo di contattarci in modo che possiamo intraprendere le azioni necessarie.</p>
+                    
+                    <h3>12. Modifiche a questa Informativa</h3>
+                    <p>Possiamo aggiornare questa informativa sul consenso al trattamento dei dati di tanto in tanto. Ti informeremo di eventuali modifiche pubblicando la nuova informativa su questa pagina e, se le modifiche sono significative, ti invieremo una notifica via email.</p>
+                    
+                    <h3>13. Contatti</h3>
+                    <p>Se hai domande riguardo a questa informativa o alle nostre pratiche di trattamento dei dati, non esitare a contattarci:</p>
+                    <p>Email: [TUA EMAIL DI CONTATTO]<br>
+                    Indirizzo: [TUO INDIRIZZO o ALTRO PUNTO DI CONTATTO]</p>
+                    
+                    <div class="consent-form">
+                        <h3>Modulo di Consenso</h3>
+                        <p>Utilizzando il nostro servizio o completando il modulo di registrazione, ti verrà richiesto di fornire il tuo consenso esplicito. Di seguito è riportato il testo del consenso che ti verrà presentato:</p>
+                        
+                        <div class="consent-box">
+                            <div class="consent-item">
+                                <input type="checkbox" id="consent_processing" disabled>
+                                <label for="consent_processing">Dichiaro di aver letto e compreso l'Informativa sul Consenso al Trattamento dei Dati e acconsento al trattamento dei miei dati personali, inclusi i dati derivati dalle immagini che carico, per le finalità descritte nell'informativa.</label>
+                            </div>
+                            
+                            <div class="consent-item">
+                                <input type="checkbox" id="consent_marketing" disabled>
+                                <label for="consent_marketing">Acconsento a ricevere comunicazioni di marketing relative a prodotti e servizi di MicroInsight. (Facoltativo)</label>
+                            </div>
+                        </div>
+                        
+                        <p class="consent-note">Nota: Questo è solo un esempio di come appare il modulo di consenso. Per fornire effettivamente il tuo consenso, utilizza il modulo presente nella pagina di registrazione o nelle impostazioni del tuo account.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>MicroInsight</h3>
+                    <p>Analisi avanzata delle microespressioni e del linguaggio non verbale tramite intelligenza artificiale.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Link Rapidi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/pacchetti">Pacchetti</a></li>
+                        <li><a href="/cronologia">Le tue Analisi</a></li>
+                        <li><a href="/#about">Chi Siamo</a></li>
+                        <li><a href="/#contact">Contatti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Servizi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/pacchetti">Analisi Microespressioni</a></li>
+                        <li><a href="/pacchetti">Profilo Psicologico</a></li>
+                        <li><a href="/pacchetti">Consulenza d'Immagine</a></li>
+                        <li><a href="/pacchetti">Analisi Evolutiva</a></li>
+                        <li><a href="/pacchetti">Armocromia</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legali</h3>
+                    <ul class="footer-links">
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service">Termini di Servizio</a></li>
+                        <li><a href="/cookie-policy">Cookie Policy</a></li>
+                        <li><a href="/data-consent">Consenso Dati</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <%= new Date().getFullYear() %> MicroInsight. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .legal-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .legal-sidebar {
+            background-color: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            height: fit-content;
+        }
+        
+        .legal-nav h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .legal-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .legal-nav li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .legal-nav a {
+            color: var(--gray-700);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            transition: all 0.2s;
+        }
+        
+        .legal-nav a:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+        
+        .legal-nav a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .last-updated {
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            text-align: center;
+        }
+        
+        .legal-content {
+            background-color: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+        
+        .legal-content h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .legal-content h3 {
+            font-size: 1.25rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--primary-color);
+        }
+        
+        .legal-content p, .legal-content ul {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .legal-content ul {
+            padding-left: 1.5rem;
+        }
+        
+        .legal-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .consent-alert {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .consent-alert i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+        
+        .consent-alert p {
+            margin: 0;
+        }
+        
+        .consent-form {
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            background-color: var(--gray-50);
+            border-radius: var(--border-radius);
+        }
+        
+        .consent-box {
+            background-color: white;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .consent-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .consent-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .consent-item input {
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .consent-note {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .legal-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .legal-sidebar {
+                margin-bottom: 1.5rem;
+            }
+            
+            .consent-alert {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

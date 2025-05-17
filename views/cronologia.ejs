@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronologia Analisi - Microespressioni</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cronologia delle Analisi</h1>
+        
+        <a href="/" class="btn">Torna alla Home</a>
+        
+        <div class="cronologia-grid">
+            <% if (analisi.length === 0) { %>
+                <p class="no-items">Nessuna analisi trovata.</p>
+            <% } else { %>
+                <% analisi.forEach(item => { %>
+                    <div class="analisi-item">
+                        <div class="immagine">
+                            <img src="<%= item.percorso %>" alt="<%= item.nome_originale %>">
+                        </div>
+                        <div class="info">
+                            <h3><%= item.nome_originale %></h3>
+                            <p class="data">
+                                <%= new Date(item.data_caricamento).toLocaleDateString('it-IT', { 
+                                    day: '2-digit', 
+                                    month: '2-digit', 
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                }) %>
+                            </p>
+                            <p class="micro"><%= item.risultato.microEspressione %></p>
+                            <a href="/dettaglio/<%= item.id %>" class="btn-small">Vedi dettagli</a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </div>
+
+    <%- include('partials/cookie-banner') %>
+    
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione - MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Font Awesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2><i class="fas fa-brain"></i> Micro<span>Insight</span></h2>
+                <p>Crea un nuovo account</p>
+            </div>
+            
+            <!-- Messaggio di errore (se presente) -->
+            <% if (typeof message !== 'undefined' && message.length > 0) { %>
+                <div class="alert alert-danger">
+                    <%= message %>
+                </div>
+            <% } %>
+            
+            <!-- Messaggio di successo (se presente) -->
+            <% if (typeof success !== 'undefined' && success.length > 0) { %>
+                <div class="alert alert-success">
+                    <%= success %>
+                </div>
+            <% } %>
+            
+            <form action="/register" method="POST" class="auth-form">
+                <div class="form-group">
+                    <label for="nome">Nome completo</label>
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="nome" name="nome" class="form-input" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" class="form-input" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password2">Conferma Password</label>
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password2" name="password2" class="form-input" required>
+                    </div>
+                </div>
+                
+                <!-- Sezione consenso al trattamento dati -->
+<div class="consent-section">
+    <h3 class="consent-title">Consenso al Trattamento dei Dati</h3>
+    
+    <div class="consent-explanation">
+        <p>MicroInsight raccoglie e tratta dati personali, inclusi potenzialmente dati biometrici derivati dall'analisi delle immagini caricate. Per utilizzare il nostro servizio, devi fornire il tuo consenso esplicito.</p>
+        
+        <p>Per maggiori informazioni, consulta la nostra <a href="/privacy-policy">Privacy Policy</a>.</p>
+    </div>
+    
+    <div class="consent-checkboxes">
+        <div class="consent-checkbox required">
+            <input type="checkbox" id="consent_processing" name="consent_processing" required>
+            <label for="consent_processing">Dichiaro di aver letto e compreso l'informativa e acconsento al <a href="/privacy-policy">trattamento dei miei dati personali</a> per le finalità descritte nell'informativa. <span class="required-mark">*</span></label>
+        </div>
+        
+        <div class="consent-checkbox">
+            <input type="checkbox" id="consent_marketing" name="consent_marketing">
+            <label for="consent_marketing">Acconsento a ricevere comunicazioni di marketing relative a prodotti e servizi di MicroInsight. (Facoltativo)</label>
+        </div>
+        
+        <div class="consent-checkbox required">
+            <input type="checkbox" id="tos_agreement" name="tos_agreement" required>
+            <label for="tos_agreement">Ho letto e accetto i <a href="/terms-of-service">Termini di Servizio</a>. <span class="required-mark">*</span></label>
+        </div>
+    </div>
+    
+    <div class="consent-note">
+        <p><span class="required-mark">*</span> Campi obbligatori</p>
+        <p>Puoi revocare il tuo consenso in qualsiasi momento tramite la tua area personale.</p>
+    </div>
+</div>
+
+<style>
+    .consent-section {
+        background-color: rgba(59, 130, 246, 0.05);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    
+    .consent-title {
+        font-size: 1.125rem;
+        margin-bottom: 1rem;
+        color: #2563eb;
+        font-weight: 600;
+    }
+    
+    .consent-explanation {
+        margin-bottom: 1.25rem;
+        font-size: 0.875rem;
+        color: #334155;
+        line-height: 1.5;
+    }
+    
+    .consent-explanation p {
+        margin-bottom: 0.75rem;
+    }
+    
+    .consent-explanation a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .consent-explanation a:hover {
+        text-decoration: underline;
+    }
+    
+    .consent-checkboxes {
+        margin-bottom: 1rem;
+    }
+    
+    .consent-checkbox {
+        display: flex;
+        margin-bottom: 1rem;
+        align-items: flex-start;
+    }
+    
+    .consent-checkbox:last-child {
+        margin-bottom: 0;
+    }
+    
+    .consent-checkbox input[type="checkbox"] {
+    margin-top: 0.25rem;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    /* Assicurati che queste proprietà non nascondano il checkbox */
+    opacity: 1;
+    position: static;
+    display: block;
+    pointer-events: auto;
+    appearance: auto; /* Aggiungi questa per assicurarti che il checkbox abbia l'aspetto predefinito */
+}
+    
+    .consent-checkbox label {
+        font-size: 0.875rem;
+        color: #1e293b;
+        line-height: 1.5;
+    }
+    
+    .consent-checkbox label a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .consent-checkbox label a:hover {
+        text-decoration: underline;
+    }
+    
+    .required-mark {
+        color: #ef4444;
+        font-weight: bold;
+    }
+    
+    .consent-note {
+        font-size: 0.75rem;
+        color: #64748b;
+        font-style: italic;
+        margin-top: 1rem;
+    }
+    
+    .consent-note p {
+        margin-bottom: 0.25rem;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verifica che i checkbox obbligatori siano spuntati prima di inviare il form
+        const form = document.querySelector('form');
+        
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const consentProcessing = document.getElementById('consent_processing');
+                const tosAgreement = document.getElementById('tos_agreement');
+                
+                if (!consentProcessing.checked || !tosAgreement.checked) {
+                    e.preventDefault();
+                    alert('Per procedere con la registrazione, devi accettare i Termini di Servizio e il consenso al trattamento dei dati.');
+                }
+            });
+        }
+    });
+</script>
+            
+                <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                    // Recupera il form attuale
+                    const form = document.querySelector('form');
+                    
+                    if (form) {
+                      // Aggiungi l'event listener per il submit
+                      form.addEventListener('submit', function(e) {
+                        // Verifica che i checkbox obbligatori siano spuntati
+                        const consentProcessing = document.getElementById('consent_processing');
+                        const tosAgreement = document.getElementById('tos_agreement');
+                        
+                        if (!consentProcessing.checked || !tosAgreement.checked) {
+                          // Se non sono spuntati, blocca l'invio del form
+                          e.preventDefault();
+                          e.stopPropagation();
+                          alert('Per procedere con la registrazione, devi accettare i Termini di Servizio e il consenso al trattamento dei dati.');
+                          return false;
+                        }
+                      });
+                    }
+                  });
+                </script>
+                <!-- FINE SEZIONE CONSENSO DATI -->
+                
+                <button type="submit" class="btn btn-primary btn-block">Registrati</button>
+            </form>
+            
+            <div class="social-login">
+                <p>Oppure registrati con</p>
+                <a href="/auth/google" class="btn-social btn-google">
+                    <i class="fab fa-google"></i> Google
+                </a>
+            </div>
+            
+            <div class="auth-footer">
+                Hai già un account? <a href="/login">Accedi</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Includi il banner dei cookie -->
+    <%- include('partials/cookie-banner') %>
+    
+    <style>
+        /* Gli stili sono gli stessi di login.ejs */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .auth-card {
+            width: 100%;
+            max-width: 480px;
+            background-color: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: 2rem;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-header h2 {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header h2 span {
+            color: var(--primary-color);
+        }
+        
+        .auth-header p {
+            color: var(--gray-500);
+            margin-bottom: 0;
+        }
+        
+        .auth-form {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+        
+        .input-icon .form-input {
+            padding-left: 3rem;
+        }
+        
+        .btn-block {
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        
+        .social-login {
+            text-align: center;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .social-login p {
+            color: var(--gray-500);
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 0 auto;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            width: fit-content;
+        }
+        
+        .btn-google {
+            background-color: #fff;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-google:hover {
+            background-color: #f8f8f8;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroInsight - Analisi Avanzata del Linguaggio Non Verbale</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span>
+            </a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/" class="nav-link active">Home</a></li>
+                    <li><a href="/pacchetti" class="nav-link">Pacchetti</a></li>
+                    <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
+                    <li><a href="#about" class="nav-link">Chi Siamo</a></li>
+                    <li><a href="#contact" class="nav-link">Contatti</a></li>
+                    <% if (locals.user) { %>
+                        <li><a href="/dashboard" class="nav-link">Area Personale</a></li>
+                    <% } else { %>
+                        <li><a href="/login" class="nav-link">Accedi</a></li>
+                    <% } %>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Scopri il potere delle Microespressioni</h1>
+                <p>MicroInsight utilizza l'intelligenza artificiale avanzata per analizzare microespressioni, creare profili psicologici e fornire consulenze personalizzate sull'immagine.</p>
+                <a href="/pacchetti" class="btn btn-primary btn-large">Inizia l'Analisi</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+            <h2 class="text-center mb-6">I Nostri Servizi di Analisi</h2>
+            
+            <div class="grid grid-3">
+                <% if (locals.pacchetti && pacchetti.length > 0) { %>
+                    <% pacchetti.forEach(function(pacchetto, index) { %>
+                        <div class="card slide-up" style="animation-delay: <%= 0.1 * (index + 1) %>s;">
+                            <div class="text-center mb-4">
+                                <% if (pacchetto.tipo === 'microespressioni') { %>
+                                    <i class="fas fa-face-smile" style="font-size: 3rem; color: var(--primary-color);"></i>
+                                <% } else if (pacchetto.tipo === 'psicologica') { %>
+                                    <i class="fas fa-brain" style="font-size: 3rem; color: var(--primary-color);"></i>
+                                <% } else { %>
+                                    <i class="fas fa-palette" style="font-size: 3rem; color: var(--primary-color);"></i>
+                                <% } %>
+                            </div>
+                            <h3 class="card-title text-center"><%= pacchetto.nome %></h3>
+                            <p><%= pacchetto.descrizione %></p>
+                            <div class="text-center">
+                                <a href="/pacchetti/<%= pacchetto.id %>/upload" class="btn btn-primary">Utilizza questo pacchetto</a>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="card slide-up">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-info-circle" style="font-size: 3rem; color: var(--primary-color);"></i>
+                        </div>
+                        <h3 class="card-title text-center">Nessun pacchetto disponibile</h3>
+                        <p>Al momento non ci sono pacchetti di analisi disponibili. Ti invitiamo a controllare più tardi.</p>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="text-center mt-8 mb-8">
+                <a href="/pacchetti" class="btn btn-large btn-outline">Esplora tutti i pacchetti <i class="fas fa-arrow-right ml-2"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-light py-8">
+        <div class="container">
+            <h2 class="text-center mb-6">Come Funziona</h2>
+            
+            <div class="grid grid-3">
+                <div class="card">
+                    <div class="text-center">
+                        <div class="step-number">1</div>
+                        <h3>Scegli il Pacchetto</h3>
+                        <p>Seleziona il tipo di analisi che più si adatta alle tue esigenze tra i nostri pacchetti specializzati.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="text-center">
+                        <div class="step-number">2</div>
+                        <h3>Carica la tua Immagine</h3>
+                        <p>Carica una foto chiara seguendo le linee guida per ottenere i risultati più accurati possibili.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="text-center">
+                        <div class="step-number">3</div>
+                        <h3>Ricevi l'Analisi</h3>
+                        <p>La nostra AI elaborerà un'analisi dettagliata in pochi secondi, con insight profondi e consigli pratici.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+            <h2 class="text-center mb-6">Testimonianze</h2>
+            
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">"L'analisi delle microespressioni mi ha fornito insight incredibili sulla mia comunicazione non verbale. Ho scoperto pattern di cui non ero consapevole e ora posso gestire meglio le mie interazioni."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-author-info">
+                                <h4>Marco Bianchi</h4>
+                                <p>Manager HR</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">"La consulenza d'immagine di MicroInsight ha trasformato il mio approccio allo stile personale. La palette di colori che mi è stata suggerita valorizza davvero il mio aspetto naturale."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-author-info">
+                                <h4>Laura Rossi</h4>
+                                <p>Fashion Designer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="bg-light py-8">
+        <div class="container">
+            <h2 class="text-center mb-6">Chi Siamo</h2>
+            
+            <div class="grid grid-2">
+                <div>
+                    <p>MicroInsight è all'avanguardia nell'applicazione dell'intelligenza artificiale all'analisi del linguaggio non verbale e delle microespressioni facciali.</p>
+                    <p>Il nostro team unisce competenze in psicologia cognitiva, scienza dei dati e IA per sviluppare algoritmi in grado di leggere e interpretare le sfumature più sottili della comunicazione umana.</p>
+                    <p>La nostra missione è rendere accessibile a tutti la comprensione approfondita delle dinamiche comunicative non verbali, offrendo strumenti che possono migliorare significativamente la comprensione di sé e degli altri.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>La Nostra Tecnologia</h3>
+                    <p>Utilizziamo modelli di intelligenza artificiale all'avanguardia, tra cui:</p>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                        <li>Reti neurali avanzate per il riconoscimento dei pattern facciali</li>
+                        <li>Algoritmi di analisi emotiva basati su ricerche scientifiche</li>
+                        <li>Elaborazione del linguaggio naturale per report dettagliati e personalizzati</li>
+                        <li>Modelli di apprendimento continuo che migliorano costantemente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="content">
+        <div class="container">
+            <h2 class="text-center mb-6">Contattaci</h2>
+            
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>Hai domande?</h3>
+                    <p>Siamo qui per aiutarti. Contattaci per qualsiasi informazione sui nostri servizi o per supporto tecnico.</p>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@microinsight.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+39 123 456 7890</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Via dell'Innovazione 42, Milano</span>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Modulo di Contatto -->
+<!-- Modulo di Contatto -->
+<div class="card">
+    <h3>Modulo di Contatto</h3>
+    
+    <!-- Messaggio di feedback temporaneo -->
+    <div id="feedback-message" style="display: none; margin-bottom: 15px;" class="alert"></div>
+    
+    <form id="contact-form" class="contact-form" action="/invia-messaggio" method="POST">
+        <div class="form-group">
+            <label for="name" class="form-label">Nome</label>
+            <input type="text" id="name" name="name" class="form-input" placeholder="Il tuo nome" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="La tua email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="message" class="form-label">Messaggio</label>
+            <textarea id="message" name="message" class="form-input" rows="5" placeholder="Il tuo messaggio" required></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Invia Messaggio</button>
+    </form>
+</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>MicroInsight</h3>
+                    <p>Analisi avanzata delle microespressioni e del linguaggio non verbale tramite intelligenza artificiale.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Link Rapidi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/pacchetti">Pacchetti</a></li>
+                        <li><a href="/cronologia">Le tue Analisi</a></li>
+                        <li><a href="#about">Chi Siamo</a></li>
+                        <li><a href="#contact">Contatti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Servizi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/pacchetti">Analisi Microespressioni</a></li>
+                        <li><a href="/pacchetti">Profilo Psicologico</a></li>
+                        <li><a href="/pacchetti">Consulenza d'Immagine</a></li>
+                        <li><a href="/pacchetti">Analisi Evolutiva</a></li>
+                        <li><a href="/pacchetti">Armocromia</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legali</h3>
+                    <ul class="footer-links">
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service">Termini di Servizio</a></li>
+                        <li><a href="/cookie-policy">Cookie Policy</a></li>
+                        <li><a href="/data-consent">Consenso Dati</a></li>
+                    </ul>
+                </div>
+        </div>
+    </footer>
+
+    <style>
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .testimonial {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .testimonial-content {
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            font-size: 1.125rem;
+            line-height: 1.7;
+            position: relative;
+            padding: 0 1rem;
+        }
+        
+        .testimonial-text::before,
+        .testimonial-text::after {
+            content: '"';
+            font-size: 2rem;
+            color: var(--primary-color);
+            opacity: 0.3;
+            position: absolute;
+        }
+        
+        .testimonial-text::before {
+            left: -10px;
+            top: -10px;
+        }
+        
+        .testimonial-text::after {
+            right: -10px;
+            bottom: -10px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author-info h4 {
+            margin-bottom: 0.25rem;
+            font-size: 1.125rem;
+        }
+        
+        .testimonial-author-info p {
+            margin: 0;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+        
+        .contact-info {
+            margin: 1.5rem 0;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-item i {
+            width: 20px;
+            margin-right: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1.25rem;
+            transition: all 0.2s;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+        
+        .py-8 {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .py-8 {
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+        }
+/* Stile per il messaggio di feedback */
+.alert {
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-left: 4px solid #dc3545;
+}
+    
+    </style>
+
+    <script src="/js/script.js"></script>
+
+    <%- include('partials/cookie-banner') %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestione del form di contatto
+            const contactForm = document.getElementById('contact-form');
+            const feedbackMessage = document.getElementById('feedback-message');
+            
+            // Verifica se l'URL contiene un parametro di success
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('feedback')) {
+                const feedbackType = urlParams.get('feedback');
+                let message = '';
+                
+                if (feedbackType === 'success') {
+                    feedbackMessage.className = 'alert alert-success';
+                    message = 'Messaggio inviato con successo! Ti risponderemo al più presto.';
+                } else if (feedbackType === 'error') {
+                    feedbackMessage.className = 'alert alert-danger';
+                    message = 'Si è verificato un errore nell\'invio del messaggio. Riprova più tardi.';
+                }
+                
+                if (message) {
+                    feedbackMessage.textContent = message;
+                    feedbackMessage.style.display = 'block';
+                    
+                    // Nascondi il messaggio dopo 5 secondi
+                    setTimeout(function() {
+                        feedbackMessage.style.display = 'none';
+                    }, 5000);
+                    
+                    // Pulisci l'URL senza ricaricare la pagina
+                    if (history.pushState) {
+                        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.hash;
+                        window.history.pushState({path: newUrl}, '', newUrl);
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

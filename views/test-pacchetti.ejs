@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Pacchetti</title>
+</head>
+<body>
+  <h1>Test Visualizzazione Pacchetti</h1>
+  
+  <h2>Dati raw:</h2>
+  <pre><%= JSON.stringify(pacchetti, null, 2) %></pre>
+  
+  <h2>Dropdown generato:</h2>
+  <select>
+    <option value="">Seleziona pacchetto...</option>
+    <% if (pacchetti && pacchetti.length > 0) { %>
+      <% for(let i=0; i<pacchetti.length; i++) { %>
+        <option value="<%= pacchetti[i].id %>"><%= pacchetti[i].nome %></option>
+      <% } %>
+    <% } else { %>
+      <option value="" disabled>Nessun pacchetto disponibile</option>
+    <% } %>
+  </select>
+</body>
+</html>

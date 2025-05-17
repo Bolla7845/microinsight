@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurazione AI - MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Font Awesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CodeMirror per l'editor di testo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar per la navigazione admin -->
+        <div class="admin-sidebar">
+            <div class="admin-logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span> Admin
+            </div>
+            <ul class="admin-nav">
+                <li>
+                    <a href="/admin/dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/users">
+                        <i class="fas fa-users"></i>
+                        <span>Gestione Utenti</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/analyses">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Gestione Analisi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/packages">
+                        <i class="fas fa-box"></i>
+                        <span>Pacchetti</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/admin/prompts">
+                        <i class="fas fa-robot"></i>
+                        <span>Configurazione AI</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/messages">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messaggi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/logs">
+                        <i class="fas fa-list"></i>
+                        <span>Log di Sistema</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Torna al sito</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Contenuto principale -->
+        <div class="admin-content">
+            <div class="admin-header">
+                <h1>Configurazione AI</h1>
+                <div class="admin-user">
+                    <span>Benvenuto, <%= user.nome %></span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+
+          <!-- Messaggi di feedback -->
+<% if (message && message.length > 0) { %>
+    <div class="alert alert-danger">
+        <%= message %>
+    </div>
+<% } %>
+
+<% if (success && success.length > 0) { %>
+    <div class="alert alert-success">
+        <%= success %>
+    </div>
+<% } %>
+
+            <!-- Sezione principale -->
+            <div class="row">
+                <!-- Lista dei prompt -->
+                <div class="col-md-4">
+                    <div class="admin-section">
+                        <div class="section-header">
+                            <h2>Prompt disponibili</h2>
+                            <button class="btn btn-success btn-sm" id="newPromptBtn">
+                                <i class="fas fa-plus"></i> Nuovo Prompt
+                            </button>
+                        </div>
+                        
+                        <ul class="list-group prompt-list">
+                            <% if (prompts && prompts.length > 0) { %>
+                                <% prompts.forEach(prompt => { %>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center prompt-item" 
+    data-id="<%= prompt.id %>" 
+    data-nome="<%= prompt.nome %>" 
+    data-tipo="<%= prompt.tipo %>" 
+    data-attivo="<%= prompt.attivo %>"
+    data-pacchetto_id="<%= prompt.pacchetto_id %>">
+    <div>
+        <strong><%= prompt.nome %></strong>
+        <span class="badge <%= prompt.attivo ? 'bg-success' : 'bg-secondary' %> ms-2">
+            <%= prompt.attivo ? 'Attivo' : 'Inattivo' %>
+        </span>
+        <br>
+        <small class="text-muted">ID: <%= prompt.id %> 
+        <% if (prompt.pacchetto_id) { %>
+            | Pacchetto: <%= prompt.pacchetto_id %>
+        <% } %>
+        </small>
+    </div>
+    <div class="btn-group prompt-actions">
+        <button class="btn btn-sm btn-primary edit-prompt">
+            <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-sm btn-danger delete-prompt">
+            <i class="fas fa-trash"></i>
+        </button>
+    </div>
+</li>
+                                <% }); %>
+                            <% } else { %>
+                                <li class="list-group-item text-center">
+                                    <em>Nessun prompt configurato</em>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Editor del prompt -->
+                <div class="col-md-8">
+                    <div class="admin-section">
+                        <div class="section-header">
+                            <h2 id="editorTitle">Configura Prompt</h2>
+                            <div>
+                                <button class="btn btn-primary" id="testBtn" data-bs-toggle="modal" data-bs-target="#testPromptModal">
+                                    <i class="fas fa-flask"></i> Test
+                                  </button>
+                                <button class="btn btn-success" id="savePromptBtn">
+                                    <i class="fas fa-save"></i> Salva
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <form id="promptForm" action="/admin/prompts" method="POST" class="prompt-form">
+                            <input type="hidden" id="promptId" name="id">
+                            <input type="hidden" id="promptType" name="tipo" value="standard">
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="promptName" class="form-label">Nome del Prompt</label>
+                                    <input type="text" class="form-control" id="promptName" name="nome" required>
+                                </div>
+                            </div>
+                                  
+                               
+                                  </div>
+                                <div class="col-md-2">
+                                    <label class="form-label d-block">Stato</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="promptActive" name="attivo" checked>
+                                        <label class="form-check-label" for="promptActive">Attivo</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="promptContent" class="form-label">Contenuto del Prompt</label>
+                                <textarea class="form-control" id="promptContent" name="contenuto" rows="15" required></textarea>
+                            </div>
+                        </form>
+                        
+                        <div class="section-header mt-4">
+                            <h3>Guida ai Prompt</h3>
+                        </div>
+                        
+                        <div class="prompt-guide">
+                            <p>Creare prompt efficaci per l'analisi delle immagini:</p>
+                            <ul>
+                                <li><strong>Sii specifico:</strong> Indica chiaramente cosa l'AI deve analizzare.</li>
+                                <li><strong>Struttura il prompt:</strong> Usa numerazione o sezioni per organizzare l'output.</li>
+                                <li><strong>Definisci il tono:</strong> Professionale, amichevole, dettagliato, ecc.</li>
+                                <li><strong>Placeholder:</strong> Usa [NUMERO] per indicare il numero di immagini.</li>
+                                <li><strong>Evita ambiguità:</strong> Specifica i parametri e le metriche da utilizzare.</li>
+                            </ul>
+                            <p><strong>Esempio:</strong> "Analizza le microespressioni e il linguaggio del corpo visibile in queste [NUMERO] immagini. Concentrati su: 1. Tensione muscolare facciale, 2. Asimmetria espressiva, 3. Pattern emotivi..."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per l'eliminazione del prompt -->
+    <div class="modal fade" id="deletePromptModal" tabindex="-1" aria-labelledby="deletePromptModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletePromptModalLabel">Conferma Eliminazione</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Sei sicuro di voler eliminare il prompt <strong id="deletePromptName"></strong>?</p>
+                    <p class="text-danger">Questa azione non può essere annullata!</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="deletePromptForm" action="/admin/prompts/delete" method="POST">
+                        <input type="hidden" id="deletePromptId" name="id">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                        <button type="submit" class="btn btn-danger">Elimina</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per il test del prompt -->
+    <div class="modal fade" id="testPromptModal" tabindex="-1" aria-labelledby="testPromptModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="testPromptModalLabel">Test Prompt</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="testImage" class="form-label">Seleziona un'immagine di test</label>
+                        <input class="form-control" type="file" id="testImage" accept="image/*">
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div id="testImagePreview" class="test-image-preview mb-3">
+                                <div class="placeholder-text">Anteprima immagine</div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="test-result-container">
+                                <h6>Risultato del test:</h6>
+                                <div id="testResultContainer" class="test-result">
+                                    <div class="placeholder-text">Il risultato apparirà qui dopo il test</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary" id="runTestBtn">
+                        <i class="fas fa-play"></i> Esegui Test
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/markdown/markdown.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inizializza CodeMirror per l'editor di testo
+            const editor = CodeMirror.fromTextArea(document.getElementById('promptContent'), {
+                mode: 'markdown',
+                theme: 'monokai',
+                lineNumbers: true,
+                lineWrapping: true,
+                tabSize: 2
+            });
+            
+            // Gestore per il bottone "Nuovo Prompt"
+            document.getElementById('newPromptBtn').addEventListener('click', function() {
+                clearPromptForm();
+                document.getElementById('editorTitle').textContent = 'Nuovo Prompt';
+            });
+            
+            // Cerca questo blocco e modificalo
+const editButtons = document.querySelectorAll('.edit-prompt');
+editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const promptItem = this.closest('.prompt-item');
+        const promptId = promptItem.dataset.id;
+        const promptNome = promptItem.dataset.nome;
+        const promptTipo = promptItem.dataset.tipo;
+        const promptAttivo = promptItem.dataset.attivo === 'true';
+        const promptPacchettoId = promptItem.dataset.pacchetto_id; // Aggiungi questa riga
+        
+        // Carica il contenuto del prompt dal server
+        fetch(`/admin/prompts/${promptId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fillPromptForm(promptId, promptNome, promptTipo, data.contenuto, promptAttivo, promptPacchettoId); // Aggiungi promptPacchettoId
+                    document.getElementById('editorTitle').textContent = 'Modifica Prompt: ' + promptNome;
+                }
+            })
+            .catch(error => {
+                console.error('Errore nel recupero del prompt:', error);
+                alert('Si è verificato un errore nel recupero del prompt');
+            });
+    });
+});
+            
+            // Gestione dei bottoni di eliminazione dei prompt
+            const deleteButtons = document.querySelectorAll('.delete-prompt');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const promptItem = this.closest('.prompt-item');
+                    const promptId = promptItem.dataset.id;
+                    const promptNome = promptItem.dataset.nome;
+                    
+                    document.getElementById('deletePromptId').value = promptId;
+                    document.getElementById('deletePromptName').textContent = promptNome;
+                    
+                    const deleteModal = new bootstrap.Modal(document.getElementById('deletePromptModal'));
+                    deleteModal.show();
+                });
+            });
+            
+            // Gestione del form di eliminazione
+document.getElementById('deletePromptForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const promptId = document.getElementById('deletePromptId').value;
+    
+    // Invia il form direttamente (senza elaborazione AJAX)
+    this.submit();
+});
+            
+ // Gestore per il bottone "Salva"
+document.getElementById('savePromptBtn').addEventListener('click', function() {
+  // Assicurati che il contenuto dell'editor venga sincronizzato con il textarea
+  if (typeof editor !== 'undefined' && editor) {
+    editor.save();
+  }
+  
+  // Controlla che tutti i campi siano compilati
+  const nome = document.getElementById('promptName').value;
+  const contenuto = document.getElementById('promptContent').value;
+  
+  if (!nome || !contenuto) {
+    alert('Nome e contenuto sono obbligatori');
+    return;
+  }
+  
+  // Invia il form
+  document.getElementById('promptForm').submit();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // SICURO: Gestione del pulsante Test
+    const testBtn = document.getElementById('testBtn');
+    if (testBtn) {
+        console.log('Pulsante Test trovato!');
+        testBtn.addEventListener('click', function(e) {
+            console.log('Pulsante Test cliccato!');
+            e.preventDefault();
+            
+            // Apertura del modal con controllo di sicurezza
+            const modalEl = document.getElementById('testPromptModal');
+            if (modalEl) {
+                try {
+                    const testModal = new bootstrap.Modal(modalEl);
+                    testModal.show();
+                } catch (error) {
+                    console.error('Errore nell\'apertura del modal:', error);
+                    alert('Si è verificato un errore nell\'apertura della finestra di test.');
+                }
+            } else {
+                console.error('Modal di test non trovato!');
+            }
+        });
+    } else {
+        console.error('Pulsante Test non trovato!');
+    }
+    
+    // SICURO: Gestione del pulsante Esegui Test
+    const runTestBtn = document.getElementById('runTestBtn');
+    if (runTestBtn) {
+        runTestBtn.addEventListener('click', function() {
+            try {
+                // Controlli di sicurezza su tutti gli elementi
+                const fileInputEl = document.getElementById('testImage');
+                const promptIdEl = document.getElementById('promptId');
+                
+                // Verifica se l'input file esiste e ha un file selezionato
+                if (!fileInputEl || !fileInputEl.files || fileInputEl.files.length === 0) {
+                    alert('Seleziona un\'immagine per il test');
+                    return;
+                }
+                
+                let promptId = null;
+                // Verifica se l'elemento dell'ID del prompt esiste
+                if (promptIdEl && promptIdEl.value) {
+                    promptId = promptIdEl.value;
+                } else {
+                    alert('Salva il prompt prima di testarlo');
+                    return;
+                }
+                
+                const file = fileInputEl.files[0];
+                const formData = new FormData();
+                formData.append('promptId', promptId);
+                formData.append('testImage', file);
+                
+                // Aggiorna il contenitore dei risultati se esiste
+                const resultContainerEl = document.getElementById('testResultContainer');
+                if (resultContainerEl) {
+                    resultContainerEl.innerHTML = 
+                        '<div class="d-flex justify-content-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Caricamento...</span></div></div>';
+                }
+                
+                // Effettua la chiamata API
+                fetch('/admin/test-prompt', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (resultContainerEl) {
+                        if (data.success) {
+                            resultContainerEl.innerHTML = 
+                                `<pre class="test-result-content">${data.result}</pre>`;
+                        } else {
+                            resultContainerEl.innerHTML = 
+                                `<div class="alert alert-danger">${data.error || 'Errore durante il test'}</div>`;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore durante il test:', error);
+                    if (resultContainerEl) {
+                        resultContainerEl.innerHTML = 
+                            `<div class="alert alert-danger">
+                                <h5>Si è verificato un errore durante il test</h5>
+                                <p>${error.message || 'Errore sconosciuto'}</p>
+                                <p>Controlla la console per maggiori dettagli</p>
+                            </div>`;
+                    }
+                });
+            } catch (error) {
+                console.error('Errore nella gestione del test:', error);
+                alert('Si è verificato un errore durante il test. Controlla la console per i dettagli.');
+            }
+        });
+    }
+});
+            
+function clearPromptForm() {
+    if (document.getElementById('promptId')) document.getElementById('promptId').value = '';
+    if (document.getElementById('promptName')) document.getElementById('promptName').value = '';
+    if (document.getElementById('promptType')) document.getElementById('promptType').value = '';  // ← PROBLEMA QUI
+    if (document.getElementById('promptActive')) document.getElementById('promptActive').checked = true;
+    editor.setValue('');
+}
+            
+ // Funzione per popolare il form
+ function fillPromptForm(id, nome, tipo, contenuto, attivo) {
+    document.getElementById('promptId').value = id;
+    document.getElementById('promptName').value = nome;
+    document.getElementById('promptActive').checked = attivo;
+    editor.setValue(contenuto);
+
+}
+        });
+
+
+    </script>
+    
+    <style>
+        /* Stili per il pannello amministrativo (mantieni gli stili esistenti) */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .admin-sidebar {
+            width: 260px;
+            background-color: #212529;
+            color: #fff;
+            padding: 1.5rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-logo {
+            padding: 0 1.5rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-logo span {
+            color: #3b82f6;
+        }
+
+        .admin-logo .logo-icon {
+            margin-right: 0.5rem;
+            color: #3b82f6;
+        }
+
+        .admin-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .admin-nav li {
+            margin-bottom: 0.25rem;
+        }
+
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .admin-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .admin-nav li.active a {
+            background-color: #3b82f6;
+            color: #fff;
+        }
+
+        .admin-nav a i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 1.5rem;
+            margin-left: 260px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            color: #212529;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            color: #495057;
+        }
+
+        .admin-user i {
+            margin-left: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Stili specifici per la pagina dei prompt */
+        .admin-section {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2, .section-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .prompt-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .prompt-item {
+            transition: background-color 0.2s;
+        }
+
+        .prompt-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .prompt-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .prompt-form {
+            margin-bottom: 1.5rem;
+        }
+
+        .CodeMirror {
+            height: 400px;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+        }
+
+        .prompt-guide {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .test-image-preview {
+            width: 100%;
+            height: 200px;
+            border: 1px dashed #ced4da;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            overflow: hidden;
+        }
+
+        .test-image-preview img.preview-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .placeholder-text {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .test-result {
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+        }
+
+        .test-result-content {
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 70px;
+            }
+
+            .admin-logo {
+                padding: 0 0.5rem 1rem;
+                justify-content: center;
+            }
+
+            .admin-logo span {
+                display: none;
+            }
+
+            .admin-nav a span {
+                display: none;
+            }
+
+            .admin-nav a {
+                justify-content: center;
+                padding: 0.75rem;
+            }
+
+            .admin-nav a i {
+                margin-right: 0;
+            }
+
+            .admin-content {
+                margin-left: 70px;
+            }
+        }
+    </style>
+</body>
+</html>

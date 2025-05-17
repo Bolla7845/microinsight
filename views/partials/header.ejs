@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><% if (typeof title !== 'undefined') { %><%= title %><% } else { %>MicroInsight<% } %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span>
+            </a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/pacchetti" class="nav-link">Pacchetti</a></li>
+                    <% if (typeof user !== 'undefined' && user) { %>
+                        <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
+                    <% } %>
+                    <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
+                    <li><a href="/#contact" class="nav-link">Contatti</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>

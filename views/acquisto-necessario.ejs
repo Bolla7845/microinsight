@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acquisto Necessario - MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span>
+            </a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/pacchetti" class="nav-link">Pacchetti</a></li>
+                    <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
+                    <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
+                    <li><a href="/#contact" class="nav-link">Contatti</a></li>
+                    <% if (locals.user) { %>
+                        <li><a href="/dashboard" class="nav-link">Area Personale</a></li>
+                    <% } else { %>
+                        <li><a href="/login" class="nav-link">Accedi</a></li>
+                    <% } %>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-header" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+        <div class="container">
+            <h1>Acquisto Necessario</h1>
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &gt;
+                <a href="/pacchetti">Pacchetti</a> &gt;
+                <span>Acquisto Necessario</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container">
+            <div class="card purchase-required-card">
+                <div class="purchase-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h2>Accesso Limitato</h2>
+                <p class="message"><%= message %></p>
+                
+                <div class="package-info">
+                    <h3><%= pacchetto.nome %></h3>
+                    <p><%= pacchetto.descrizione %></p>
+                    <div class="package-price">
+                        <span class="price-currency">€</span>
+                        <span class="price-amount"><%= parseFloat(pacchetto.prezzo).toFixed(2) %></span>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="/acquista/<%= pacchetto.id %>" class="btn btn-primary btn-large">
+                        <i class="fas fa-shopping-cart"></i> Acquista Ora
+                    </a>
+                    <a href="/pacchetti" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Torna ai Pacchetti
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .purchase-required-card {
+            text-align: center;
+            padding: 3rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .purchase-icon {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            font-size: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+        }
+        
+        .purchase-required-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .message {
+            font-size: 1.125rem;
+            color: #4b5563;
+            margin-bottom: 2rem;
+        }
+        
+        .package-info {
+            background-color: #f9fafb;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .package-info h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-top: 1rem;
+        }
+        
+        .price-currency {
+            font-size: 1.5rem;
+            vertical-align: super;
+            margin-right: 0.25rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .purchase-required-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-buttons .btn {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>MicroInsight</h3>
+                    <p>Analisi avanzata delle microespressioni e del linguaggio non verbale tramite intelligenza artificiale.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Link Rapidi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/pacchetti">Pacchetti</a></li>
+                        <li><a href="/cronologia">Le tue Analisi</a></li>
+                        <li><a href="/#about">Chi Siamo</a></li>
+                        <li><a href="/#contact">Contatti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Servizi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/pacchetti">Analisi Microespressioni</a></li>
+                        <li><a href="/pacchetti">Profilo Psicologico</a></li>
+                        <li><a href="/pacchetti">Consulenza d'Immagine</a></li>
+                        <li><a href="/pacchetti">Analisi Evolutiva</a></li>
+                        <li><a href="/pacchetti">Armocromia</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legali</h3>
+                    <ul class="footer-links">
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service">Termini di Servizio</a></li>
+                        <li><a href="/cookie-policy">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <%= new Date().getFullYear() %> MicroInsight. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

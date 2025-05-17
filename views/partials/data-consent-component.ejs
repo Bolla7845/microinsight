@@ -1,0 +1,144 @@
+<!-- data-consent-component.ejs -->
+<div class="consent-section">
+    <h3 class="consent-title">Consenso al Trattamento dei Dati</h3>
+    
+    <div class="consent-explanation">
+        <p>MicroInsight raccoglie e tratta dati personali, inclusi potenzialmente dati biometrici derivati dall'analisi delle immagini caricate. Per utilizzare il nostro servizio, devi fornire il tuo consenso esplicito.</p>
+        
+        <p>Per maggiori informazioni, consulta la nostra <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</p>
+    </div>
+    
+    <div class="consent-checkboxes">
+        <div class="consent-checkbox required">
+            <input type="checkbox" id="consent_processing" name="consent_processing" required>
+            <label for="consent_processing">Dichiaro di aver letto e compreso l'Informativa e acconsento al <a href="/privacy-policy" target="_blank">trattamento dei miei dati personali</a> per le finalità descritte nell'informativa. <span class="required-mark">*</span></label>
+        </div>
+        
+        <div class="consent-checkbox">
+            <input type="checkbox" id="consent_marketing" name="consent_marketing">
+            <label for="consent_marketing">Acconsento a ricevere comunicazioni di marketing relative a prodotti e servizi di MicroInsight. (Facoltativo)</label>
+        </div>
+        
+        <div class="consent-checkbox required">
+            <input type="checkbox" id="tos_agreement" name="tos_agreement" required>
+            <label for="tos_agreement">Ho letto e accetto i <a href="/terms-of-service" target="_blank">Termini di Servizio</a>. <span class="required-mark">*</span></label>
+        </div>
+    </div>
+    
+    <div class="consent-note">
+        <p><span class="required-mark">*</span> Campi obbligatori</p>
+        <p>Puoi revocare il tuo consenso in qualsiasi momento tramite la tua area personale.</p>
+    </div>
+</div>
+
+<style>
+    .consent-section {
+        background-color: rgba(59, 130, 246, 0.05);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    
+    .consent-title {
+        font-size: 1.125rem;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .consent-explanation {
+        margin-bottom: 1.25rem;
+        font-size: 0.875rem;
+        color: var(--gray-700);
+        line-height: 1.5;
+    }
+    
+    .consent-explanation p {
+        margin-bottom: 0.75rem;
+    }
+    
+    .consent-explanation a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .consent-explanation a:hover {
+        text-decoration: underline;
+    }
+    
+    .consent-checkboxes {
+        margin-bottom: 1rem;
+    }
+    
+    .consent-checkbox {
+        display: flex;
+        margin-bottom: 1rem;
+        align-items: flex-start;
+    }
+    
+    .consent-checkbox:last-child {
+        margin-bottom: 0;
+    }
+    
+    .consent-checkbox input[type="checkbox"] {
+        margin-top: 0.25rem;
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+    
+    .consent-checkbox label {
+        font-size: 0.875rem;
+        color: var(--gray-800);
+        line-height: 1.5;
+    }
+    
+    .consent-checkbox label a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .consent-checkbox label a:hover {
+        text-decoration: underline;
+    }
+    
+    .required-mark {
+        color: var(--danger);
+        font-weight: bold;
+    }
+    
+    .consent-note {
+        font-size: 0.75rem;
+        color: var(--gray-500);
+        font-style: italic;
+        margin-top: 1rem;
+    }
+    
+    .consent-note p {
+        margin-bottom: 0.25rem;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verifica che i checkbox obbligatori siano spuntati prima di inviare il form
+        const form = document.querySelector('form');
+        
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const consentProcessing = document.getElementById('consent_processing');
+                const tosAgreement = document.getElementById('tos_agreement');
+                
+                if (!consentProcessing.checked || !tosAgreement.checked) {
+                    e.preventDefault();
+                    alert('Per procedere con la registrazione, devi accettare i Termini di Servizio e il consenso al trattamento dei dati.');
+                }
+            });
+        }
+    });
+</script>

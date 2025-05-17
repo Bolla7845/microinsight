@@ -1,0 +1,438 @@
+<!-- Questo file sarà views/admin/dashboard.ejs -->
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Amministrativa - MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Font Awesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Se vuoi usare Bootstrap (opzionale) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar per la navigazione admin -->
+        <div class="admin-sidebar">
+            <div class="admin-logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span> Admin
+            </div>
+            <ul class="admin-nav">
+                <li class="active">
+                    <a href="/admin/dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/users">
+                        <i class="fas fa-users"></i>
+                        <span>Gestione Utenti</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/analyses">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Gestione Analisi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/packages">
+                        <i class="fas fa-box"></i>
+                        <span>Pacchetti</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/prompts">
+                        <i class="fas fa-robot"></i>
+                        <span>Configurazione AI</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/messages">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messaggi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/logs">
+                        <i class="fas fa-list"></i>
+                        <span>Log di Sistema</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Torna al sito</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Contenuto principale -->
+        <div class="admin-content">
+            <div class="admin-header">
+                <h1>Dashboard Amministrativa</h1>
+                <div class="admin-user">
+                    <span>Benvenuto, <%= user.nome %></span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+
+            <!-- Riassunto delle statistiche -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Utenti Totali</h3>
+                        <p class="stat-number"><%= stats.totalUsers %></p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Analisi Totali</h3>
+                        <p class="stat-number"><%= stats.totalAnalyses %></p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Pacchetti Venduti</h3>
+                        <p class="stat-number"><%= stats.totalSales %></p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-euro-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Fatturato</h3>
+                        <p class="stat-number">€<%= (stats.totalRevenue || 0).toFixed(2) %></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ultimi utenti registrati -->
+            <div class="admin-section">
+                <h2>Ultimi Utenti Registrati</h2>
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Data Registrazione</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% recentUsers.forEach(user => { %>
+                            <tr>
+                                <td><%= user.id %></td>
+                                <td><%= user.nome %></td>
+                                <td><%= user.email %></td>
+                                <td><%= new Date(user.data_creazione).toLocaleDateString('it-IT') %></td>
+                                <td>
+                                    <a href="/admin/users/<%= user.id %>" class="admin-btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Ultime analisi effettuate -->
+            <div class="admin-section">
+                <h2>Ultime Analisi Effettuate</h2>
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Utente</th>
+                                <th>Pacchetto</th>
+                                <th>Data</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% recentAnalyses.forEach(analysis => { %>
+                            <tr>
+                                <td><%= analysis.id %></td>
+                                <td><%= analysis.nome_utente %></td>
+                                <td><%= analysis.nome_pacchetto %></td>
+                                <td><%= new Date(analysis.data_analisi).toLocaleDateString('it-IT') %></td>
+                                <td>
+                                    <a href="/admin/analyses/<%= analysis.id %>" class="admin-btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Stili per il pannello amministrativo */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .admin-sidebar {
+            width: 260px;
+            background-color: #212529;
+            color: #fff;
+            padding: 1.5rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-logo {
+            padding: 0 1.5rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-logo span {
+            color: #3b82f6;
+        }
+
+        .admin-logo .logo-icon {
+            margin-right: 0.5rem;
+            color: #3b82f6;
+        }
+
+        .admin-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .admin-nav li {
+            margin-bottom: 0.25rem;
+        }
+
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .admin-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .admin-nav li.active a {
+            background-color: #3b82f6;
+            color: #fff;
+        }
+
+        .admin-nav a i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 1.5rem;
+            margin-left: 260px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            color: #212529;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            color: #495057;
+        }
+
+        .admin-user i {
+            margin-left: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: #3b82f6;
+            font-size: 1.5rem;
+        }
+
+        .stat-info h3 {
+            margin: 0 0 0.25rem;
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212529;
+            margin: 0;
+        }
+
+        .admin-section {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .admin-section h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            color: #212529;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .admin-table th {
+            font-weight: 600;
+            background-color: #f8f9fa;
+        }
+
+        .admin-btn-sm {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: #3b82f6;
+            color: #fff;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .admin-btn-sm:hover {
+            background-color: #2563eb;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 70px;
+                padding: 1rem 0;
+            }
+
+            .admin-logo {
+                padding: 0 0.5rem 1rem;
+                justify-content: center;
+            }
+
+            .admin-logo span {
+                display: none;
+            }
+
+            .admin-nav a span {
+                display: none;
+            }
+
+            .admin-nav a {
+                justify-content: center;
+                padding: 0.75rem;
+            }
+
+            .admin-nav a i {
+                margin-right: 0;
+            }
+
+            .admin-content {
+                margin-left: 70px;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

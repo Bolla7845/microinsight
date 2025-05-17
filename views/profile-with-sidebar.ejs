@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilo Utente | MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Stili per la dashboard e sidebar */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .sidebar-menu {
+            padding: 1.5rem;
+        }
+        
+        .sidebar-menu h3 {
+            margin: 0 0 1rem;
+            font-size: 1.25rem;
+            color: #374151;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
+        }
+        
+        .sidebar-nav a:hover {
+            background-color: #f9fafb;
+            color: #2563eb;
+        }
+        
+        .sidebar-nav li.active a {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
+            font-weight: 500;
+        }
+        
+        .sidebar-nav i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Stili per il profilo */
+        .profile-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            background-color: #3b82f6;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 600;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+        }
+        
+        .profile-tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-tab-btn {
+            padding: 0.75rem 1rem;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.2s;
+        }
+        
+        .profile-tab-btn.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        
+        .profile-section {
+            display: none;
+        }
+        
+        .profile-section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .form-control:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .password-field {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+            color: #64748b;
+            transition: color 0.2s;
+            z-index: 2;
+        }
+        
+        .password-toggle:hover {
+            color: #3b82f6;
+        }
+        
+        .password-strength {
+            margin-top: 0.5rem;
+        }
+        
+        .strength-meter {
+            height: 4px;
+            background-color: #e2e8f0;
+            border-radius: 2px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 2px;
+            transition: width 0.3s, background-color 0.3s;
+        }
+        
+        #password-strength-text {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .password-match {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .match-success {
+            color: #10b981;
+        }
+        
+        .match-error {
+            color: #ef4444;
+        }
+        
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.375rem;
+        }
+        
+        .alert-success {
+            background-color: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .alert-danger {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+        
+        .stats-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .stats-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #eff6ff;
+            color: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+        }
+        
+        .stat-info {
+            flex: 1;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1.125rem;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .user-welcome {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    background-color: #f3f4f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    color: #6b7280;
+    margin-right: 1.5rem;
+}
+
+.user-info h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.75rem;
+}
+
+.user-info p {
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Stili per i modali */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-container {
+    background-color: white;
+    border-radius: 0.5rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1f2937;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <div class="page-header" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+        <div class="container">
+            <h1>Il tuo Profilo</h1>
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &gt;
+                <a href="/dashboard">Dashboard</a> &gt;
+                <span>Profilo</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container">
+            <div class="user-welcome">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h2>Benvenuto, <%= user.nome %></h2>
+                    <p>Gestisci le impostazioni del tuo account e le preferenze personali.</p>
+                </div>
+            </div>
+             <div class="dashboard-grid">
+                <!-- Menu laterale -->
+                <div class="sidebar-card">
+                    <div class="sidebar-menu">
+                        <h3>Menu</h3>
+                        <ul class="sidebar-nav">
+                            <li>
+                                <a href="/">
+                                    <i class="fas fa-house"></i>
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/dashboard">
+                                    <i class="fas fa-home"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="/profile">
+                                    <i class="fas fa-user"></i>
+                                    <span>Gestisci Profilo</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/cronologia">
+                                    <i class="fas fa-history"></i>
+                                    <span>Analisi</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/pacchetti-personale">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span>Acquista Pacchetti</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/logout">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Esci</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Contenuto principale -->
+                <div class="main-content">
+                    <!-- Header del profilo -->
+                    <div class="profile-header">
+                        <div class="avatar-circle">
+                            <% if (user.nome) { %>
+                                <%= user.nome.charAt(0).toUpperCase() %>
+                            <% } else { %>
+                                U
+                            <% } %>
+                        </div>
+                        <div>
+                            <h2 style="font-size: 1.875rem; margin: 0 0 0.5rem;"><%= user.nome %></h2>
+                            <p style="color: #64748b; margin: 0;"><%= user.email %></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab navigation -->
+                    <div class="profile-tabs">
+                        <div class="profile-tab-btn active" data-tab="personal-info">
+                            <i class="fas fa-user"></i> Informazioni Personali
+                        </div>
+                        <div class="profile-tab-btn" data-tab="password">
+                            <i class="fas fa-key"></i> Cambia Password
+                        </div>
+                        <div class="profile-tab-btn" data-tab="privacy">
+                            <i class="fas fa-shield-alt"></i> Privacy e Consensi
+                        </div>
+                        <div class="profile-tab-btn" data-tab="data-management">
+                            <i class="fas fa-database"></i> Gestione Dati
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Informazioni Personali -->
+                    <div class="profile-section active" id="personal-info">
+                        <h3 style="margin-bottom: 1rem;">Aggiorna i tuoi dati personali</h3>
+                        
+                        <form action="/update-profile" method="POST">
+                            <div class="form-group">
+                                <label for="nome">Nome Completo</label>
+                                <input type="text" id="nome" name="nome" class="form-control" value="<%= user.nome %>" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" class="form-control" value="<%= user.email %>" required disabled>
+                                <small class="form-text text-muted">Per cambiare email, contatta l'assistenza</small>
+                            </div>
+                            
+                            <% if (user.telefono !== undefined) { %>
+                            <div class="form-group">
+                                <label for="telefono">Telefono</label>
+                                <input type="tel" id="telefono" name="telefono" class="form-control" value="<%= user.telefono || '' %>">
+                            </div>
+                            <% } %>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Salva Modifiche
+                            </button>
+                        </form>
+                        
+                        <!-- Statistiche Account -->
+                        <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Statistiche Account</h3>
+                        <div class="account-stats">
+                            <div class="stats-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-label">Data Registrazione</span>
+                                    <span class="stat-value"><%= new Date(user.data_creazione).toLocaleDateString('it-IT') %></span>
+                                </div>
+                            </div>
+                            
+                            <div class="stats-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-label">Analisi Gratuite Rimanenti</span>
+                                    <span class="stat-value"><%= user.analisi_gratuite || 0 %></span>
+                                </div>
+                            </div>
+                            
+                            <div class="stats-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-label">Ultimo Accesso</span>
+                                    <span class="stat-value"><%= user.ultimo_accesso ? new Date(user.ultimo_accesso).toLocaleString('it-IT') : 'N/A' %></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Cambio Password -->
+                    <div class="profile-section" id="password">
+                        <h3 style="margin-bottom: 1rem;">Cambia Password</h3>
+                        <% if (locals.error && error.length > 0) { %>
+                            <div class="alert alert-danger" style="margin: 15px; padding: 10px; border-radius: 5px;">
+                                <strong>Errore:</strong> <%= error %>
+                            </div>
+                        <% } %>
+                        
+                        <form action="/update-password" method="POST">
+                            <div class="form-group">
+                                <label for="current_password">Password Attuale</label>
+                                <div class="password-field">
+                                    <input type="password" id="current_password" name="current_password" class="form-control" required>
+                                    <span class="password-toggle" onclick="togglePasswordVisibility('current_password')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="new_password">Nuova Password</label>
+                                <div class="password-field">
+                                    <input type="password" id="new_password" name="new_password" class="form-control" required>
+                                    <span class="password-toggle" onclick="togglePasswordVisibility('new_password')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                                <div class="password-strength">
+                                    <div class="strength-meter">
+                                        <div class="strength-bar" id="password-strength-bar"></div>
+                                    </div>
+                                    <span id="password-strength-text">Forza: Nessuna</span>
+                                </div>
+                                <small class="form-text text-muted">Almeno 8 caratteri, con maiuscole, minuscole e numeri</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm_password">Conferma Nuova Password</label>
+                                <div class="password-field">
+                                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                                    <span class="password-toggle" onclick="togglePasswordVisibility('confirm_password')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                                <div id="password-match" class="password-match"></div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" id="change-password-btn">
+                                <i class="fas fa-key"></i> Cambia Password
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Tab Privacy e Consensi -->
+                    <div class="profile-section" id="privacy">
+                        <h3 style="margin-bottom: 1rem;">Privacy e Consensi</h3>
+                        
+                        <form action="/update-privacy" method="POST">
+                            <div style="margin-bottom: 1.5rem;">
+                                <h4>Comunicazioni via Email</h4>
+                                <div class="form-check" style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                                    <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter" <%= user.consenso_newsletter ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="newsletter" style="margin-left: 0.5rem;">
+                                        Desidero ricevere email con aggiornamenti sui servizi e nuove funzionalità
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem;">
+                                <h4>Trattamento dei Dati</h4>
+                                <div class="form-check" style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                                    <input class="form-check-input" type="checkbox" id="data_processing" name="data_processing" <%= user.consenso_trattamento ? 'checked' : '' %> required>
+                                    <label class="form-check-label" for="data_processing" style="margin-left: 0.5rem;">
+                                        Acconsento al trattamento dei miei dati personali secondo la Privacy Policy
+                                    </label>
+                                </div>
+                                <small class="form-text text-muted">Questo consenso è necessario per l'utilizzo del servizio</small>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Salva Preferenze
+                            </button>
+                        </form>
+                        
+                        <div style="margin-top: 2rem;">
+                            <p>Leggi i nostri documenti sulla privacy:</p>
+                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                                <a href="/privacy-policy" class="btn btn-outline btn-sm">
+                                    <i class="fas fa-file-alt"></i> Privacy Policy
+                                </a>
+                                <a href="/terms-of-service" class="btn btn-outline btn-sm">
+                                    <i class="fas fa-file-contract"></i> Termini di Servizio
+                                </a>
+                                <a href="/cookie-policy" class="btn btn-outline btn-sm">
+                                    <i class="fas fa-cookie"></i> Cookie Policy
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tab Gestione Dati -->
+<div class="profile-section" id="data-management">
+    <h3 style="margin-bottom: 1rem;">Gestione Dati Personali</h3>
+    <!-- Aggiungi questo div per il messaggio di successo -->
+    <% if (locals.success && success.length > 0) { %>
+        <div id="success-alert" class="alert alert-success" style="padding: 0.75rem 1rem; margin-bottom: 1.5rem; border-radius: 0.375rem; background-color: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
+            <i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i> <%= success %>
+        </div>
+        <script>
+            // Nascondi l'avviso dopo 3 secondi
+            setTimeout(function() {
+                const alert = document.getElementById('success-alert');
+                if (alert) {
+                    alert.style.transition = 'opacity 1s';
+                    alert.style.opacity = '0';
+                    setTimeout(function() {
+                        alert.style.display = 'none';
+                    }, 1000);
+                }
+            }, 3000);
+        </script>
+    <% } %>
+    
+    <p style="color: #6b7280; margin-bottom: 2rem;">
+        In questa sezione puoi esportare o cancellare i tuoi dati personali memorizzati nel nostro sistema.
+    </p>
+    <p style="color: #6b7280; margin-bottom: 2rem;">
+        In questa sezione puoi esportare o cancellare i tuoi dati personali memorizzati nel nostro sistema.
+    </p>
+    
+    <div style="border-top: 1px solid #e5e7eb; padding-top: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f3f4f6;">
+            <div>
+                <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Esporta Dati Personali</h4>
+                <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">Scarica una copia di tutti i tuoi dati personali e analisi in formato ZIP.</p>
+            </div>
+            <a href="/export-data" class="btn btn-primary btn-sm">
+                <i class="fas fa-download"></i> Esporta
+            </a>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f3f4f6;">
+            <div>
+                <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Elimina Analisi</h4>
+                <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">Rimuovi tutte le analisi effettuate dal tuo account.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" style="color: #ef4444;" onclick="openDeleteAnalysesModal()">
+                <i class="fas fa-trash-alt"></i> Elimina
+            </button>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Elimina Account</h4>
+                <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">Elimina permanentemente il tuo account e tutti i dati associati.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" style="color: #ef4444;" onclick="openDeleteAccountModal()">
+                <i class="fas fa-user-times"></i> Elimina
+            </button>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab Navigation
+            const tabButtons = document.querySelectorAll('.profile-tab-btn');
+            const sections = document.querySelectorAll('.profile-section');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Nascondi tutte le sezioni
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Rimuovi la classe active da tutti i bottoni
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Attiva la sezione selezionata
+                    document.getElementById(targetTab).classList.add('active');
+                    
+                    // Attiva il bottone selezionato
+                    this.classList.add('active');
+                    
+                    // Aggiorna l'URL con l'hash
+                    window.location.hash = targetTab;
+                });
+            });
+            
+            // Verifica se c'è un hash nell'URL e apri la tab corrispondente
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                const tabButton = document.querySelector(`.profile-tab-btn[data-tab="${hash}"]`);
+                if (tabButton) {
+                    tabButton.click();
+                }
+            }
+            
+            // Validazione password
+            const newPasswordInput = document.getElementById('new_password');
+            const confirmPasswordInput = document.getElementById('confirm_password');
+            const passwordStrengthBar = document.getElementById('password-strength-bar');
+            const passwordStrengthText = document.getElementById('password-strength-text');
+            const passwordMatchIndicator = document.getElementById('password-match');
+            const changePasswordBtn = document.getElementById('change-password-btn');
+            
+            if (newPasswordInput && confirmPasswordInput) {
+                // Controlla la forza della password
+                newPasswordInput.addEventListener('input', function() {
+                    const password = this.value;
+                    let strength = 0;
+                    let feedback = '';
+                    
+                    if (password.length > 0) {
+                        // Calcola la forza della password
+                        if (password.length >= 8) strength += 20;
+                        if (password.match(/[a-z]+/)) strength += 20;
+                        if (password.match(/[A-Z]+/)) strength += 20;
+                        if (password.match(/[0-9]+/)) strength += 20;
+                        if (password.match(/[^a-zA-Z0-9]+/)) strength += 20;
+                        
+                        // Aggiorna il feedback visivo
+                        passwordStrengthBar.style.width = strength + '%';
+                        
+                        if (strength < 40) {
+                            passwordStrengthBar.style.backgroundColor = '#ef4444'; // Rosso
+                            feedback = 'Debole';
+                        } else if (strength < 70) {
+                            passwordStrengthBar.style.backgroundColor = '#f59e0b'; // Giallo
+                            feedback = 'Media';
+                        } else {
+                            passwordStrengthBar.style.backgroundColor = '#10b981'; // Verde
+                            feedback = 'Forte';
+                        }
+                    } else {
+                        passwordStrengthBar.style.width = '0';
+                        feedback = 'Nessuna';
+                    }
+                    
+                    passwordStrengthText.textContent = 'Forza: ' + feedback;
+                    
+                    // Controlla se le password corrispondono
+                    checkPasswordMatch();
+                });
+                
+                // Controlla se le password corrispondono
+                confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+                
+                function checkPasswordMatch() {
+                    const password = newPasswordInput.value;
+                    const confirmPassword = confirmPasswordInput.value;
+                    
+                    if (confirmPassword.length > 0) {
+                        if (password === confirmPassword) {
+                            passwordMatchIndicator.className = 'password-match match-success';
+                            passwordMatchIndicator.textContent = 'Le password corrispondono';
+                            changePasswordBtn.disabled = false;
+                        } else {
+                            passwordMatchIndicator.className = 'password-match match-error';
+                            passwordMatchIndicator.textContent = 'Le password non corrispondono';
+                            changePasswordBtn.disabled = true;
+                        }
+                    } else {
+                        passwordMatchIndicator.textContent = '';
+                    }
+                }
+            }
+
+            // Controlla parametri URL per errori specifici
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorParam = urlParams.get('error');
+            if (errorParam === 'password_incorrect') {
+                const passwordTab = document.getElementById('password');
+                if (passwordTab) {
+                    const errorAlert = document.createElement('div');
+                    errorAlert.className = 'alert alert-danger';
+                    errorAlert.style.margin = '15px';
+                    errorAlert.style.padding = '10px';
+                    errorAlert.style.borderRadius = '5px';
+                    errorAlert.innerHTML = '<strong>Errore:</strong> La password attuale non è corretta';
+                    
+                    const cardHeader = passwordTab.querySelector('.card-header');
+                    if (cardHeader) {
+                        cardHeader.parentNode.insertBefore(errorAlert, cardHeader.nextSibling);
+                    }
+                    
+                    const tabButton = document.querySelector('.profile-tab-btn[data-tab="password"]');
+                    if (tabButton) {
+                        tabButton.click();
+                    }
+                }
+            }
+        });
+
+        // Funzione per mostrare/nascondere la password
+        function togglePasswordVisibility(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = event.currentTarget.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+// Funzioni per aprire i modali
+function openDeleteAnalysesModal() {
+    const modal = document.createElement('div');
+    modal.innerHTML = `
+        <div class="modal-overlay" onclick="closeModal(this)">
+            <div class="modal-container" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>Conferma Eliminazione Analisi</h3>
+                    <button onclick="closeModal(this.closest('.modal-overlay'))" class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Sei sicuro di voler eliminare <strong>tutte</strong> le tue analisi? Questa azione non può essere annullata.</p>
+                    <p style="font-size: 0.875rem; color: #ef4444;">Nota: Le analisi già scaricate o condivise potrebbero comunque esistere altrove.</p>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="closeModal(this.closest('.modal-overlay'))" class="btn btn-outline">Annulla</button>
+                    <form action="/delete-analyses" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-primary" style="background-color: #ef4444; border-color: #ef4444;">Elimina Analisi</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+}
+
+function openDeleteAccountModal() {
+    const modal = document.createElement('div');
+    modal.innerHTML = `
+        <div class="modal-overlay" onclick="closeModal(this)">
+            <div class="modal-container" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>Conferma Eliminazione Account</h3>
+                    <button onclick="closeModal(this.closest('.modal-overlay'))" class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Sei sicuro di voler eliminare <strong>definitivamente</strong> il tuo account? Questa azione comporta:</p>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Rimozione di tutti i tuoi dati personali</li>
+                        <li>Eliminazione di tutte le analisi effettuate</li>
+                        <li>Cancellazione di abbonamenti attivi</li>
+                    </ul>
+                    <p style="font-size: 0.875rem; color: #ef4444;">Questa azione non può essere annullata.</p>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <label for="deleteConfirmation" style="display: block; margin-bottom: 0.5rem;">Per confermare, digita l'email del tuo account:</label>
+                        <input type="text" id="deleteConfirmation" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.25rem;" oninput="validateDeleteConfirmation()">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="closeModal(this.closest('.modal-overlay'))" class="btn btn-outline">Annulla</button>
+                    <form action="/delete-account" method="POST" style="display: inline;">
+                        <input type="hidden" name="confirmedEmail" id="confirmedEmailInput">
+                        <button type="submit" id="confirmDeleteBtn" class="btn btn-primary" style="background-color: #ef4444; border-color: #ef4444;" disabled>Elimina Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+    
+    // Aggiungi questo codice per assicurarsi che l'email venga passata correttamente
+    const deleteConfirmation = document.getElementById('deleteConfirmation');
+    const confirmedEmailInput = document.getElementById('confirmedEmailInput');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    
+    if (deleteConfirmation && confirmedEmailInput && confirmDeleteBtn) {
+        deleteConfirmation.addEventListener('input', function() {
+            confirmedEmailInput.value = this.value;
+            confirmDeleteBtn.disabled = this.value !== '<%= user.email %>';
+        });
+    }
+}
+
+function validateDeleteConfirmation() {
+    const confirmInput = document.getElementById('deleteConfirmation');
+    const confirmedEmailInput = document.getElementById('confirmedEmailInput');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmInput && confirmBtn && confirmedEmailInput) {
+        confirmedEmailInput.value = confirmInput.value;
+        confirmBtn.disabled = confirmInput.value !== '<%= user.email %>';
+    }
+}
+
+function closeModal(modalElement) {
+    if (modalElement) {
+        modalElement.remove();
+        document.body.style.overflow = '';
+    }
+}
+
+function validateDeleteConfirmation() {
+    const confirmInput = document.getElementById('deleteConfirmation');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmInput && confirmBtn) {
+        confirmBtn.disabled = confirmInput.value !== 'ELIMINA';
+    }
+}
+
+    </script>
+</body>
+</html>

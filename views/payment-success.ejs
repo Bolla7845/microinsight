@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Completato - MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span>
+            </a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/pacchetti" class="nav-link">Pacchetti</a></li>
+                    <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
+                    <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
+                    <li><a href="/#contact" class="nav-link">Contatti</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-header" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+        <div class="container">
+            <h1>Pagamento Completato</h1>
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &gt;
+                <a href="/pacchetti">Pacchetti</a> &gt;
+                <span>Pagamento Completato</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container">
+            <div class="success-card">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Pagamento completato con successo!</h2>
+                <p>Grazie per il tuo acquisto. Il pacchetto <%= pacchetto.nome %> è stato aggiunto al tuo account.</p>
+                
+                <div class="success-details">
+                    <h3>Dettagli dell'acquisto</h3>
+                    <div class="purchase-info">
+                        <div class="purchase-item">
+                            <span class="label">Pacchetto:</span>
+                            <span class="value"><%= pacchetto.nome %></span>
+                        </div>
+                        <div class="purchase-item">
+                            <span class="label">Prezzo:</span>
+                            <span class="value">€<%= parseFloat(pacchetto.prezzo).toFixed(2) %></span>
+                        </div>
+                        <div class="purchase-item">
+                            <span class="label">Data:</span>
+                            <span class="value"><%= new Date().toLocaleDateString('it-IT') %></span>
+                        </div>
+                        <div class="purchase-item">
+                            <span class="label">Stato:</span>
+                            <span class="value status-active">Attivo</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="success-actions">
+                    <a href="/pacchetti/<%= pacchetto.id %>/upload" class="btn btn-primary btn-large">
+                        <i class="fas fa-rocket"></i> Usa Ora
+                    </a>
+                    <a href="/pacchetti" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Torna ai Pacchetti
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .success-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            font-size: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+        }
+        
+        .success-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .success-card p {
+            font-size: 1.125rem;
+            color: #4b5563;
+            margin-bottom: 2rem;
+        }
+        
+        .success-details {
+            background-color: #f9fafb;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .success-details h3 {
+            margin: 0 0 1rem;
+            font-size: 1.25rem;
+            color: #374151;
+        }
+        
+        .purchase-info {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .purchase-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.75rem;
+        }
+        
+        .purchase-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .label {
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .value {
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .status-active {
+            color: #10b981;
+        }
+        
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .success-actions {
+                flex-direction: column;
+            }
+            
+            .success-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>MicroInsight</h3>
+                    <p>Analisi avanzata delle microespressioni e del linguaggio non verbale tramite intelligenza artificiale.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Link Rapidi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/pacchetti">Pacchetti</a></li>
+                        <li><a href="/cronologia">Le tue Analisi</a></li>
+                        <li><a href="/#about">Chi Siamo</a></li>
+                        <li><a href="/#contact">Contatti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Servizi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/pacchetti">Analisi Microespressioni</a></li>
+                        <li><a href="/pacchetti">Profilo Psicologico</a></li>
+                        <li><a href="/pacchetti">Consulenza d'Immagine</a></li>
+                        <li><a href="/pacchetti">Analisi Evolutiva</a></li>
+                        <li><a href="/pacchetti">Armocromia</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legali</h3>
+                    <ul class="footer-links">
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service">Termini di Servizio</a></li>
+                        <li><a href="/cookie-policy">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacchetti di Analisi - MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span>
+            </a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/pacchetti" class="nav-link active">Pacchetti</a></li>
+                    <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
+                    <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
+                    <li><a href="/#contact" class="nav-link">Contatti</a></li>
+                    <li><a href="/carrello" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count-nav">0</span>
+                    </a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-header" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+        <div class="container">
+            <h1>Scegli il Pacchetto Più Adatto a Te</h1>
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &gt;
+                <span>Pacchetti</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container">
+            <% if (typeof success !== 'undefined' && success) { %>
+                <div class="alert alert-success mb-6 purchase-success">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="success-content">
+                        <h3>Acquisto completato con successo!</h3>
+                        <p>Hai acquistato il pacchetto <strong><%= pacchetto %></strong>. Ora puoi procedere con l'analisi.</p>
+                        <div class="success-actions">
+                            <a href="/pacchetti" class="btn btn-primary">Esplora altri pacchetti</a>
+                            <a href="/cronologia" class="btn btn-outline">Vedi le tue analisi</a>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+            
+            <div class="package-controls">
+                <div class="package-view-controls">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th-large"></i> Griglia
+                    </button>
+                    <button class="view-btn" data-view="table">
+                        <i class="fas fa-table"></i> Tabella comparativa
+                    </button>
+                </div>
+                
+                <div class="package-filter-controls">
+                    <label class="filter-label">Filtra per categoria:</label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">
+                            <i class="fas fa-th"></i> Tutti
+                        </button>
+                        <button class="filter-btn" data-filter="basic">
+                            <i class="fas fa-face-smile"></i> Base
+                        </button>
+                        <button class="filter-btn" data-filter="psychology">
+                            <i class="fas fa-brain"></i> Psicologia
+                        </button>
+                        <button class="filter-btn" data-filter="image">
+                            <i class="fas fa-palette"></i> Immagine
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vista a griglia -->
+            <div class="packages-grid" id="grid-view">
+                <% pacchetti.forEach(pacchetto => { %>
+                    <% 
+                        let categoria = 'basic';
+                        if (['psicologica', 'profilo', 'evolutiva'].includes(pacchetto.tipo)) {
+                            categoria = 'psychology';
+                        } else if (['armocromia', 'stile'].includes(pacchetto.tipo)) {
+                            categoria = 'image';
+                        }
+                        
+                        let icona = 'fa-face-smile';
+                        if (pacchetto.tipo === 'psicologica') icona = 'fa-brain';
+                        if (pacchetto.tipo === 'profilo') icona = 'fa-user-gear';
+                        if (pacchetto.tipo === 'evolutiva') icona = 'fa-chart-line';
+                        if (pacchetto.tipo === 'armocromia') icona = 'fa-palette';
+                        if (pacchetto.tipo === 'stile') icona = 'fa-shirt';
+                        
+                        let categoriaNome = 'Base';
+                        if (categoria === 'psychology') categoriaNome = 'Psicologia';
+                        if (categoria === 'image') categoriaNome = 'Immagine';
+                    %>
+                    <div class="package-card" data-category="<%= categoria %>">
+                        <div class="package-badge"><%= categoriaNome %></div>
+                        <div class="package-header">
+                            <div class="package-icon">
+                                <i class="fas <%= icona %>"></i>
+                            </div>
+                            <h3 class="package-title"><%= pacchetto.nome %></h3>
+                            <div class="package-price">
+                                <% if (parseFloat(pacchetto.prezzo) === 0) { %>
+                                    <span class="price-free">GRATUITO</span>
+                                <% } else { %>
+                                    <span class="price-currency">€</span>
+                                    <span class="price-amount"><%= parseFloat(pacchetto.prezzo).toFixed(2) %></span>
+                                <% } %>
+                            </div>
+                        </div>
+                        
+                        <div class="package-body">
+                            <p class="package-description"><%= pacchetto.descrizione %></p>
+                            
+                            <div class="package-features">
+                                <% if (pacchetto.tipo === 'microespressioni') { %>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Analisi delle emozioni di base</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Rilevamento microespressioni</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Percentuale affidabilità</span>
+                                    </div>
+                                <% } else if (pacchetto.tipo === 'psicologica') { %>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Analisi microespressioni avanzata</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Linguaggio del corpo</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Pattern psicologici</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Strategie comunicative</span>
+                                    </div>
+                                <% } else if (pacchetto.tipo === 'profilo') { %>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Profilo psicologico completo</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Tratti di personalità</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Dinamiche psicologiche</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Suggerimenti personali</span>
+                                    </div>
+                                <% } else if (pacchetto.tipo === 'evolutiva') { %>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Confronto temporale</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Evoluzione emotiva</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Sviluppo identitario</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Cambiamenti espressivi</span>
+                                    </div>
+                                <% } else if (pacchetto.tipo === 'armocromia') { %>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Stagione cromatica</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Palette personalizzata</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Colori ideali</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Combinazioni suggerite</span>
+                                    </div>
+                                <% } else if (pacchetto.tipo === 'stile') { %>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Morfologia viso e corpo</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Stile personale ottimale</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Suggerimenti guardaroba</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Strategie di styling</span>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                        
+                        <div class="package-footer">
+                            <% if (parseFloat(pacchetto.prezzo) === 0) { %>
+                                <a href="/pacchetti/<%= pacchetto.id %>/upload" class="btn btn-primary btn-block">
+                                    <i class="fas fa-rocket"></i> Inizia Analisi Gratuita
+                                </a>
+                            <% } else { %>
+                                <div class="package-actions">
+                                    <button class="btn btn-primary add-to-cart"
+                                           data-id="<%= pacchetto.id %>"
+                                           data-name="<%= pacchetto.nome %>"
+                                           data-price="<%= pacchetto.prezzo %>"
+                                           data-type="<%= pacchetto.tipo %>">
+                                        <i class="fas fa-shopping-cart"></i> Aggiungi al Carrello
+                                    </button>
+                                    <a href="/payment/<%= pacchetto.id %>" class="btn btn-outline">
+                                        <i class="fas fa-credit-card"></i> Acquista Ora
+                                    </a>
+                                </div>
+                            <% } %>
+                        </div>
+                        <% }); %>
+</div>
+            
+            <!-- Vista tabella comparativa -->
+            <div class="packages-table-container" id="table-view" style="display: none;">
+                <table class="packages-table">
+                    <thead>
+                        <tr>
+                            <th class="feature-name">Caratteristiche</th>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <th class="package-column">
+                                    <div class="table-package-header">
+                                        <div class="table-package-icon">
+                                            <% 
+                                            let icona = 'fa-face-smile';
+                                            if (pacchetto.tipo === 'psicologica') icona = 'fa-brain';
+                                            if (pacchetto.tipo === 'profilo') icona = 'fa-user-gear';
+                                            if (pacchetto.tipo === 'evolutiva') icona = 'fa-chart-line';
+                                            if (pacchetto.tipo === 'armocromia') icona = 'fa-palette';
+                                            if (pacchetto.tipo === 'stile') icona = 'fa-shirt';
+                                            %>
+                                            <i class="fas <%= icona %>"></i>
+                                        </div>
+                                        <div class="table-package-name"><%= pacchetto.nome %></div>
+                                        <div class="table-package-price">
+                                            <% if (parseFloat(pacchetto.prezzo) === 0) { %>
+                                                <span class="price-free">GRATUITO</span>
+                                            <% } else { %>
+                                                <span>€<%= parseFloat(pacchetto.prezzo).toFixed(2) %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </th>
+                            <% }) %>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-name">Analisi emozioni di base</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (true) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Rilevamento microespressioni</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (true) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Linguaggio del corpo</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (pacchetto.tipo !== 'microespressioni') { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Pattern psicologici</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (['psicologica', 'profilo', 'evolutiva'].includes(pacchetto.tipo)) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Tratti di personalità</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (['profilo', 'evolutiva'].includes(pacchetto.tipo)) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Suggerimenti personalizzati</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (['profilo', 'armocromia', 'stile'].includes(pacchetto.tipo)) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Analisi armocromia</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (pacchetto.tipo === 'armocromia') { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Consulenza stile</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (pacchetto.tipo === 'stile') { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Report dettagliato PDF</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (parseFloat(pacchetto.prezzo) > 0) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Assistenza prioritaria</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="feature-availability">
+                                    <% if (parseFloat(pacchetto.prezzo) >= 19.99) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                        <tr class="actions-row">
+                            <td class="feature-name">Azioni</td>
+                            <% pacchetti.forEach(function(pacchetto) { %>
+                                <td class="package-actions-cell">
+                                    <% if (parseFloat(pacchetto.prezzo) === 0) { %>
+                                        <a href="/pacchetti/<%= pacchetto.id %>/upload" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-rocket"></i> Inizia Gratis
+                                        </a>
+                                    <% } else { %>
+                                        <div class="table-actions">
+                                            <button class="btn btn-primary btn-sm add-to-cart"
+                                                   data-id="<%= pacchetto.id %>"
+                                                   data-name="<%= pacchetto.nome %>"
+                                                   data-price="<%= pacchetto.prezzo %>"
+                                                   data-type="<%= pacchetto.tipo %>">
+                                                <i class="fas fa-shopping-cart"></i> Aggiungi
+                                            </button>
+                                            <a href="/payment/<%= pacchetto.id %>" class="btn btn-outline btn-sm">
+                                                <i class="fas fa-credit-card"></i> Acquista
+                                            </a>
+                                        </div>
+                                    <% } %>
+                                </td>
+                            <% }) %>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Cosa dicono i nostri clienti</h2>
+            <div class="testimonials-slider">
+                <div class="testimonial-slide">
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"L'analisi delle microespressioni ha rivelato pattern che non avevo mai notato. Il report è estremamente dettagliato e le intuizioni sono sorprendenti. Un servizio che consiglio vivamente."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <div class="author-name">Marco Bianchi</div>
+                            <div class="author-title">Manager HR</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-slide">
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">"La consulenza di armocromia ha trasformato il mio approccio al guardaroba. Ora so esattamente quali colori mi valorizzano. Il servizio clienti è stato impeccabile."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <div class="author-name">Laura Rossi</div>
+                            <div class="author-title">Fashion Designer</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-slide">
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Il profilo psicologico è stato incredibilmente accurato. Mi ha aiutato a comprendere meglio i miei pattern comportamentali e a lavorare in modo più efficace con il mio team. Vale ogni centesimo speso."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <div class="author-name">Alessandro Verdi</div>
+                            <div class="author-title">CEO, Innovate Tech</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-nav">
+                <button class="testimonial-nav-btn active" data-slide="0"></button>
+                <button class="testimonial-nav-btn" data-slide="1"></button>
+                <button class="testimonial-nav-btn" data-slide="2"></button>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-light py-8">
+        <div class="container">
+            <h2 class="section-title">Domande Frequenti</h2>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Quanto sono accurate le analisi?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Le nostre analisi utilizzano algoritmi di intelligenza artificiale avanzati addestrati su vasti dataset. L'accuratezza varia in base alla qualità dell'immagine fornita e alla specificità dell'analisi, ma generalmente raggiungiamo livelli di precisione superiori all'85%.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Posso riutilizzare un pacchetto acquistato?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ogni pacchetto acquistato può essere utilizzato per una singola analisi. Se desideri effettuare più analisi, dovrai acquistare pacchetti aggiuntivi o considerare il nostro piano di abbonamento che offre analisi illimitate.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Che tipo di immagini devo caricare?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Per ottenere i migliori risultati, consigliamo di caricare immagini che mostrino chiaramente il volto, con buona illuminazione e risoluzione. Per l'analisi dell'armocromia, è preferibile utilizzare foto con luce naturale. Per la consulenza di stile, è ideale una foto a figura intera.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Come vengono gestiti i miei dati?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>La tua privacy è la nostra priorità. Tutte le immagini caricate e le analisi generate sono crittografate e archiviate in modo sicuro. Non condividiamo i tuoi dati con terze parti e puoi richiedere la cancellazione in qualsiasi momento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Pronto a scoprire nuove intuizioni?</h2>
+                <p>Inizia oggi con la nostra analisi gratuita delle microespressioni base.</p>
+                <div class="cta-buttons">
+                    <a href="/pacchetti/1/upload" class="btn btn-light btn-large">Prova Gratuita</a>
+                    <a href="/#about" class="btn btn-outline-light">Scopri di più</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>MicroInsight</h3>
+                    <p>Analisi avanzata delle microespressioni e del linguaggio non verbale tramite intelligenza artificiale.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Link Rapidi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/pacchetti">Pacchetti</a></li>
+                        <li><a href="/cronologia">Le tue Analisi</a></li>
+                        <li><a href="/#about">Chi Siamo</a></li>
+                        <li><a href="/#contact">Contatti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Servizi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/pacchetti">Analisi Microespressioni</a></li>
+                        <li><a href="/pacchetti">Profilo Psicologico</a></li>
+                        <li><a href="/pacchetti">Consulenza d'Immagine</a></li>
+                        <li><a href="/pacchetti">Analisi Evolutiva</a></li>
+                        <li><a href="/pacchetti">Armocromia</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legali</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Termini di Servizio</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 MicroInsight. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        /* Stili migliorati per la pagina dei pacchetti */
+        .page-header {
+            color: white;
+            padding: 3rem 0;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+        
+        .breadcrumbs {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        
+        .breadcrumbs a {
+            color: white;
+        }
+        
+        .breadcrumbs a:hover {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Messaggio di acquisto completato */
+        .purchase-success {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+        
+        .success-icon {
+            font-size: 2.5rem;
+            color: var(--success);
+            flex-shrink: 0;
+        }
+        
+        .success-content {
+            flex-grow: 1;
+        }
+        
+        .success-content h3 {
+            margin: 0 0 0.5rem;
+            color: var(--success);
+        }
+        
+        .success-content p {
+            margin: 0 0 1rem;
+        }
+        
+        .success-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        /* Controlli vista e filtri */
+        .package-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .package-view-controls,
+        .package-filter-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+        
+        .view-btn, 
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--gray-100);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .view-btn:hover, 
+        .filter-btn:hover {
+            background-color: var(--gray-200);
+        }
+        
+        .view-btn.active, 
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Griglia dei pacchetti migliorata */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .package-card {
+            background-color: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .package-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .package-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+        
+        .package-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+        }
+        
+        .package-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .package-price {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .price-currency {
+            font-size: 1.25rem;
+            vertical-align: super;
+            margin-right: 0.25rem;
+        }
+        
+        .price-free {
+            font-size: 1.5rem;
+            padding: 0.25rem 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+        }
+        
+        .package-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        .package-description {
+            margin-bottom: 1.5rem;
+            color: var(--gray-700);
+        }
+        
+        .package-features {
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-item i {
+            color: var(--success);
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .package-footer {
+            padding: 1.5rem;
+            background-color: var(--gray-50);
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .package-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .package-actions .btn {
+            flex: 1;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        /* Vista tabella comparativa */
+        .packages-table-container {
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            background-color: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .packages-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .packages-table th,
+        .packages-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .packages-table th.feature-name,
+        .packages-table td.feature-name {
+            text-align: left;
+            font-weight: 500;
+            color: var(--gray-700);
+            min-width: 200px;
+        }
+        
+        .packages-table th.package-column {
+            min-width: 200px;
+            vertical-align: top;
+            border-left: 1px solid var(--gray-200);
+        }
+        
+        .table-package-header {
+            padding: 0.5rem;
+        }
+        
+        .table-package-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-size: 1.25rem;
+        }
+        
+        .table-package-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .table-package-price {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .feature-yes {
+            color: var(--success);
+            font-size: 1.25rem;
+        }
+        
+        .feature-no {
+            color: var(--gray-300);
+            font-size: 1.25rem;
+        }
+        
+        .actions-row {
+            background-color: var(--gray-50);
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .table-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        /* Testimonianze */
+        .testimonials-section {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .testimonials-slider {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .testimonial-slide {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .testimonial-content {
+            background-color: var(--gray-50);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .testimonial-content::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            margin-left: -15px;
+            border-width: 15px 15px 0;
+            border-style: solid;
+            border-color: var(--gray-50) transparent;
+        }
+        
+        .testimonial-rating {
+            margin-bottom: 1rem;
+            color: #FFD700;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: var(--gray-700);
+        }
+        
+        .testimonial-author {
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .author-info {
+            text-align: center;
+        }
+        
+        .author-name {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--secondary-color);
+        }
+        
+        .author-title {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+        
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .testimonial-nav-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--gray-300);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.3s;
+        }
+        
+        .testimonial-nav-btn.active {
+            background-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .cta-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .cta-content p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .btn-light {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        .btn-light:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--primary-dark);
+        }
+        
+        .btn-outline-light {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline-light:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        /* Utils */
+        .py-8 {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .package-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .package-filter-controls {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .testimonial-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle vista griglia/tabella
+            const gridView = document.getElementById('grid-view');
+            const tableView = document.getElementById('table-view');
+            const viewButtons = document.querySelectorAll('.view-btn');
+            
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const view = this.getAttribute('data-view');
+                    
+                    // Rimuovi classe active da tutti i bottoni
+                    viewButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Aggiungi classe active a questo bottone
+                    this.classList.add('active');
+                    
+                    // Mostra la vista corretta
+                    if (view === 'grid') {
+                        gridView.style.display = 'grid';
+                        tableView.style.display = 'none';
+                    } else {
+                        gridView.style.display = 'none';
+                        tableView.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Filtro dei pacchetti
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const packageCards = document.querySelectorAll('.package-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Rimuovi classe active da tutti i bottoni
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Aggiungi classe active a questo bottone
+                    this.classList.add('active');
+                    
+                    // Filtra le card
+                    packageCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Slider testimonianze
+            const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+            const navButtons = document.querySelectorAll('.testimonial-nav-btn');
+            let currentSlide = 0;
+            
+            function showSlide(index) {
+                testimonialSlides.forEach((slide, i) => {
+                    slide.style.display = i === index ? 'block' : 'none';
+                });
+                
+                navButtons.forEach((btn, i) => {
+                    btn.classList.toggle('active', i === index);
+                });
+                
+                currentSlide = index;
+            }
+            
+            // Inizializza lo slider
+            showSlide(0);
+            
+            // Event listener per i pulsanti di navigazione
+            navButtons.forEach((button, index) => {
+                button.addEventListener('click', () => showSlide(index));
+            });
+            
+            // Auto rotazione delle testimonianze
+            setInterval(() => {
+                let nextSlide = (currentSlide + 1) % testimonialSlides.length;
+                showSlide(nextSlide);
+            }, 8000);
+            
+            // FAQ Toggles
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', function() {
+                    // Toggle la classe active
+                    item.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+
+<%- include('partials/cookie-banner') %>
+
+<script src="/js/cart.js"></script>
+
+</body>
+</html>

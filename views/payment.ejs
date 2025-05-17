@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span>
+            </a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/pacchetti" class="nav-link active">Pacchetti</a></li>
+                    <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
+                    <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
+                    <li><a href="/#contact" class="nav-link">Contatti</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-header" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+        <div class="container">
+            <h1>Completa il tuo acquisto</h1>
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &gt;
+                <a href="/pacchetti">Pacchetti</a> &gt;
+                <span>Pagamento</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container">
+            <div class="payment-container">
+                <div class="payment-summary">
+                    <h2>Riepilogo dell'ordine</h2>
+                    <div class="package-info">
+                        <h3><%= pacchetto.nome %></h3>
+                        <p><%= pacchetto.descrizione %></p>
+                        <div class="package-price">
+                            <span class="price-currency">€</span>
+                            <span class="price-amount"><%= parseFloat(pacchetto.prezzo).toFixed(2) %></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-form-container">
+                    <h2>Dettagli di pagamento</h2>
+                    <form id="payment-form">
+                        <input type="hidden" id="pacchetto-id" value="<%= pacchetto.id %>">
+                        
+                        <div class="form-group">
+                            <label for="card-element">Carta di credito o debito</label>
+                            <div id="card-element" class="form-control">
+                                <!-- Stripe Elements si inserirà qui -->
+                            </div>
+                            <div id="card-errors" role="alert" class="payment-error"></div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-large payment-button">
+                            <i class="fas fa-lock"></i> Paga ora €<%= parseFloat(pacchetto.prezzo).toFixed(2) %>
+                        </button>
+                    </form>
+                    
+                    <div class="payment-security">
+                        <p><i class="fas fa-shield-alt"></i> I tuoi dati di pagamento sono protetti da una connessione sicura</p>
+                        <div class="payment-methods">
+                            <i class="fab fa-cc-visa"></i>
+                            <i class="fab fa-cc-mastercard"></i>
+                            <i class="fab fa-cc-amex"></i>
+                            <i class="fab fa-cc-discover"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .payment-summary, .payment-form-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .package-info {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+        }
+        
+        .package-info h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .package-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-top: 1rem;
+        }
+        
+        .price-currency {
+            font-size: 1.25rem;
+            vertical-align: super;
+            margin-right: 0.25rem;
+        }
+        
+        #card-element {
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-error {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-button {
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .payment-security {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .payment-security p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 2rem;
+            color: #6b7280;
+        }
+        
+        @media (max-width: 768px) {
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crea un'istanza di Stripe con la tua chiave pubblica
+            const stripe = Stripe('pk_test_your_stripe_public_key'); // Sostituisci con la tua chiave pubblica di test
+            const elements = stripe.elements();
+            
+            // Crea un elemento card
+            const cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        color: '#32325d',
+                        fontFamily: '"Inter", sans-serif',
+                        fontSmoothing: 'antialiased',
+                        fontSize: '16px',
+                        '::placeholder': {
+                            color: '#aab7c4'
+                        }
+                    },
+                    invalid: {
+                        color: '#ef4444',
+                        iconColor: '#ef4444'
+                    }
+                }
+            });
+            
+            // Monta l'elemento card nel DOM
+            cardElement.mount('#card-element');
+            
+            // Gestione degli errori in tempo reale
+            cardElement.on('change', function(event) {
+                const displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+            
+            // Gestione dell'invio del form
+            const form = document.getElementById('payment-form');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                // Disabilita il pulsante di invio per prevenire più invii
+                document.querySelector('.payment-button').disabled = true;
+                
+                const pacchettoId = document.getElementById('pacchetto-id').value;
+                
+                // Crea un token di pagamento
+                stripe.createToken(cardElement).then(function(result) {
+                    if (result.error) {
+                        // Mostra l'errore all'utente
+                        const errorElement = document.getElementById('card-errors');
+                        errorElement.textContent = result.error.message;
+                        document.querySelector('.payment-button').disabled = false;
+                    } else {
+                        // Invia il token al server
+                        stripeTokenHandler(result.token, pacchettoId);
+                    }
+                });
+            });
+            
+            // Invio del token al server
+            function stripeTokenHandler(token, pacchettoId) {
+                // Invia la richiesta al server
+                fetch('/process-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: token.id,
+                        pacchettoId: pacchettoId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Reindirizza alla pagina di successo
+                        window.location.href = '/pagamento-completato?id=' + pacchettoId;
+                    } else {
+                        // Mostra l'errore
+                        const errorElement = document.getElementById('card-errors');
+                        errorElement.textContent = data.error || 'Si è verificato un errore durante il pagamento.';
+                        document.querySelector('.payment-button').disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore:', error);
+                    const errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = 'Si è verificato un errore durante il pagamento.';
+                    document.querySelector('.payment-button').disabled = false;
+                });
+            }
+        });
+    </script>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>MicroInsight</h3>
+                    <p>Analisi avanzata delle microespressioni e del linguaggio non verbale tramite intelligenza artificiale.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Link Rapidi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/pacchetti">Pacchetti</a></li>
+                        <li><a href="/cronologia">Le tue Analisi</a></li>
+                        <li><a href="/#about">Chi Siamo</a></li>
+                        <li><a href="/#contact">Contatti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Servizi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/pacchetti">Analisi Microespressioni</a></li>
+                        <li><a href="/pacchetti">Profilo Psicologico</a></li>
+                        <li><a href="/pacchetti">Consulenza d'Immagine</a></li>
+                        <li><a href="/pacchetti">Analisi Evolutiva</a></li>
+                        <li><a href="/pacchetti">Armocromia</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legali</h3>
+                    <ul class="footer-links">
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service">Termini di Servizio</a></li>
+                        <li><a href="/cookie-policy">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

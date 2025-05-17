@@ -1,0 +1,41 @@
+{
+  "name": "progetto-microespressioni",
+  "version": "1.0.0",
+  "main": "index.js",
+"scripts": {
+  "start": "node -e \"process.env.NODE_ENV='production'; require('./server.js')\"",
+  "dev": "node -e \"process.env.NODE_ENV='development'; require('./server.js')\"",
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "archiver": "^7.0.1",
+    "bcrypt": "^5.1.1",
+    "canvas": "^3.1.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^11.3.0",
+    "html-pdf": "^3.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "marked": "^15.0.7",
+    "mime-types": "^3.0.1",
+    "multer": "^1.4.5-lts.2",
+    "nodemailer": "^6.10.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "connect-pg-simple": "^7.0.0",
+    "pg": "^8.14.1",
+    "stripe": "^18.0.0"
+  }
+}

@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carica Immagine - <%= pacchetto.nome %> | MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span>
+            </a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/pacchetti" class="nav-link active">Pacchetti</a></li>
+                    <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
+                    <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
+                    <li><a href="/#contact" class="nav-link">Contatti</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-header" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+        <div class="container">
+            <h1>Carica un'immagine per l'analisi</h1>
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &gt;
+                <a href="/pacchetti">Pacchetti</a> &gt;
+                <span><%= pacchetto.nome %></span>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container">
+            <!-- Barra di progresso per la procedura -->
+            <div class="progress-container">
+                <div class="progress-step completed">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Scegli il pacchetto</div>
+                </div>
+                <div class="progress-step active">
+                    <div class="step-number">2</div>
+                    <div class="step-text">Carica l'immagine</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Visualizza risultati</div>
+                </div>
+            </div>
+
+            <div class="upload-grid">
+                <div class="upload-main">
+                    <div class="card">
+                        <h2>Carica la tua immagine</h2>
+                        <p class="upload-intro">Seguendo questi semplici passaggi potrai ottenere un'analisi dettagliata basata sul pacchetto selezionato. Assicurati che l'immagine rispetti le linee guida per risultati ottimali.</p>
+                        
+                        <form action="/upload-multiple" method="POST" enctype="multipart/form-data" id="upload-form">
+                            <input type="hidden" name="pacchetto_id" value="<%= pacchetto.id %>">
+                            
+                            <div class="dropzone" id="upload-area">
+                                <div class="dropzone-content">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-cloud-arrow-up"></i>
+                                    </div>
+                                    <h3 class="upload-text">Trascina qui le tue immagini (4-20)<br>o clicca per selezionarle</h3>
+                                    <p class="upload-hint">Supporta JPG, PNG o GIF - Min: 4 immagini, Max: 20 immagini</p>
+                                </div>
+                                
+                                <input type="file" name="immagini" id="immagine" accept="image/*" required style="display: none;" multiple>
+                            </div>
+                            
+                            <div id="preview-container" style="display: none;">
+                                <div class="preview-header">
+                                    <h3>Anteprima Immagini (<span id="image-count">0</span>)</h3>
+                                    <button type="button" class="btn-icon" id="remove-all-images" title="Rimuovi tutte le immagini">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="image-previews" id="image-previews-container">
+                                    <!-- Le anteprime delle immagini verranno aggiunte qui -->
+                                </div>
+                                <div class="image-count-info">
+                                    <div class="info-item">
+                                        <i class="fas fa-images"></i>
+                                        <span id="image-count-text">0 immagini selezionate</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <i class="fas fa-exclamation-circle" id="count-warning-icon" style="display: none; color: #e74c3c;"></i>
+                                        <span id="count-warning" style="display: none; color: #e74c3c;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <% if (pacchetto.tipo === 'evolutiva') { %>
+                                <div class="secondary-image-section">
+                                    <h3>Immagine secondaria (opzionale)</h3>
+                                    <p class="upload-intro">Per un'analisi evolutiva completa, carica un'immagine di un periodo diverso della stessa persona.</p>
+                                    
+                                    <div class="dropzone dropzone-secondary" id="upload-area-secondary">
+                                        <div class="dropzone-content">
+                                            <div class="upload-icon upload-icon-small">
+                                                <i class="fas fa-cloud-arrow-up"></i>
+                                            </div>
+                                            <h3 class="upload-text">Carica un'immagine di un periodo diverso</h3>
+                                            <p class="upload-hint">Per un'analisi evolutiva completa</p>
+                                        </div>
+                                        
+                                        <input type="file" name="immagine_secondaria" id="immagine_secondaria" accept="image/*" style="display: none;">
+                                    </div>
+                                    
+                                    <div id="preview-container-secondary" style="display: none;">
+                                        <div class="preview-header">
+                                            <h3>Anteprima seconda immagine</h3>
+                                            <button type="button" class="btn-icon" id="remove-image-secondary" title="Rimuovi immagine">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="image-preview">
+                                            <img src="" alt="Anteprima seconda immagine" id="image-preview-secondary">
+                                        </div>
+                                        <div class="image-info">
+                                            <div class="info-item">
+                                                <i class="fas fa-file-image"></i>
+                                                <span id="image-name-secondary">filename.jpg</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <i class="fas fa-weight-scale"></i>
+                                                <span id="image-size-secondary">0 KB</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <i class="fas fa-arrows-up-down"></i>
+                                                <span id="image-dimensions-secondary">0 x 0 px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-large" id="submit-btn" disabled>
+                                    <i class="fas fa-bolt"></i> Analizza ora
+                                </button>
+                                <a href="/pacchetti" class="btn btn-outline">Torna ai pacchetti</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="upload-sidebar">
+                    <div class="card package-info">
+                        <div class="package-header-card">
+                            <div class="package-icon-card">
+                                <% 
+                                let icona = 'fa-face-smile';
+                                if (pacchetto.tipo === 'psicologica') icona = 'fa-brain';
+                                if (pacchetto.tipo === 'profilo') icona = 'fa-user-gear';
+                                if (pacchetto.tipo === 'evolutiva') icona = 'fa-chart-line';
+                                if (pacchetto.tipo === 'armocromia') icona = 'fa-palette';
+                                if (pacchetto.tipo === 'stile') icona = 'fa-shirt';
+                                %>
+                                <i class="fas <%= icona %>"></i>
+                            </div>
+                            <h2 class="package-title-card"><%= pacchetto.nome %></h2>
+                            <div class="package-price-card">
+                                <% if (parseFloat(pacchetto.prezzo) === 0) { %>
+                                    <span class="badge badge-success">GRATUITO</span>
+                                <% } else { %>
+                                    <span class="badge badge-primary">€<%= parseFloat(pacchetto.prezzo).toFixed(2) %></span>
+                                <% } %>
+                            </div>
+                        </div>
+                        
+                        <div class="package-description-card">
+                            <p><%= pacchetto.descrizione %></p>
+                        </div>
+                    </div>
+                    
+                    <div class="card guidelines-card">
+                        <h3 class="guidelines-title">
+                            <i class="fas fa-lightbulb"></i> Linee guida per risultati ottimali
+                        </h3>
+                        
+                        <div class="guidelines-content">
+                            <% if (pacchetto.tipo === 'microespressioni' || pacchetto.tipo === 'psicologica' || pacchetto.tipo === 'profilo') { %>
+                                <div class="guideline-item">
+                                    <div class="guideline-icon">
+                                        <i class="fas fa-image"></i>
+                                    </div>
+                                    <div class="guideline-content">
+                                        <h4>Visibilità del volto</h4>
+                                        <p>Assicurati che il volto sia chiaramente visibile, senza maschere o occhiali da sole, e occupa almeno il 70% dell'immagine.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="guideline-item">
+                                    <div class="guideline-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <div class="guideline-content">
+                                        <h4>Illuminazione</h4>
+                                        <p>Utilizza un'illuminazione uniforme che non crei ombre marcate sul volto. La luce naturale è ideale.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="guideline-item">
+                                    <div class="guideline-icon">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                    <div class="guideline-content">
+                                        <h4>Qualità dell'immagine</h4>
+                                        <p>Carica immagini in alta risoluzione e nitide, evitando foto sfocate o con filtri pesanti.</p>
+                                    </div>
+                                </div>
+                            <% } else if (pacchetto.tipo === 'evolutiva') { %>
+                                <div class="guideline-item">
+                                    <div class="guideline-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="guideline-content">
+                                        <h4>Periodi temporali diversi</h4>
+                                        <p>Carica due immagini di periodi differenti (es. gioventù e età adulta) per un'analisi evolutiva completa.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="guideline-item">
+                                    <div class="guideline-icon">
+                                        <i class="fas fa-image"></i>
+                                    </div>
+                                    <div class="guideline-content">
+                                        <h4>Comparabilità</h4>
+                                        <p>Assicurati che le due immagini siano comparabili in termini di angolazione e visibilità del volto.</p>
+                                    </div>
+                                </div>
+                            <% } else if (pacchetto.tipo === 'armocromia') { %>
+                                <div class="guideline-item">
+                                    <div class="guideline-icon">
+                                        <i class="fas fa-sun"></i>
+                                    </div>
+                                    <div class="guideline-content">
+                                        <h4>Luce naturale</h4>
+                                        <p>Utilizza un'immagine scattata con luce naturale, senza filtri che alterino i colori reali.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="guideline-item">
+                                    <div class="guideline-icon">
+                                        <i class="fas fa-shirt"></i>
+                                    </div>
+                                    <div class="guideline-content">
+                                        <h4>Neutro</h4>
+                                        <p>Indossa colori neutri o uno sfondo neutro per non influenzare l'analisi cromatica.</p>
+                                    </div>
+                                </div>
+                            <% } else if (pacchetto.tipo === 'stile') { %>
+                                <div class="guideline-item">
+                                    <div class="guideline-icon">
+                                        <i class="fas fa-person"></i>
+                                    </div>
+                                    <div class="guideline-content">
+                                        <h4>Figura intera</h4>
+                                        <p>Carica un'immagine a figura intera per permettere un'analisi completa delle proporzioni corporee.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="guideline-item">
+                                    <div class="guideline-icon">
+                                        <i class="fas fa-arrows-up-down"></i>
+                                    </div>
+                                    <div class="guideline-content">
+                                        <h4>Postura naturale</h4>
+                                        <p>Assumi una postura naturale, in piedi, senza pose esagerate che alterino la percezione della silhouette.</p>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                    <div class="card example-card">
+                        <h3 class="example-title">Esempio di immagine ideale</h3>
+                        <div class="example-image">
+                            <% if (pacchetto.tipo === 'microespressioni' || pacchetto.tipo === 'psicologica' || pacchetto.tipo === 'profilo') { %>
+                                <img src="/images/example-face.jpg" alt="Esempio di immagine ideale per analisi facciale">
+                            <% } else if (pacchetto.tipo === 'evolutiva') { %>
+                                <div class="example-pair">
+                                    <img src="/images/example-young.jpg" alt="Esempio immagine giovane">
+                                    <img src="/images/example-adult.jpg" alt="Esempio immagine adulta">
+                                </div>
+                            <% } else if (pacchetto.tipo === 'armocromia') { %>
+                                <img src="/images/example-color.jpg" alt="Esempio per analisi armocromia">
+                            <% } else if (pacchetto.tipo === 'stile') { %>
+                                <img src="/images/example-style.jpg" alt="Esempio per analisi stile">
+                            <% } %>
+                        </div>
+                        <p class="example-caption">Questa immagine rispetta tutte le linee guida raccomandate e produce risultati ottimali.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>MicroInsight</h3>
+                    <p>Analisi avanzata delle microespressioni e del linguaggio non verbale tramite intelligenza artificiale.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Link Rapidi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/pacchetti">Pacchetti</a></li>
+                        <li><a href="/cronologia">Le tue Analisi</a></li>
+                        <li><a href="/#about">Chi Siamo</a></li>
+                        <li><a href="/#contact">Contatti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Servizi</h3>
+                    <ul class="footer-links">
+                        <li><a href="/pacchetti">Analisi Microespressioni</a></li>
+                        <li><a href="/pacchetti">Profilo Psicologico</a></li>
+                        <li><a href="/pacchetti">Consulenza d'Immagine</a></li>
+                        <li><a href="/pacchetti">Analisi Evolutiva</a></li>
+                        <li><a href="/pacchetti">Armocromia</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legali</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Termini di Servizio</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 MicroInsight. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        /* Stili specifici per la pagina di upload migliorata */
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-container::before {
+            content: '';
+            position: absolute;
+            top: 23px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--gray-200);
+            z-index: 0;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            width: 33.33%;
+        }
+        
+        .step-number {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--gray-200);
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+        }
+        
+        .step-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            text-align: center;
+        }
+        
+        .progress-step.completed .step-number {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .progress-step.active .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+        }
+        
+        .progress-step.active .step-text {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .upload-main {
+            flex: 1;
+        }
+        
+        .upload-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .upload-intro {
+            margin-bottom: 1.5rem;
+            color: var(--gray-700);
+        }
+        
+        .dropzone {
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--border-radius-lg);
+            padding: 3rem 2rem;
+            text-align: center;
+            background-color: var(--gray-50);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .dropzone:hover,
+        .dropzone.active {
+            border-color: var(--primary-color);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .dropzone-secondary {
+            padding: 2rem 1.5rem;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--gray-500);
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .dropzone:hover .upload-icon,
+        .dropzone.active .upload-icon {
+            color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+        
+        .upload-icon-small {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .upload-text {
+            font-size: 1.125rem;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .upload-hint {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin: 0;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .preview-header h3 {
+            margin: 0;
+            font-size: 1.125rem;
+        }
+        
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--gray-200);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--gray-700);
+        }
+        
+        .btn-icon:hover {
+            background-color: var(--gray-300);
+            color: var(--gray-900);
+        }
+        
+        .image-preview {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            max-width: 100%;
+            text-align: center;
+            background-color: var(--gray-100);
+            margin-bottom: 1rem;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+        }
+        
+        .image-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: var(--gray-50);
+            border-radius: var(--border-radius);
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+        
+        .info-item i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .secondary-image-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .package-header-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+            margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+        }
+        
+        .package-icon-card {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .package-title-card {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+        
+        .package-price-card {
+            margin-bottom: 0.5rem;
+        }
+        
+        .package-description-card {
+            color: var(--gray-700);
+        }
+        
+        .guidelines-card, .example-card {
+            overflow: hidden;
+        }
+        
+        .guidelines-title, .example-title {
+            padding: 1rem 1.5rem;
+            margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+            background-color: var(--gray-100);
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 1.25rem;
+        }
+        
+        .guidelines-title i, .example-title i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+        
+        .guideline-item {
+            display: flex;
+            margin-bottom: 1.25rem;
+        }
+        
+        .guideline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .guideline-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .guideline-content h4 {
+            margin: 0 0 0.25rem;
+            font-size: 1rem;
+        }
+        
+        .guideline-content p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+        
+        .example-image {
+            margin-bottom: 1rem;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .example-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .example-pair {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .example-pair img {
+            width: 50%;
+            height: auto;
+        }
+        
+        .example-caption {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            text-align: center;
+            margin: 0;
+        }
+        
+        /* Loader per l'upload */
+        .loader-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .loader {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .loader-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 5px solid transparent;
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+        }
+        
+        .loader-circle:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .loader-circle:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-top-color: var(--info);
+            animation-delay: -0.3s;
+        }
+        
+        .loader-circle:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top-color: var(--success);
+            animation-delay: -0.6s;
+        }
+        
+        .loader-text {
+            margin-top: 2rem;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .loader-progress {
+            width: 300px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .loader-progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s;
+            border-radius: 5px;
+        }
+        
+        .loader-status {
+            margin-top: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.875rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        .image-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.preview-item {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-preview {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.remove-preview:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.image-count-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background-color: var(--gray-50);
+    border-radius: var(--border-radius);
+}
+
+    </style>
+
+    <!-- Loader per l'upload migliorato -->
+    <div class="loader-container" id="loader">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+        </div>
+        <div class="loader-text">Analisi in corso...</div>
+        <div class="loader-progress">
+            <div class="loader-progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="loader-status" id="loader-status">Caricamento immagine...</div>
+    </div>
+
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('immagine');
+    const previewContainer = document.getElementById('preview-container');
+    const imagePreviewsContainer = document.getElementById('image-previews-container');
+    const imageCount = document.getElementById('image-count');
+    const imageCountText = document.getElementById('image-count-text');
+    const countWarning = document.getElementById('count-warning');
+    const countWarningIcon = document.getElementById('count-warning-icon');
+    const removeAllImages = document.getElementById('remove-all-images');
+    const submitBtn = document.getElementById('submit-btn');
+    const uploadForm = document.getElementById('upload-form');
+    const loader = document.getElementById('loader');
+    const progressBar = document.getElementById('progress-bar');
+    const loaderStatus = document.getElementById('loader-status');
+    
+    const MIN_IMAGES = 4;
+    const MAX_IMAGES = 20;
+    let selectedFiles = [];
+    
+    // Funzione per formattare la dimensione del file
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+    
+    // Funzione per aggiornare il contatore e gli avvisi
+    function updateCounters() {
+        const count = selectedFiles.length;
+        imageCount.textContent = count;
+        imageCountText.textContent = count + ' immagini selezionate';
+        
+        if (count < MIN_IMAGES) {
+            countWarning.textContent = `Seleziona almeno ${MIN_IMAGES} immagini`;
+            countWarning.style.display = 'inline';
+            countWarningIcon.style.display = 'inline';
+            submitBtn.disabled = true;
+        } else if (count > MAX_IMAGES) {
+            countWarning.textContent = `Hai selezionato troppe immagini (massimo ${MAX_IMAGES})`;
+            countWarning.style.display = 'inline';
+            countWarningIcon.style.display = 'inline';
+            submitBtn.disabled = true;
+        } else {
+            countWarning.style.display = 'none';
+            countWarningIcon.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    }
+    
+    // Rimuovi una singola immagine
+    function removeImage(index) {
+        selectedFiles.splice(index, 1);
+        renderPreviews();
+        updateCounters();
+    }
+    
+    // Renderizza le anteprime
+    function renderPreviews() {
+        imagePreviewsContainer.innerHTML = '';
+        
+        selectedFiles.forEach((file, index) => {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'preview-item';
+            
+            const img = document.createElement('img');
+            img.src = file.preview;
+            img.alt = 'Anteprima';
+            img.className = 'preview-img';
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-preview';
+            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            removeBtn.onclick = function(e) {
+                e.preventDefault();
+                removeImage(index);
+            };
+            
+            previewItem.appendChild(img);
+            previewItem.appendChild(removeBtn);
+            imagePreviewsContainer.appendChild(previewItem);
+        });
+    }
+    
+    // Gestione del drag and drop e selezione file
+    uploadArea.addEventListener('click', function() {
+        fileInput.click();
+    });
+    
+    uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('active');
+    });
+    
+    uploadArea.addEventListener('dragleave', function() {
+        this.classList.remove('active');
+    });
+    
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('active');
+        
+        const files = e.dataTransfer.files;
+        if (files.length) {
+            handleFiles(files);
+        }
+    });
+    
+    fileInput.addEventListener('change', function() {
+        handleFiles(this.files);
+    });
+    
+    // Rimuovi tutte le immagini
+    removeAllImages.addEventListener('click', function() {
+        fileInput.value = '';
+        selectedFiles = [];
+        previewContainer.style.display = 'none';
+        uploadArea.classList.remove('active');
+        submitBtn.disabled = true;
+        renderPreviews();
+        updateCounters();
+    });
+    
+    // Gestione dei file selezionati
+    function handleFiles(files) {
+        // Aggiungi solo file immagine validi
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type.startsWith('image/')) {
+                // Verifica dimensione massima (10MB)
+                if (file.size <= 10 * 1024 * 1024) {
+                    // Crea anteprima
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const fileObj = {
+                            file: file,
+                            preview: e.target.result,
+                            name: file.name,
+                            size: file.size
+                        };
+                        
+                        selectedFiles.push(fileObj);
+                        previewContainer.style.display = 'block';
+                        uploadArea.classList.add('active');
+                        
+                        renderPreviews();
+                        updateCounters();
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    showError(`Il file ${file.name} è troppo grande. La dimensione massima è 10MB.`);
+                }
+            }
+        }
+    }
+    
+    // Funzioni per gestire messaggi di errore
+    function showError(message) {
+        let errorEl = document.getElementById('upload-error');
+        if (!errorEl) {
+            errorEl = document.createElement('div');
+            errorEl.id = 'upload-error';
+            errorEl.className = 'alert alert-danger';
+            previewContainer.parentNode.insertBefore(errorEl, previewContainer.nextSibling);
+        }
+        errorEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+        errorEl.style.display = 'block';
+    }
+    
+    function hideError() {
+        const errorEl = document.getElementById('upload-error');
+        if (errorEl) {
+            errorEl.style.display = 'none';
+        }
+    }
+    
+  // Modifica l'evento submit del form
+  uploadForm.addEventListener('submit', function(e) {
+    console.log('Form submit attivato');
+    
+    // Preveniamo l'invio standard del form
+    e.preventDefault();
+    
+    // Controlla numero di immagini
+    if (selectedFiles.length < MIN_IMAGES) {
+        showError(`Seleziona almeno ${MIN_IMAGES} immagini per procedere.`);
+        return;
+    }
+    
+    if (selectedFiles.length > MAX_IMAGES) {
+        showError(`Hai selezionato troppe immagini. Il massimo consentito è ${MAX_IMAGES}.`);
+        return;
+    }
+    
+    // Mostra il loader
+    loader.style.display = 'flex';
+    
+    // Crea un nuovo FormData
+    const formData = new FormData();
+    
+    // Aggiungi il pacchetto_id
+    formData.append('pacchetto_id', document.querySelector('input[name="pacchetto_id"]').value);
+    
+    // Aggiungi tutti i file selezionati
+    selectedFiles.forEach((fileObj, index) => {
+        formData.append('immagini', fileObj.file);
+    });
+    
+    // Invia il form manualmente tramite fetch
+    fetch('/upload-multiple', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        } else {
+            return response.text().then(html => {
+                document.open();
+                document.write(html);
+                document.close();
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Errore durante l\'invio:', error);
+        loader.style.display = 'none';
+        showError('Si è verificato un errore durante l\'invio. Riprova più tardi.');
+    });
+});
+
+});
+    </script>
+
+<%- include('partials/cookie-banner') %>
+
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Pacchetti - MicroInsight</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Font Awesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Se vuoi usare Bootstrap (opzionale) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar per la navigazione admin -->
+        <div class="admin-sidebar">
+            <div class="admin-logo">
+                <i class="fas fa-brain logo-icon"></i>
+                Micro<span>Insight</span> Admin
+            </div>
+            <ul class="admin-nav">
+                <li>
+                    <a href="/admin/dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/users">
+                        <i class="fas fa-users"></i>
+                        <span>Gestione Utenti</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/analyses">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Gestione Analisi</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/admin/packages">
+                        <i class="fas fa-box"></i>
+                        <span>Pacchetti</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/prompts">
+                        <i class="fas fa-robot"></i>
+                        <span>Configurazione AI</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/messages">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messaggi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/logs">
+                        <i class="fas fa-list"></i>
+                        <span>Log di Sistema</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Torna al sito</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Contenuto principale -->
+        <div class="admin-content">
+            <div class="admin-header">
+                <h1>Gestione Pacchetti</h1>
+                <div class="admin-user">
+                    <span>Benvenuto, <%= user.nome %></span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+            
+            <!-- Sezione principale -->
+            <div class="admin-section">
+                <div class="section-header">
+                    <h2>Elenco Pacchetti</h2>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPackageModal">
+                        <i class="fas fa-plus"></i> Nuovo Pacchetto
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Tipo</th>
+                                <th>Visualizzatore</th>
+                                <th>Prezzo</th>
+                                <th>Stato</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% packages.forEach(pkg => { %>
+                                <tr>
+                                    <td><%= pkg.id %></td>
+                                    <td><%= pkg.nome %></td>
+                                    <td><%= pkg.prompt_nome || pkg.tipo || 'Nessun prompt' %></td>
+                                    <td><%= pkg.visualizzatore_id || 'Default' %></td>
+                                    <% console.log('Dati pacchetto:', pkg) %>
+                                    <td>€<%= pkg.prezzo %></td>
+                                    <td>
+                                        <span class="badge <%= pkg.attivo ? 'bg-success' : 'bg-secondary' %>">
+                                            <%= pkg.attivo ? 'ATTIVO' : 'INATTIVO' %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-sm btn-primary edit-package" 
+                                                    data-id="<%= pkg.id %>" 
+                                                    data-nome="<%= pkg.nome %>" 
+                                                    data-tipo="<%= pkg.tipo %>"
+                                                    data-descrizione="<%= pkg.descrizione %>"
+                                                    data-prezzo="<%= pkg.prezzo %>"
+                                                    data-attivo="<%= pkg.attivo %>"
+                                                    data-prompt-id="<%= pkg.prompt_id %>"
+                                                    data-visualizzatore-id="<%= pkg.visualizzatore_id %>"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#editPackageModal">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-danger delete-package" 
+                                                    data-id="<%= pkg.id %>" 
+                                                    data-nome="<%= pkg.nome %>"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#deletePackageModal">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuovo Pacchetto -->
+    <div class="modal fade" id="newPackageModal" tabindex="-1" aria-labelledby="newPackageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newPackageModalLabel">Nuovo Pacchetto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                </div>
+                <form action="/admin/packages/create" method="POST">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="nome" class="form-label">Nome del Pacchetto</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="prompt_id" class="form-label">Prompt</label>
+                                <select class="form-select" id="prompt_id" name="prompt_id">
+                                    <option value="">Seleziona prompt...</option>
+                                    <!-- Questo verrà riempito dinamicamente con i prompt dal database -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="visualizzatore_id" class="form-label">Visualizzatore</label>
+                                <select class="form-select" id="visualizzatore_id" name="visualizzatore_id">
+                                    <option value="">Seleziona visualizzatore...</option>
+                                    <!-- Verrà riempito dinamicamente -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="prezzo" class="form-label">Prezzo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">€</span>
+                                    <input type="number" class="form-control" id="prezzo" name="prezzo" step="0.01" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descrizione" class="form-label">Descrizione</label>
+                            <textarea class="form-control" id="descrizione" name="descrizione" rows="4" required></textarea>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="attivo" name="attivo" checked>
+                            <label class="form-check-label" for="attivo">Attivo</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                        <button type="submit" class="btn btn-primary">Salva</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Modifica Pacchetto -->
+    <div class="modal fade" id="editPackageModal" tabindex="-1" aria-labelledby="editPackageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPackageModalLabel">Modifica Pacchetto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                </div>
+                <form id="editPackageForm" action="/admin/packages/update" method="POST">
+                    <input type="hidden" id="edit_id" name="id">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="edit_nome" class="form-label">Nome del Pacchetto</label>
+                                <input type="text" class="form-control" id="edit_nome" name="nome" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit_prompt_id" class="form-label">Prompt</label>
+                                <select class="form-select" id="edit_prompt_id" name="prompt_id">
+                                    <option value="">Seleziona prompt...</option>
+                                    <!-- Verrà riempito dinamicamente -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit_visualizzatore_id" class="form-label">Visualizzatore</label>
+                                <select class="form-select" id="edit_visualizzatore_id" name="visualizzatore_id">
+                                    <option value="">Seleziona visualizzatore...</option>
+                                    <!-- Verrà riempito dinamicamente -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit_prezzo" class="form-label">Prezzo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">€</span>
+                                    <input type="number" class="form-control" id="edit_prezzo" name="prezzo" step="0.01" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_descrizione" class="form-label">Descrizione</label>
+                            <textarea class="form-control" id="edit_descrizione" name="descrizione" rows="4" required></textarea>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="edit_attivo" name="attivo">
+                            <label class="form-check-label" for="edit_attivo">Attivo</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                        <button type="submit" class="btn btn-primary">Aggiorna</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Elimina Pacchetto -->
+    <div class="modal fade" id="deletePackageModal" tabindex="-1" aria-labelledby="deletePackageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletePackageModalLabel">Conferma Eliminazione</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Sei sicuro di voler eliminare il pacchetto <strong id="delete_package_name"></strong>?</p>
+                    <p class="text-danger">Questa azione non può essere annullata!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <a href="#" id="confirmDeleteBtn" class="btn btn-danger">Elimina</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Stili per il pannello amministrativo */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .admin-sidebar {
+            width: 260px;
+            background-color: #212529;
+            color: #fff;
+            padding: 1.5rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-logo {
+            padding: 0 1.5rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-logo span {
+            color: #3b82f6;
+        }
+
+        .admin-logo .logo-icon {
+            margin-right: 0.5rem;
+            color: #3b82f6;
+        }
+
+        .admin-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .admin-nav li {
+            margin-bottom: 0.25rem;
+        }
+
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .admin-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .admin-nav li.active a {
+            background-color: #3b82f6;
+            color: #fff;
+        }
+
+        .admin-nav a i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 1.5rem;
+            margin-left: 260px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            color: #212529;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            color: #495057;
+        }
+
+        .admin-user i {
+            margin-left: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .admin-section {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .admin-table th {
+            font-weight: 600;
+            background-color: #f8f9fa;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 70px;
+                padding: 1rem 0;
+            }
+
+            .admin-logo {
+                padding: 0 0.5rem 1rem;
+                justify-content: center;
+            }
+
+            .admin-logo span {
+                display: none;
+            }
+
+            .admin-nav a span {
+                display: none;
+            }
+
+            .admin-nav a {
+                justify-content: center;
+                padding: 0.75rem;
+            }
+
+            .admin-nav a i {
+                margin-right: 0;
+            }
+
+            .admin-content {
+                margin-left: 70px;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestione click su pulsante modifica
+            const editButtons = document.querySelectorAll('.edit-package');
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const nome = this.getAttribute('data-nome');
+                    const tipo = this.getAttribute('data-tipo');
+                    const descrizione = this.getAttribute('data-descrizione');
+                    const prezzo = this.getAttribute('data-prezzo');
+                    const attivo = this.getAttribute('data-attivo') === 'true';
+                    
+                    document.getElementById('edit_id').value = id;
+                    document.getElementById('edit_nome').value = nome;
+                    document.getElementById('edit_descrizione').value = descrizione;
+                    document.getElementById('edit_prezzo').value = prezzo;
+                    document.getElementById('edit_attivo').checked = attivo;
+
+                    // Carica i prompt nel dropdown di modifica
+                    loadPromptsForEdit();
+
+                    // Seleziona il prompt corretto dopo che sono stati caricati
+                    setTimeout(() => {
+                        const promptId = this.getAttribute('data-prompt-id');
+                        if (promptId) {
+                            document.getElementById('edit_prompt_id').value = promptId;
+                        }
+                        const visualizzatoreId = this.getAttribute('data-visualizzatore-id');
+    if (visualizzatoreId) {
+        document.getElementById('edit_visualizzatore_id').value = visualizzatoreId;
+    }
+
+                    }, 500);
+                });
+            });
+
+
+
+            // Funzione per caricare i prompt nel dropdown di modifica
+            function loadPromptsForEdit() {
+                fetch('/api/prompts')
+                    .then(response => response.json())
+                    .then(prompts => {
+                        const select = document.getElementById('edit_prompt_id');
+                        
+                        // Mantieni solo la prima opzione
+                        while (select.options.length > 1) {
+                            select.remove(1);
+                        }
+                        
+                        // Aggiungi i prompt
+                        prompts.forEach(prompt => {
+                            const option = document.createElement('option');
+                            option.value = prompt.id;
+                            option.textContent = prompt.nome;
+                            select.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Errore nel caricamento dei prompt:', error);
+                    });
+            }
+
+            // Funzione per caricare i visualizzatori nel dropdown
+function loadVisualizers() {
+    fetch('/api/visualizers')
+        .then(response => response.json())
+        .then(visualizers => {
+            const selectNew = document.getElementById('visualizzatore_id');
+            const selectEdit = document.getElementById('edit_visualizzatore_id');
+            
+            // Aggiungi opzione predefinita
+            if (visualizers.length > 0) {
+                // Aggiungi i visualizzatori ai dropdown
+                visualizers.forEach(visualizer => {
+                    // Per il dropdown di creazione
+                    if (selectNew) {
+                        const option = document.createElement('option');
+                        option.value = visualizer;
+                        option.textContent = visualizer.charAt(0).toUpperCase() + visualizer.slice(1);
+                        selectNew.appendChild(option);
+                    }
+                    
+                    // Per il dropdown di modifica
+                    if (selectEdit) {
+                        const option = document.createElement('option');
+                        option.value = visualizer;
+                        option.textContent = visualizer.charAt(0).toUpperCase() + visualizer.slice(1);
+                        selectEdit.appendChild(option);
+                    }
+                });
+            } else {
+                // Se non ci sono visualizzatori
+                const noVisualizersText = "Nessun visualizzatore disponibile";
+                
+                if (selectNew) {
+                    const option = document.createElement('option');
+                    option.value = "";
+                    option.disabled = true;
+                    option.textContent = noVisualizersText;
+                    selectNew.appendChild(option);
+                }
+                
+                if (selectEdit) {
+                    const option = document.createElement('option');
+                    option.value = "";
+                    option.disabled = true;
+                    option.textContent = noVisualizersText;
+                    selectEdit.appendChild(option);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Errore nel caricamento dei visualizzatori:', error);
+        });
+}
+            
+            // Gestione click su pulsante elimina
+            const deleteButtons = document.querySelectorAll('.delete-package');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const nome = this.getAttribute('data-nome');
+                    
+                    document.getElementById('delete_package_name').textContent = nome;
+                    document.getElementById('confirmDeleteBtn').href = `/admin/packages/delete/${id}`;
+                });
+            });
+            
+            // Funzione per caricare i prompt nel dropdown
+            function loadPrompts() {
+                fetch('/api/prompts')
+                    .then(response => response.json())
+                    .then(prompts => {
+                        const select = document.getElementById('prompt_id');
+                        
+                        // Mantieni solo la prima opzione (quella di default)
+                        while (select.options.length > 1) {
+                            select.remove(1);
+                        }
+                        
+                        if (prompts.length > 0) {
+                            // Aggiungi i prompt
+                            prompts.forEach(prompt => {
+                                const option = document.createElement('option');
+                                option.value = prompt.id;
+                                option.textContent = prompt.nome;
+                                select.appendChild(option);
+                            });
+                        } else {
+                            // Nessun prompt trovato
+                            const option = document.createElement('option');
+                            option.value = "";
+                            option.disabled = true;
+                            option.textContent = "Nessun prompt disponibile";
+                            select.appendChild(option);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Errore nel caricamento dei prompt:', error);
+                    });
+            }
+
+            // Carica i prompt quando la pagina è pronta
+            loadPrompts();
+
+            // Carica i visualizzatori quando la pagina è pronta
+loadVisualizers();
+
+
+        });
+    </script>
+</body>
+</html>
