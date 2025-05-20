@@ -38,4 +38,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // NUOVO CODICE: Toggle menu mobile
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const nav = document.querySelector('.nav');
+    
+    if (mobileMenuButton && nav) {
+        mobileMenuButton.addEventListener('click', function() {
+            nav.classList.toggle('mobile-open');
+        });
+    }
+    
+    // NUOVO CODICE: Chiudi il menu mobile se si clicca su un link
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 640) {
+                nav.classList.remove('mobile-open');
+            }
+        });
+    });
 });

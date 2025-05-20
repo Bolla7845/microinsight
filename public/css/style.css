@@ -859,3 +859,78 @@
 .nav-link[href="/cronologia"] {
   display: none !important;
 }
+
+/* Menu mobile migliorato */
+@media (max-width: 640px) {
+  .nav {
+    display: none;
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    z-index: 99;
+  }
+  
+  .nav.mobile-open {
+    display: flex;
+  }
+  
+  .nav li {
+    margin: 0.5rem 0;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .nav-link {
+    display: block;
+    padding: 0.75rem;
+    width: 100%;
+  }
+  
+  .nav-link:hover {
+    background-color: var(--gray-100);
+  }
+}
+
+/* Gestione overflow per dispositivi piccoli */
+img, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Miglioramenti per grid su mobile */
+@media (max-width: 640px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .grid, .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .card {
+    padding: 1rem;
+  }
+  
+  .hero {
+    padding: 2rem 0;
+  }
+  
+  .hero h1 {
+    font-size: 1.75rem;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+  }
+  
+  .btn-large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
