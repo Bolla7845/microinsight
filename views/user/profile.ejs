@@ -301,6 +301,41 @@
             gap: 2rem;
             margin-top: 2rem;
         }
+
+        /* Responsive per mobile */
+@media (max-width: 992px) {
+    .profile-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .profile-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 1rem;
+        overflow-x: auto;
+    }
+    
+    .profile-menu-item {
+        flex: 0 0 auto;
+        min-width: 150px;
+        text-align: center;
+        padding: 0.75rem;
+        border-radius: 0.375rem;
+        border: 1px solid #e2e8f0;
+        white-space: nowrap;
+    }
+    
+    .profile-form {
+        padding: 1rem;
+    }
+    
+    .account-stats {
+        padding: 1rem;
+    }
+}
         
         .profile-sidebar {
             background-color: white;
