@@ -168,10 +168,13 @@
     color: var(--primary-color);
   }
   
-  .nav {
-    display: flex;
-    gap: 1.5rem;
-  }
+ .nav {
+  display: flex;
+  gap: 1.5rem;
+  list-style-position: inside; /* Questo posiziona i pallini all'interno dell'elemento */
+  margin: 0;
+  padding: 0;
+}
   
   .nav-link {
     color: var(--gray-700);
@@ -855,8 +858,23 @@
     animation: slideUp 0.5s ease forwards;
   }
 
-  /* Rimuovi completamente il link "Le tue Analisi" dalla navigazione principale */
+/* Rimuovi completamente il link "Le tue Analisi" dalla navigazione principale */
+.nav li:has(.nav-link[href="/cronologia"]) {
+  display: none !important;
+}
+
+/* Fallback per browser che non supportano :has() */
 .nav-link[href="/cronologia"] {
+  display: none !important;
+}
+
+.nav-link[href="/cronologia"]::before,
+.nav-link[href="/cronologia"]::after {
+  display: none !important;
+}
+
+/* Rimuovi eventuali punti elenco orfani */
+.nav li:empty {
   display: none !important;
 }
 
@@ -878,12 +896,32 @@
   .nav.mobile-open {
     display: flex;
   }
+
+  /* Fix per mobile: pallini e testo allineati orizzontalmente */
+@media (max-width: 640px) {
+  .nav li {
+    display: flex;
+    align-items: center;
+    list-style: none; /* Rimuovi il pallino di default */
+  }
+  
+  .nav li::before {
+    content: "•"; /* Crea pallino artificiale */
+    margin-right: 0.5rem;
+    flex-shrink: 0; /* Il pallino non si riduce */
+  }
+  
+  .nav-link {
+    flex: 1; /* Il link occupa lo spazio rimanente */
+  }
+}
   
   .nav li {
-    margin: 0.5rem 0;
-    width: 100%;
-    text-align: center;
-  }
+  list-style-type: disc; /* Assicura che ci siano i pallini */
+  list-style-position: inside; /* Pallini all'interno dell'elemento li */
+  margin: 0;
+  padding: 0;
+}
   
   .nav-link {
     display: block;

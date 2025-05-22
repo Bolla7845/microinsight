@@ -1,3 +1,5 @@
+db.js - per webapp REALE:
+
 // db.js
 const { Pool } = require('pg');
 const logger = require('./logger');

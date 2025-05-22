@@ -20,17 +20,17 @@
                 Micro<span>Insight</span>
             </a>
             <nav>
-                <ul class="nav">
-                    <li><a href="/" class="nav-link">Home</a></li>
-                    <li><a href="/pacchetti" class="nav-link active">Pacchetti</a></li>
-                    <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
-                    <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
-                    <li><a href="/#contact" class="nav-link">Contatti</a></li>
-                    <li><a href="/carrello" class="nav-link">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span id="cart-count-nav">0</span>
-                    </a></li>
-                </ul>
+              <ul class="nav">
+    <li><a href="/" class="nav-link">Home</a></li>
+    <li><a href="/pacchetti" class="nav-link active">Pacchetti</a></li>
+    <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
+    <li><a href="/#contact" class="nav-link">Contatti</a></li>
+    <% if (locals.user) { %>
+        <li><a href="/dashboard" class="nav-link">Area Personale</a></li>
+    <% } else { %>
+        <li><a href="/login" class="nav-link">Accedi</a></li>
+    <% } %>
+</ul>
             </nav>
             <button class="mobile-menu-button">
                 <i class="fas fa-bars"></i>
