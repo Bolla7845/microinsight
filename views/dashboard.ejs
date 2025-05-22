@@ -126,12 +126,29 @@
     <style>
         /* Stili per la dashboard e sidebar COPIATI da cronologia-with-sidebar.ejs */
         .dashboard-grid {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-        }
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Responsive per mobile */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Una sola colonna su mobile */
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .sidebar-card {
+        order: 2; /* Mette la sidebar dopo il contenuto principale */
+    }
+    
+    .main-content {
+        order: 1; /* Mette il contenuto principale per primo */
+    }
+}
         
         .sidebar-card {
             background-color: white;
