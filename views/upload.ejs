@@ -1214,6 +1214,10 @@
         showError('Si è verificato un errore durante l\'invio. Riprova più tardi.');
     });
 
+
+});
+
+    
 // Gestione consenso biometrico
 document.addEventListener('DOMContentLoaded', function() {
     const biometricConsent = document.getElementById('biometric_consent');
@@ -1221,20 +1225,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (biometricConsent && submitBtn) {
         biometricConsent.addEventListener('change', function() {
-            checkSubmitButton();
+            console.log('Consenso cambiato:', biometricConsent.checked);
+            // Per ora non facciamo niente, solo testiamo
         });
-        
-        function checkSubmitButton() {
-            const hasImages = typeof selectedFiles !== 'undefined' && selectedFiles.length >= 4 && selectedFiles.length <= 20;
-            const hasConsent = biometricConsent.checked;
-            
-            submitBtn.disabled = !(hasImages && hasConsent);
-        }
-        
-        // Funzione globale per chiamare da updateCounters
-        window.checkBiometricConsent = checkSubmitButton;
     }
-
 });
 
 });
