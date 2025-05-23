@@ -151,24 +151,27 @@
                                 </div>
                             <% } %>
 
-                            <!-- Sezione Consenso Dati Biometrici -->
-<div class="consent-section">
-    <h3 class="consent-title">
-        <i class="fas fa-shield-alt"></i> Consenso al Trattamento Dati Biometrici
-    </h3>
+                            <!-- Consenso Privacy -->
+<div class="privacy-consent-section">
+    <div class="consent-header">
+        <i class="fas fa-shield-check"></i>
+        <h3>Consenso al Trattamento Dati</h3>
+    </div>
     
-    <div class="consent-box">
-      <div class="consent-item required">
-    <input type="checkbox" id="biometric_consent" name="biometric_consent" required style="display: block !important; position: relative !important;">
-    <label for="biometric_consent">
-                <strong>Dichiaro di aver letto la <a href="/privacy-policy" target="_blank">Privacy Policy</a> e acconsento esplicitamente al trattamento dei miei dati biometrici derivanti dall'analisi dell'immagine caricata per le finalità del servizio di analisi delle microespressioni.</strong>
-                <span class="required-mark">*</span>
-            </label>
-        </div>
+    <div class="consent-content">
+        <label class="consent-checkbox">
+            <input type="checkbox" id="privacy-consent" name="privacy_consent" required>
+            <span class="checkmark"></span>
+            <span class="consent-text">
+                Acconsento al trattamento dei miei dati biometrici per l'analisi delle microespressioni. 
+                <a href="/privacy-policy" target="_blank">Leggi la Privacy Policy</a>
+                <span class="required">*</span>
+            </span>
+        </label>
         
-        <div class="consent-note">
-            <p><i class="fas fa-info-circle"></i> I tuoi dati biometrici saranno utilizzati esclusivamente per l'analisi richiesta e saranno automaticamente cancellati entro 30 giorni.</p>
-            <p><strong>Puoi revocare questo consenso in qualsiasi momento</strong> contattandoci o dalla tua area personale.</p>
+        <div class="consent-info">
+            <i class="fas fa-info-circle"></i>
+            I dati saranno cancellati automaticamente entro 30 giorni. Puoi revocare il consenso in qualsiasi momento.
         </div>
     </div>
 </div>
@@ -883,87 +886,92 @@
     border-radius: var(--border-radius);
 }
 
-/* Stili per la sezione consenso */
-.consent-section {
-    background-color: rgba(59, 130, 246, 0.05);
-    border: 2px solid rgba(59, 130, 246, 0.3);
-    border-radius: var(--border-radius-lg);
+/* Stili per il consenso privacy */
+.privacy-consent-section {
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    border: 2px solid #3b82f6;
+    border-radius: 12px;
     padding: 1.5rem;
     margin: 2rem 0;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
-.consent-title {
-    font-size: 1.125rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-    font-weight: 600;
+.consent-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    color: #1e40af;
 }
 
-.consent-box {
-    background-color: white;
-    border-radius: var(--border-radius);
-    padding: 1.25rem;
-    border: 1px solid var(--gray-200);
+.consent-header i {
+    font-size: 1.5rem;
+    color: #3b82f6;
 }
 
-.consent-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-}
-
-.consent-item input[type="checkbox"] {
-    margin-top: 0.25rem;
-    margin-right: 0.75rem;
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-.consent-item label {
-    font-size: 0.95rem;
-    color: var(--gray-800);
-    line-height: 1.5;
-    cursor: pointer;
-}
-
-.consent-item label a {
-    color: var(--primary-color);
-    text-decoration: none;
+.consent-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
     font-weight: 600;
 }
 
-.consent-item label a:hover {
+.consent-content {
+    space-y: 1rem;
+}
+
+.consent-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.consent-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #3b82f6;
+}
+
+.consent-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #374151;
+}
+
+.consent-text a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.consent-text a:hover {
     text-decoration: underline;
 }
 
-.required-mark {
-    color: var(--danger);
+.required {
+    color: #ef4444;
     font-weight: bold;
     margin-left: 0.25rem;
 }
 
-.consent-note {
-    background-color: var(--gray-50);
-    border-radius: var(--border-radius);
-    padding: 1rem;
-    margin-top: 1rem;
-    border-left: 4px solid var(--primary-color);
-}
-
-.consent-note p {
-    margin: 0.5rem 0;
+.consent-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background-color: rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
     font-size: 0.875rem;
-    color: var(--gray-700);
+    color: #1e40af;
+    border-left: 4px solid #3b82f6;
 }
 
-.consent-note i {
-    color: var(--primary-color);
-    margin-right: 0.5rem;
+.consent-info i {
+    color: #3b82f6;
+    flex-shrink: 0;
 }
 
     </style>
@@ -1014,31 +1022,31 @@
     
     // Funzione per aggiornare il contatore e gli avvisi
     function updateCounters() {
-    const count = selectedFiles.length;
-    imageCount.textContent = count;
-    imageCountText.textContent = count + ' immagini selezionate';
-    
-    if (count < MIN_IMAGES) {
-        countWarning.textContent = `Seleziona almeno ${MIN_IMAGES} immagini`;
-        countWarning.style.display = 'inline';
-        countWarningIcon.style.display = 'inline';
-        submitBtn.disabled = true;
-    } else if (count > MAX_IMAGES) {
-        countWarning.textContent = `Hai selezionato troppe immagini (massimo ${MAX_IMAGES})`;
-        countWarning.style.display = 'inline';
-        countWarningIcon.style.display = 'inline';
-        submitBtn.disabled = true;
-    } else {
-        countWarning.style.display = 'none';
-        countWarningIcon.style.display = 'none';
-    }
+        const count = selectedFiles.length;
+        imageCount.textContent = count;
+        imageCountText.textContent = count + ' immagini selezionate';
+        
+        if (count < MIN_IMAGES) {
+            countWarning.textContent = `Seleziona almeno ${MIN_IMAGES} immagini`;
+            countWarning.style.display = 'inline';
+            countWarningIcon.style.display = 'inline';
+            submitBtn.disabled = true;
+        } else if (count > MAX_IMAGES) {
+            countWarning.textContent = `Hai selezionato troppe immagini (massimo ${MAX_IMAGES})`;
+            countWarning.style.display = 'inline';
+            countWarningIcon.style.display = 'inline';
+            submitBtn.disabled = true;
+        } else {
+            countWarning.style.display = 'none';
+            countWarningIcon.style.display = 'none';
+            submitBtn.disabled = false;
+        }
 
-    // Controlla anche il consenso
-    if (window.checkBiometricConsent) {
-        window.checkBiometricConsent();
-    }
-    
+        // Controlla anche il consenso privacy
+if (window.checkPrivacyConsent) {
+    window.checkPrivacyConsent();
 }
+    }
     
     // Rimuovi una singola immagine
     function removeImage(index) {
@@ -1219,42 +1227,31 @@
         loader.style.display = 'none';
         showError('Si è verificato un errore durante l\'invio. Riprova più tardi.');
     });
-
+});
 
 });
 
-    
-// Gestione consenso biometrico
+// Gestione consenso privacy
 document.addEventListener('DOMContentLoaded', function() {
-    const biometricConsent = document.getElementById('biometric_consent');
-    const submitBtn = document.getElementById('submit-btn');
+    const privacyConsent = document.getElementById('privacy-consent');
+    const submitButton = document.getElementById('submit-btn');
     
-    if (biometricConsent && submitBtn) {
-      biometricConsent.addEventListener('change', function() {
-    console.log('Consenso cambiato:', biometricConsent.checked);
-    checkSubmitButton();
-});
-
-function checkSubmitButton() {
-    const hasImages = typeof selectedFiles !== 'undefined' && selectedFiles.length >= 4 && selectedFiles.length <= 20;
-    const hasConsent = biometricConsent.checked;
-    
-    console.log('Controllo pulsante - Immagini:', hasImages, 'Consenso:', hasConsent);
-    
-    if (hasImages && hasConsent) {
-        submitBtn.disabled = false;
-        console.log('Pulsante ABILITATO');
-    } else {
-        submitBtn.disabled = true;
-        console.log('Pulsante DISABILITATO');
+    if (privacyConsent && submitButton) {
+        // Funzione per controllare se il form può essere inviato
+        function checkFormReady() {
+            const hasImages = typeof selectedFiles !== 'undefined' && selectedFiles.length >= 4 && selectedFiles.length <= 20;
+            const hasConsent = privacyConsent.checked;
+            
+            // Abilita il pulsante solo se ha immagini E consenso
+            submitButton.disabled = !(hasImages && hasConsent);
+        }
+        
+        // Ascolta i cambiamenti della checkbox
+        privacyConsent.addEventListener('change', checkFormReady);
+        
+        // Rendi la funzione disponibile globalmente per chiamarla da altre parti
+        window.checkPrivacyConsent = checkFormReady;
     }
-}
-
-// Chiamiamo la funzione anche quando cambiano le immagini
-window.checkBiometricConsent = checkSubmitButton;
-    }
-});
-
 });
 
     </script>
