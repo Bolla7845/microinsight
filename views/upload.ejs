@@ -1241,22 +1241,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const privacyConsent = document.getElementById('privacy-consent');
     const submitButton = document.getElementById('submit-btn');
     
-    if (privacyConsent && submitButton) {
-        // Funzione per controllare se il form può essere inviato
-        function checkFormReady() {
-            const hasImages = typeof selectedFiles !== 'undefined' && selectedFiles.length >= 4 && selectedFiles.length <= 20;
-            const hasConsent = privacyConsent.checked;
-            
-            // Abilita il pulsante solo se ha immagini E consenso
-            submitButton.disabled = !(hasImages && hasConsent);
-        }
-        
-        // Ascolta i cambiamenti della checkbox
-        privacyConsent.addEventListener('change', checkFormReady);
-        
-        // Rendi la funzione disponibile globalmente per chiamarla da altre parti
-        window.checkPrivacyConsent = checkFormReady;
-    }
+   
+   // Funzione per controllare se il form può essere inviato
+function checkFormReady() {
+    const hasImages = typeof selectedFiles !== 'undefined' && selectedFiles.length >= 4 && selectedFiles.length <= 20;
+    const hasConsent = privacyConsent.checked;
+    
+    console.log('=== DEBUG CONSENSO ===');
+    console.log('Immagini caricate:', typeof selectedFiles !== 'undefined' ? selectedFiles.length : 'selectedFiles non definito');
+    console.log('Ha abbastanza immagini:', hasImages);
+    console.log('Consenso spuntato:', hasConsent);
+    console.log('Pulsante abilitato:', hasImages && hasConsent);
+    
+    // Abilita il pulsante solo se ha immagini E consenso
+    submitButton.disabled = !(hasImages && hasConsent);
+}
+
 });
 
     </script>
