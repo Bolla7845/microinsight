@@ -1213,33 +1213,28 @@
         loader.style.display = 'none';
         showError('Si è verificato un errore durante l\'invio. Riprova più tardi.');
     });
-});
 
-
-// Gestione consenso biometrico - versione corretta
+// Gestione consenso biometrico
 document.addEventListener('DOMContentLoaded', function() {
     const biometricConsent = document.getElementById('biometric_consent');
     const submitBtn = document.getElementById('submit-btn');
     
     if (biometricConsent && submitBtn) {
-        // Funzione per controllare se abilitare il pulsante
-        function checkBiometricConsent() {
-            if (biometricConsent.checked) {
-                // Se il consenso è dato, abilita il pulsante solo se ci sono abbastanza immagini
-                if (typeof selectedFiles !== 'undefined' && selectedFiles.length >= 4 && selectedFiles.length <= 20) {
-                    submitBtn.disabled = false;
-                }
-            } else {
-                // Se il consenso non è dato, disabilita sempre
-                submitBtn.disabled = true;
-            }
+        biometricConsent.addEventListener('change', function() {
+            checkSubmitButton();
+        });
+        
+        function checkSubmitButton() {
+            const hasImages = typeof selectedFiles !== 'undefined' && selectedFiles.length >= 4 && selectedFiles.length <= 20;
+            const hasConsent = biometricConsent.checked;
+            
+            submitBtn.disabled = !(hasImages && hasConsent);
         }
         
-        // Aggiungi listener per il consenso
-        biometricConsent.addEventListener('change', function() {
-            checkBiometricConsent();
-        });
+        // Funzione globale per chiamare da updateCounters
+        window.checkBiometricConsent = checkSubmitButton;
     }
+
 });
 
 });
