@@ -71,9 +71,6 @@
                     <button class="view-btn active" data-view="grid">
                         <i class="fas fa-th-large"></i> Griglia
                     </button>
-                    <button class="view-btn" data-view="table">
-                        <i class="fas fa-table"></i> Tabella comparativa
-                    </button>
                 </div>
                 
                 <div class="package-filter-controls">
@@ -263,148 +260,7 @@
                         <% }); %>
 </div>
             
-            <!-- Vista tabella comparativa -->
-            <div class="packages-table-container" id="table-view" style="display: none;">
-                <table class="packages-table">
-                    <thead>
-                        <tr>
-                            <th class="feature-name">Caratteristiche</th>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <th class="package-column">
-                                    <div class="table-package-header">
-                                        <div class="table-package-icon">
-                                            <% 
-                                            let icona = 'fa-face-smile';
-                                            if (pacchetto.tipo === 'psicologica') icona = 'fa-brain';
-                                            if (pacchetto.tipo === 'profilo') icona = 'fa-user-gear';
-                                            if (pacchetto.tipo === 'evolutiva') icona = 'fa-chart-line';
-                                            if (pacchetto.tipo === 'armocromia') icona = 'fa-palette';
-                                            if (pacchetto.tipo === 'stile') icona = 'fa-shirt';
-                                            %>
-                                            <i class="fas <%= icona %>"></i>
-                                        </div>
-                                        <div class="table-package-name"><%= pacchetto.nome %></div>
-                                        <div class="table-package-price">
-                                            <% if (parseFloat(pacchetto.prezzo) === 0) { %>
-                                                <span class="price-free">GRATUITO</span>
-                                            <% } else { %>
-                                                <span>€<%= parseFloat(pacchetto.prezzo).toFixed(2) %></span>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                </th>
-                            <% }) %>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="feature-name">Analisi emozioni di base</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (true) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr>
-                            <td class="feature-name">Rilevamento microespressioni</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (true) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr>
-                            <td class="feature-name">Linguaggio del corpo</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (pacchetto.tipo !== 'microespressioni') { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr>
-                            <td class="feature-name">Pattern psicologici</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (['psicologica', 'profilo', 'evolutiva'].includes(pacchetto.tipo)) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr>
-                            <td class="feature-name">Tratti di personalità</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (['profilo', 'evolutiva'].includes(pacchetto.tipo)) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr>
-                            <td class="feature-name">Suggerimenti personalizzati</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (['profilo', 'armocromia', 'stile'].includes(pacchetto.tipo)) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr>
-                            <td class="feature-name">Analisi armocromia</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (pacchetto.tipo === 'armocromia') { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr>
-                            <td class="feature-name">Consulenza stile</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (pacchetto.tipo === 'stile') { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr>
-                            <td class="feature-name">Report dettagliato PDF</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (parseFloat(pacchetto.prezzo) > 0) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr>
-                            <td class="feature-name">Assistenza prioritaria</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="feature-availability">
-                                    <% if (parseFloat(pacchetto.prezzo) >= 19.99) { %><i class="fas fa-check-circle feature-yes"></i><% } else { %><i class="fas fa-times-circle feature-no"></i><% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                        <tr class="actions-row">
-                            <td class="feature-name">Azioni</td>
-                            <% pacchetti.forEach(function(pacchetto) { %>
-                                <td class="package-actions-cell">
-                                    <% if (parseFloat(pacchetto.prezzo) === 0) { %>
-                                        <a href="/pacchetti/<%= pacchetto.id %>/upload" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-rocket"></i> Inizia Gratis
-                                        </a>
-                                    <% } else { %>
-                                        <div class="table-actions">
-                                            <button class="btn btn-primary btn-sm add-to-cart"
-                                                   data-id="<%= pacchetto.id %>"
-                                                   data-name="<%= pacchetto.nome %>"
-                                                   data-price="<%= pacchetto.prezzo %>"
-                                                   data-type="<%= pacchetto.tipo %>">
-                                                <i class="fas fa-shopping-cart"></i> Aggiungi
-                                            </button>
-                                            <a href="/payment/<%= pacchetto.id %>" class="btn btn-outline btn-sm">
-                                                <i class="fas fa-credit-card"></i> Acquista
-                                            </a>
-                                        </div>
-                                    <% } %>
-                                </td>
-                            <% }) %>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            
         </div>
     </section>
     
@@ -815,15 +671,7 @@
             width: 100%;
         }
         
-        /* Vista tabella comparativa */
-        .packages-table-container {
-            overflow-x: auto;
-            margin-bottom: 2rem;
-            background-color: white;
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-md);
-        }
-        
+            
         .packages-table {
             width: 100%;
             border-collapse: collapse;
