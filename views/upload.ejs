@@ -1032,6 +1032,12 @@
         countWarning.style.display = 'none';
         countWarningIcon.style.display = 'none';
     }
+
+    // Controlla anche il consenso
+    if (window.checkBiometricConsent) {
+        window.checkBiometricConsent();
+    }
+    
 }
     
     // Rimuovi una singola immagine
@@ -1224,10 +1230,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitBtn = document.getElementById('submit-btn');
     
     if (biometricConsent && submitBtn) {
-        biometricConsent.addEventListener('change', function() {
-            console.log('Consenso cambiato:', biometricConsent.checked);
-            // Per ora non facciamo niente, solo testiamo
-        });
+      biometricConsent.addEventListener('change', function() {
+    console.log('Consenso cambiato:', biometricConsent.checked);
+    checkSubmitButton();
+});
+
+function checkSubmitButton() {
+    const hasImages = typeof selectedFiles !== 'undefined' && selectedFiles.length >= 4 && selectedFiles.length <= 20;
+    const hasConsent = biometricConsent.checked;
+    
+    console.log('Controllo pulsante - Immagini:', hasImages, 'Consenso:', hasConsent);
+    
+    if (hasImages && hasConsent) {
+        submitBtn.disabled = false;
+        console.log('Pulsante ABILITATO');
+    } else {
+        submitBtn.disabled = true;
+        console.log('Pulsante DISABILITATO');
+    }
+}
+
+// Chiamiamo la funzione anche quando cambiano le immagini
+window.checkBiometricConsent = checkSubmitButton;
     }
 });
 
