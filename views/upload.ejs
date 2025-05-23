@@ -158,9 +158,9 @@
     </h3>
     
     <div class="consent-box">
-        <div class="consent-item required">
-            <input type="checkbox" id="biometric_consent" name="biometric_consent" required>
-            <label for="biometric_consent">
+      <div class="consent-item required">
+    <input type="checkbox" id="biometric_consent" name="biometric_consent" required style="display: block !important; position: relative !important;">
+    <label for="biometric_consent">
                 <strong>Dichiaro di aver letto la <a href="/privacy-policy" target="_blank">Privacy Policy</a> e acconsento esplicitamente al trattamento dei miei dati biometrici derivanti dall'analisi dell'immagine caricata per le finalità del servizio di analisi delle microespressioni.</strong>
                 <span class="required-mark">*</span>
             </label>
@@ -1014,26 +1014,26 @@
     
     // Funzione per aggiornare il contatore e gli avvisi
     function updateCounters() {
-        const count = selectedFiles.length;
-        imageCount.textContent = count;
-        imageCountText.textContent = count + ' immagini selezionate';
-        
-        if (count < MIN_IMAGES) {
-            countWarning.textContent = `Seleziona almeno ${MIN_IMAGES} immagini`;
-            countWarning.style.display = 'inline';
-            countWarningIcon.style.display = 'inline';
-            submitBtn.disabled = true;
-        } else if (count > MAX_IMAGES) {
-            countWarning.textContent = `Hai selezionato troppe immagini (massimo ${MAX_IMAGES})`;
-            countWarning.style.display = 'inline';
-            countWarningIcon.style.display = 'inline';
-            submitBtn.disabled = true;
-        } else {
-            countWarning.style.display = 'none';
-            countWarningIcon.style.display = 'none';
-            submitBtn.disabled = false;
-        }
+    const count = selectedFiles.length;
+    imageCount.textContent = count;
+    imageCountText.textContent = count + ' immagini selezionate';
+    
+    if (count < MIN_IMAGES) {
+        countWarning.textContent = `Seleziona almeno ${MIN_IMAGES} immagini`;
+        countWarning.style.display = 'inline';
+        countWarningIcon.style.display = 'inline';
+        submitBtn.disabled = true;
+    } else if (count > MAX_IMAGES) {
+        countWarning.textContent = `Hai selezionato troppe immagini (massimo ${MAX_IMAGES})`;
+        countWarning.style.display = 'inline';
+        countWarningIcon.style.display = 'inline';
+        submitBtn.disabled = true;
+    } else {
+        countWarning.style.display = 'none';
+        countWarningIcon.style.display = 'none';
+        updateSubmitButton();
     }
+}
     
     // Rimuovi una singola immagine
     function removeImage(index) {
