@@ -150,6 +150,28 @@
                                     </div>
                                 </div>
                             <% } %>
+
+                            <!-- Sezione Consenso Dati Biometrici -->
+<div class="consent-section">
+    <h3 class="consent-title">
+        <i class="fas fa-shield-alt"></i> Consenso al Trattamento Dati Biometrici
+    </h3>
+    
+    <div class="consent-box">
+        <div class="consent-item required">
+            <input type="checkbox" id="biometric_consent" name="biometric_consent" required>
+            <label for="biometric_consent">
+                <strong>Dichiaro di aver letto la <a href="/privacy-policy" target="_blank">Privacy Policy</a> e acconsento esplicitamente al trattamento dei miei dati biometrici derivanti dall'analisi dell'immagine caricata per le finalità del servizio di analisi delle microespressioni.</strong>
+                <span class="required-mark">*</span>
+            </label>
+        </div>
+        
+        <div class="consent-note">
+            <p><i class="fas fa-info-circle"></i> I tuoi dati biometrici saranno utilizzati esclusivamente per l'analisi richiesta e saranno automaticamente cancellati entro 30 giorni.</p>
+            <p><strong>Puoi revocare questo consenso in qualsiasi momento</strong> contattandoci o dalla tua area personale.</p>
+        </div>
+    </div>
+</div>
                             
                             <div class="form-actions">
                                 <button type="submit" class="btn btn-primary btn-large" id="submit-btn" disabled>
@@ -861,6 +883,89 @@
     border-radius: var(--border-radius);
 }
 
+/* Stili per la sezione consenso */
+.consent-section {
+    background-color: rgba(59, 130, 246, 0.05);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.consent-title {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.consent-box {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    border: 1px solid var(--gray-200);
+}
+
+.consent-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.consent-item input[type="checkbox"] {
+    margin-top: 0.25rem;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.consent-item label {
+    font-size: 0.95rem;
+    color: var(--gray-800);
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.consent-item label a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.consent-item label a:hover {
+    text-decoration: underline;
+}
+
+.required-mark {
+    color: var(--danger);
+    font-weight: bold;
+    margin-left: 0.25rem;
+}
+
+.consent-note {
+    background-color: var(--gray-50);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-top: 1rem;
+    border-left: 4px solid var(--primary-color);
+}
+
+.consent-note p {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+    color: var(--gray-700);
+}
+
+.consent-note i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
     </style>
 
     <!-- Loader per l'upload migliorato -->
@@ -1112,6 +1217,24 @@
 });
 
 });
+
+// Gestione consenso biometrico
+const biometricConsent = document.getElementById('biometric_consent');
+const submitBtn = document.getElementById('submit-btn');
+
+// Controlla che il consenso sia dato per abilitare il pulsante
+function updateSubmitButton() {
+    const hasFiles = selectedFiles.length >= MIN_IMAGES && selectedFiles.length <= MAX_IMAGES;
+    const hasConsent = biometricConsent.checked;
+    
+    submitBtn.disabled = !(hasFiles && hasConsent);
+}
+
+// Aggiungi listener per il consenso
+if (biometricConsent) {
+    biometricConsent.addEventListener('change', updateSubmitButton);
+}
+
     </script>
 
 <%- include('partials/cookie-banner') %>
