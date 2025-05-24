@@ -45,6 +45,19 @@
                 <h1>Scopri il potere delle Microespressioni</h1>
                 <p>MicroInsight utilizza l'intelligenza artificiale avanzata per analizzare microespressioni, creare profili psicologici e fornire consulenze personalizzate sull'immagine.</p>
                 <a href="/pacchetti" class="btn btn-primary btn-large">Inizia l'Analisi</a>
+                <!-- Disclaimer Legale -->
+            <div class="disclaimer-banner">
+                <div class="disclaimer-content">
+                    <div class="disclaimer-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="disclaimer-text">
+                        <strong>Servizio di Analisi Digitale e Consulenza d'Immagine</strong><br>
+                        Le analisi hanno carattere <strong>esclusivamente ludico e informativo</strong>. Non sostituiscono consulenze professionali qualificate.
+                        <a href="#disclaimer-completo" class="disclaimer-link">Leggi il disclaimer completo</a>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </section>
@@ -178,6 +191,49 @@
                         <li>Elaborazione del linguaggio naturale per report dettagliati e personalizzati</li>
                         <li>Modelli di apprendimento continuo che migliorano costantemente</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disclaimer Completo -->
+    <section id="disclaimer-completo" class="bg-light py-8">
+        <div class="container">
+            <div class="card">
+                <h2 class="text-center mb-6" style="color: #ef4444;">
+                    <i class="fas fa-exclamation-triangle"></i> 
+                    Dichiarazione di Non Responsabilità
+                </h2>
+                
+                <div class="disclaimer-full">
+                    <h3>SERVIZIO DI ANALISI DIGITALE E CONSULENZA D'IMMAGINE</h3>
+                    <p>MicroInsight utilizza algoritmi di intelligenza artificiale per fornire analisi digitali dell'immagine, consulenza estetica e interpretazioni basate su caratteristiche visive.</p>
+                    
+                    <div class="disclaimer-points">
+                        <div class="disclaimer-point">
+                            <strong>• NATURA DEL SERVIZIO:</strong> Le analisi fornite hanno esclusivamente carattere ludico, informativo e di intrattenimento
+                        </div>
+                        
+                        <div class="disclaimer-point">
+                            <strong>• VALIDITÀ SCIENTIFICA:</strong> I risultati non hanno validità scientifica, medica, psicologica o diagnostica
+                        </div>
+                        
+                        <div class="disclaimer-point">
+                            <strong>• NON SOSTITUZIONE PROFESSIONALE:</strong> Il servizio non sostituisce consulenze di psicologi, medici, consulenti d'immagine qualificati o altri professionisti
+                        </div>
+                        
+                        <div class="disclaimer-point">
+                            <strong>• UTILIZZO DEI RISULTATI:</strong> Gli utenti utilizzano i risultati a proprio rischio e discrezione. Non basare decisioni importanti su queste analisi
+                        </div>
+                        
+                        <div class="disclaimer-point">
+                            <strong>• PRECISIONE:</strong> Non garantiamo l'accuratezza o l'affidabilità delle interpretazioni generate dall'IA
+                        </div>
+                        
+                        <div class="disclaimer-point">
+                            <strong>• RESPONSABILITÀ:</strong> MicroInsight declina ogni responsabilità per conseguenze derivanti dall'uso improprio del servizio
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -414,6 +470,75 @@
     border: 1px solid #f5c6cb;
     border-left: 4px solid #dc3545;
 }
+
+/* Disclaimer Banner */
+        .disclaimer-banner {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.1));
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .disclaimer-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .disclaimer-icon {
+            color: #ef4444;
+            font-size: 1.5rem;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+        
+        .disclaimer-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .disclaimer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: underline;
+            margin-left: 0.5rem;
+        }
+        
+        .disclaimer-link:hover {
+            color: white;
+        }
+
+        /* Disclaimer Completo */
+        .disclaimer-full h3 {
+            color: #ef4444;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .disclaimer-points {
+            margin-top: 1.5rem;
+        }
+        
+        .disclaimer-point {
+            background-color: #fff5f5;
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+        
+        .disclaimer-point:last-child {
+            margin-bottom: 0;
+        }
+        
+        .disclaimer-point strong {
+            color: #dc2626;
+        }
     
     </style>
 
