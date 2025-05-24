@@ -23,7 +23,6 @@
                 <ul class="nav">
                     <li><a href="/" class="nav-link">Home</a></li>
                     <li><a href="/pacchetti" class="nav-link">Pacchetti</a></li>
-                    <li><a href="/cronologia" class="nav-link">Le tue Analisi</a></li>
                     <li><a href="/#about" class="nav-link">Chi Siamo</a></li>
                     <li><a href="/#contact" class="nav-link">Contatti</a></li>
                 </ul>
@@ -38,7 +37,7 @@
         <div class="container">
             <h1>Cookie Policy</h1>
             <div class="breadcrumbs">
-                <a href="/">Home</a> &gt;
+                <a href="/" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">Home</a> &gt;
                 <span>Cookie Policy</span>
             </div>
         </div>
@@ -58,9 +57,10 @@
                         </ul>
                     </div>
                     <div class="last-updated">
-                        Ultimo aggiornamento: <%= new Date().toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                        Ultimo aggiornamento: 24 maggio 2025
                     </div>
                 </div>
+                
                 <div class="legal-content">
                     <h2>Cookie Policy di MicroInsight</h2>
                     <p>Questa Cookie Policy spiega cosa sono i cookie e come vengono utilizzati sul sito web di MicroInsight. Ti consigliamo di leggere attentamente questa policy per comprendere i tipi di cookie che utilizziamo, le informazioni che raccogliamo e come queste informazioni vengono utilizzate.</p>
@@ -69,12 +69,11 @@
                     <p>I cookie sono piccoli file di testo che vengono memorizzati sul tuo dispositivo (computer, tablet o telefono) quando visiti un sito web. I cookie vengono ampiamente utilizzati per far funzionare i siti web in modo più efficiente, nonché per fornire informazioni ai proprietari del sito.</p>
                     
                     <h3>2. Come utilizziamo i cookie</h3>
-                    <p>MicroInsight utilizza i cookie per vari scopi, tra cui:</p>
+                    <p>MicroInsight utilizza i cookie per i seguenti scopi:</p>
                     <ul>
-                        <li><strong>Cookie strettamente necessari</strong>: Essenziali per permetterti di navigare nel sito e utilizzare le sue funzionalità, come l'accesso alle aree riservate.</li>
-                        <li><strong>Cookie analitici/di performance</strong>: Ci permettono di riconoscere e contare il numero di visitatori e di vedere come i visitatori si muovono all'interno del nostro sito quando lo stanno utilizzando. Questo ci aiuta a migliorare il funzionamento del nostro sito.</li>
-                        <li><strong>Cookie di funzionalità</strong>: Utilizzati per riconoscerti quando torni sul nostro sito. Questo ci permette di personalizzare i nostri contenuti per te e ricordare le tue preferenze.</li>
-                        <li><strong>Cookie di targeting</strong>: Registrano la tua visita al nostro sito, le pagine che hai visitato e i link che hai seguito. Utilizziamo queste informazioni per rendere il nostro sito e la pubblicità visualizzata più pertinenti ai tuoi interessi.</li>
+                        <li><strong>Cookie strettamente necessari</strong>: Essenziali per permetterti di navigare nel sito e utilizzare le sue funzionalità, come l'accesso alle aree riservate e la gestione delle sessioni utente.</li>
+                        <li><strong>Cookie di funzionalità</strong>: Utilizzati per riconoscerti quando torni sul nostro sito, ricordare le tue preferenze e migliorare la tua esperienza d'uso.</li>
+                        <li><strong>Cookie di sicurezza</strong>: Utilizzati per proteggere il sito da attacchi e mantenere la sicurezza delle sessioni utente.</li>
                     </ul>
                     
                     <h3>3. Tipi specifici di cookie utilizzati</h3>
@@ -89,69 +88,83 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>session_id</td>
+                                <td>connect.sid</td>
                                 <td>Strettamente necessario</td>
-                                <td>Utilizzato per mantenere la tua sessione di accesso</td>
-                                <td>Sessione</td>
-                            </tr>
-                            <tr>
-                                <td>remember_me</td>
-                                <td>Funzionalità</td>
-                                <td>Utilizzato per ricordare le tue credenziali di accesso</td>
-                                <td>30 giorni</td>
-                            </tr>
-                            <tr>
-                                <td>_ga, _gid</td>
-                                <td>Analitico</td>
-                                <td>Utilizzato da Google Analytics per distinguere gli utenti</td>
-                                <td>2 anni / 24 ore</td>
+                                <td>Gestione della sessione utente per mantenere l'accesso</td>
+                                <td>Sessione (24 ore)</td>
                             </tr>
                             <tr>
                                 <td>cookie_consent</td>
                                 <td>Strettamente necessario</td>
-                                <td>Utilizzato per ricordare il consenso dell'utente ai cookie</td>
+                                <td>Memorizza il consenso dell'utente all'uso dei cookie</td>
                                 <td>1 anno</td>
+                            </tr>
+                            <tr>
+                                <td>csrf_token</td>
+                                <td>Sicurezza</td>
+                                <td>Protezione contro attacchi CSRF (Cross-Site Request Forgery)</td>
+                                <td>Sessione</td>
                             </tr>
                         </tbody>
                     </table>
                     
                     <h3>4. Cookie di terze parti</h3>
-                    <p>Alcuni cookie sono impostati da servizi di terze parti che compaiono sulle nostre pagine:</p>
-                    <ul>
-                        <li><strong>Google Analytics</strong>: Utilizziamo Google Analytics per raccogliere informazioni su come i visitatori utilizzano il nostro sito. Queste informazioni vengono elaborate in forma anonima e utilizziamo questi dati per migliorare il nostro sito e l'esperienza utente. Per maggiori informazioni sui cookie di Google Analytics, visita la <a href="https://support.google.com/analytics/answer/6004245" target="_blank">pagina di Google Analytics sulla privacy</a>.</li>
-                        <li><strong>Social Media</strong>: Se utilizzi i pulsanti di condivisione sui social media presenti sul nostro sito, questi servizi imposteranno i loro cookie. Per maggiori informazioni su questi cookie, visita i siti web di questi servizi.</li>
-                    </ul>
+                    <p>Attualmente MicroInsight non utilizza cookie di terze parti come Google Analytics o servizi di tracciamento esterni. Tutti i cookie utilizzati sono gestiti direttamente dal nostro sistema.</p>
+                    <p>Se in futuro dovessimo implementare servizi di terze parti, aggiorneremo questa policy e ti informeremo adeguatamente.</p>
                     
                     <h3>5. Come gestire i cookie</h3>
-                    <p>Puoi gestire i cookie modificando le impostazioni del tuo browser. La maggior parte dei browser web ti permette di controllare i cookie attraverso le impostazioni del browser. Per sapere come gestire i cookie sul tuo browser, consulta il menu di aiuto del browser che stai utilizzando.</p>
+                    <p>Puoi gestire i cookie modificando le impostazioni del tuo browser. La maggior parte dei browser web ti permette di controllare i cookie attraverso le impostazioni del browser.</p>
                     
-                    <p>Di seguito trovi i link alle pagine di supporto dei principali browser per la gestione dei cookie:</p>
+                    <h4>Link alle guide dei principali browser:</h4>
                     <ul>
-                        <li><a href="https://support.google.com/chrome/answer/95647" target="_blank">Google Chrome</a></li>
-                        <li><a href="https://support.mozilla.org/it/kb/Attivare%20e%20disattivare%20i%20cookie" target="_blank">Mozilla Firefox</a></li>
-                        <li><a href="https://support.microsoft.com/it-it/help/17442/windows-internet-explorer-delete-manage-cookies" target="_blank">Internet Explorer</a></li>
-                        <li><a href="https://support.apple.com/it-it/guide/safari/sfri11471/mac" target="_blank">Safari</a></li>
+                        <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
+                        <li><a href="https://support.mozilla.org/it/kb/Attivare%20e%20disattivare%20i%20cookie" target="_blank" rel="noopener">Mozilla Firefox</a></li>
+                        <li><a href="https://support.microsoft.com/it-it/help/17442/windows-internet-explorer-delete-manage-cookies" target="_blank" rel="noopener">Microsoft Edge</a></li>
+                        <li><a href="https://support.apple.com/it-it/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari</a></li>
                     </ul>
                     
-                    <p>Tieni presente che bloccare tutti i cookie potrebbe impedire il corretto funzionamento di MicroInsight e di altre pagine web che visiti.</p>
+                    <p><strong>Attenzione:</strong> Bloccare i cookie strettamente necessari potrebbe impedire il corretto funzionamento di MicroInsight, in particolare l'accesso all'area personale e l'utilizzo dei servizi di analisi.</p>
                     
                     <h3>6. Il nostro banner dei cookie</h3>
                     <p>Quando visiti per la prima volta il nostro sito, vedrai un banner dei cookie che ti informa dell'uso dei cookie sul nostro sito. Questo banner ti offre la possibilità di:</p>
                     <ul>
                         <li>Accettare tutti i cookie</li>
-                        <li>Personalizzare le tue preferenze sui cookie</li>
-                        <li>Rifiutare tutti i cookie non essenziali</li>
+                        <li>Accettare solo i cookie necessari</li>
+                        <li>Personalizzare le tue preferenze</li>
                     </ul>
-                    <p>Puoi modificare le tue preferenze in qualsiasi momento visitando la pagina delle impostazioni dei cookie nel piè di pagina del nostro sito.</p>
+                    <p>Le tue scelte vengono memorizzate tramite il cookie "cookie_consent" per un anno.</p>
                     
-                    <h3>7. Modifiche alla Cookie Policy</h3>
-                    <p>Possiamo aggiornare questa Cookie Policy di tanto in tanto per riflettere, ad esempio, cambiamenti nei cookie che utilizziamo o per altri motivi operativi, legali o normativi. Ti invitiamo quindi a visitare regolarmente questa Cookie Policy per restare informato sul nostro utilizzo dei cookie e delle tecnologie correlate.</p>
+                    <h3>7. Cookie e account utente</h3>
+                    <p>Se hai un account su MicroInsight, utilizziamo cookie per:</p>
+                    <ul>
+                        <li>Mantenere il tuo accesso al sito (cookie di sessione)</li>
+                        <li>Ricordare le tue preferenze di utilizzo</li>
+                        <li>Garantire la sicurezza del tuo account</li>
+                        <li>Proteggere dalle attività fraudolente</li>
+                    </ul>
+                    
+                    <h3>8. Aggiornamenti futuri</h3>
+                    <p>Man mano che MicroInsight si evolve, potremmo implementare nuove funzionalità che richiedono l'uso di cookie aggiuntivi. In tal caso:</p>
+                    <ul>
+                        <li>Aggiorneremo questa Cookie Policy</li>
+                        <li>Ti informeremo tramite banner o notifica</li>
+                        <li>Richiederemo il tuo consenso per i nuovi cookie non essenziali</li>
+                    </ul>
+                    
+                    <h3>9. Modifiche alla Cookie Policy</h3>
+                    <p>Possiamo aggiornare questa Cookie Policy di tanto in tanto per riflettere cambiamenti nelle nostre pratiche o per altri motivi operativi, legali o normativi. Ti invitiamo quindi a visitare regolarmente questa Cookie Policy per restare informato sul nostro utilizzo dei cookie.</p>
                     <p>La data in cima a questa Cookie Policy indica quando è stata aggiornata l'ultima volta.</p>
                     
-                    <h3>8. Contatti</h3>
+                    <h3>10. Contatti</h3>
                     <p>Se hai domande sulla nostra Cookie Policy o sull'utilizzo dei cookie, puoi contattarci tramite:</p>
-                    <p>Email: [TUA EMAIL DI CONTATTO]<br>
-                    Indirizzo: [TUO INDIRIZZO o ALTRO PUNTO DI CONTATTO]</p>
+                    <p><strong>Email:</strong> info.microinsight@gmail.com<br>
+                    <strong>Titolare:</strong> Antonio Palma<br>
+                    <strong>Sede:</strong> Taranto, Italia</p>
+                    
+                    <div class="legal-footer">
+                        <p><em>Ultimo aggiornamento: 24 maggio 2025</em></p>
+                        <p><strong>Versione documento: 1.0</strong></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -170,22 +183,11 @@
                     <ul class="footer-links">
                         <li><a href="/">Home</a></li>
                         <li><a href="/pacchetti">Pacchetti</a></li>
-                        <li><a href="/cronologia">Le tue Analisi</a></li>
                         <li><a href="/#about">Chi Siamo</a></li>
                         <li><a href="/#contact">Contatti</a></li>
                     </ul>
                 </div>
                 
-                <div class="footer-section">
-                    <h3>Servizi</h3>
-                    <ul class="footer-links">
-                        <li><a href="/pacchetti">Analisi Microespressioni</a></li>
-                        <li><a href="/pacchetti">Profilo Psicologico</a></li>
-                        <li><a href="/pacchetti">Consulenza d'Immagine</a></li>
-                        <li><a href="/pacchetti">Analisi Evolutiva</a></li>
-                        <li><a href="/pacchetti">Armocromia</a></li>
-                    </ul>
-                </div>
                 
                 <div class="footer-section">
                     <h3>Legali</h3>
@@ -283,6 +285,12 @@
             color: var(--primary-color);
         }
         
+        .legal-content h4 {
+            font-size: 1.1rem;
+            margin: 1rem 0 0.75rem;
+            color: var(--gray-700);
+        }
+        
         .legal-content p, .legal-content ul {
             margin-bottom: 1rem;
             line-height: 1.7;
@@ -300,21 +308,36 @@
             width: 100%;
             border-collapse: collapse;
             margin: 1.5rem 0;
+            font-size: 0.9rem;
         }
         
         .cookie-table th, .cookie-table td {
             padding: 0.75rem;
             text-align: left;
             border: 1px solid var(--gray-200);
+            vertical-align: top;
         }
         
         .cookie-table th {
             background-color: var(--gray-100);
             font-weight: 600;
+            color: var(--gray-800);
         }
         
         .cookie-table tr:nth-child(even) {
             background-color: var(--gray-50);
+        }
+        
+        .cookie-table tr:hover {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .legal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+            font-style: italic;
+            color: var(--gray-600);
         }
         
         @media (max-width: 768px) {
@@ -326,9 +349,33 @@
                 margin-bottom: 1.5rem;
             }
             
+            .legal-content {
+                padding: 1.5rem;
+            }
+            
             .cookie-table {
                 display: block;
                 overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .legal-content {
+                padding: 1rem;
+            }
+            
+            .legal-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .legal-content h3 {
+                font-size: 1.125rem;
+            }
+            
+            .cookie-table th, .cookie-table td {
+                padding: 0.5rem;
+                font-size: 0.8rem;
             }
         }
     </style>
