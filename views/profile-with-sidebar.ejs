@@ -594,66 +594,42 @@
                     </div>
                     
                     <!-- Tab Privacy e Consensi -->
-                    <div class="profile-section" id="privacy">
-                        <h3 style="margin-bottom: 1rem;">Privacy e Consensi</h3>
-                        
-                        <form action="/update-privacy" method="POST">
-                            <div style="margin-bottom: 1.5rem;">
-                                <h4>Comunicazioni via Email</h4>
-                                <div class="form-check" style="display: flex; align-items: center; margin-bottom: 0.75rem;">
-                                    <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter" <%= user.consenso_newsletter ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="newsletter" style="margin-left: 0.5rem;">
-                                        Desidero ricevere email con aggiornamenti sui servizi e nuove funzionalità
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div style="margin-bottom: 1.5rem;">
-                                <h4>Trattamento dei Dati</h4>
-                                <div class="form-check" style="display: flex; align-items: center; margin-bottom: 0.75rem;">
-                                    <input class="form-check-input" type="checkbox" id="data_processing" name="data_processing" <%= user.consenso_trattamento ? 'checked' : '' %> required>
-                                    <label class="form-check-label" for="data_processing" style="margin-left: 0.5rem;">
-                                        Acconsento al trattamento dei miei dati personali secondo la Privacy Policy
-                                    </label>
-                                </div>
-                                <small class="form-text text-muted">Questo consenso è necessario per l'utilizzo del servizio</small>
-                            </div>
+<div class="profile-section" id="privacy">
+    <h3 style="margin-bottom: 1rem;">Privacy e Consensi</h3>
+    
+    <form action="/update-privacy" method="POST">
+        <div style="margin-bottom: 1.5rem;">
+            <h4>Comunicazioni via Email</h4>
+            <div class="form-check" style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter" <%= user.consenso_newsletter ? 'checked' : '' %>>
+                <label class="form-check-label" for="newsletter" style="margin-left: 0.5rem;">
+                    Desidero ricevere email con aggiornamenti sui servizi e nuove funzionalità
+                </label>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Salva Preferenze
+        </button>
+    </form>
+    
+    <div style="margin-top: 2rem;">
+        <p>Il consenso al trattamento dei dati è stato fornito durante la registrazione secondo la nostra <a href="/privacy-policy">Privacy Policy</a>.</p>
+        <p>Leggi i nostri documenti sulla privacy:</p>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="/privacy-policy" class="btn btn-outline btn-sm">
+                <i class="fas fa-file-alt"></i> Privacy Policy
+            </a>
+            <a href="/terms-of-service" class="btn btn-outline btn-sm">
+                <i class="fas fa-file-contract"></i> Termini di Servizio
+            </a>
+            <a href="/cookie-policy" class="btn btn-outline btn-sm">
+                <i class="fas fa-cookie"></i> Cookie Policy
+            </a>
+        </div>
+    </div>
+</div>
 
-                            <div style="margin-bottom: 1.5rem;">
-                        <h4>Limitazione del Trattamento</h4>
-                        <div class="form-check" style="display: flex; align-items: center; margin-bottom: 0.75rem;">
-                            <input class="form-check-input" type="checkbox" id="limitazione_trattamento" name="limitazione_trattamento" <%= user.limitazione_trattamento ? 'checked' : '' %>>
-                            <label class="form-check-label" for="limitazione_trattamento" style="margin-left: 0.5rem;">
-                                Limita il trattamento dei miei dati (sospende temporaneamente l'utilizzo del servizio)
-                            </label>
-                        </div>
-                        <div class="form-group" style="margin-left: 1.5rem;">
-                            <label for="motivo_limitazione" style="font-size: 0.875rem;">Motivo (opzionale):</label>
-                            <input type="text" id="motivo_limitazione" name="motivo_limitazione" class="form-control" style="font-size: 0.875rem;" placeholder="Es: Contestazione analisi, pausa temporanea..." value="<%= user.motivo_limitazione || '' %>">
-                        </div>
-                        <small class="form-text text-muted">Attivando questa opzione non potrai utilizzare il servizio fino alla disattivazione</small>
-                    </div>
-                            
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Salva Preferenze
-                            </button>
-                        </form>
-                        
-                        <div style="margin-top: 2rem;">
-                            <p>Leggi i nostri documenti sulla privacy:</p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/privacy-policy" class="btn btn-outline btn-sm">
-                                    <i class="fas fa-file-alt"></i> Privacy Policy
-                                </a>
-                                <a href="/terms-of-service" class="btn btn-outline btn-sm">
-                                    <i class="fas fa-file-contract"></i> Termini di Servizio
-                                </a>
-                                <a href="/cookie-policy" class="btn btn-outline btn-sm">
-                                    <i class="fas fa-cookie"></i> Cookie Policy
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                     <!-- Tab Gestione Dati -->
 <div class="profile-section" id="data-management">
     <h3 style="margin-bottom: 1rem;">Gestione Dati Personali</h3>

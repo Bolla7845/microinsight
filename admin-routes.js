@@ -67,10 +67,11 @@ router.get('/admin/users', ensureAdmin, async (req, res) => {
     // Costruisci la query di base
     let query = `
     SELECT u.id, u.nome, u.email, 
-           CASE WHEN u.email_verificata = true THEN true ELSE false END as email_verificata,
-           u.ultimo_accesso, u.data_creazione, u.attivo, r.nome as ruolo
-    FROM utenti u 
-    JOIN ruoli r ON u.ruolo_id = r.id
+       CASE WHEN u.email_verificata = true THEN true ELSE false END as email_verificata,
+       u.ultimo_accesso, u.data_creazione, u.attivo, r.nome as ruolo,
+       u.limitazione_trattamento, u.data_limitazione, u.motivo_limitazione
+FROM utenti u 
+JOIN ruoli r ON u.ruolo_id = r.id
   `;
     
     // Gestione dei filtri
@@ -612,6 +613,34 @@ router.post('/admin/messages/delete', ensureAdmin, async (req, res) => {
     logger.error('Errore nell\'eliminazione del messaggio:', error);
     req.flash('error', 'Si è verificato un errore durante l\'eliminazione del messaggio');
     res.redirect('/admin/messages');
+  }
+});
+
+
+// Route per attivare/disattivare limitazione trattamento
+router.post('/admin/users/toggle-limitazione', ensureAdmin, async (req, res) => {
+  try {
+    const { userId, attiva, motivo } = req.body;
+    
+    if (attiva === 'true') {
+      await pool.query(
+        'UPDATE utenti SET limitazione_trattamento = TRUE, data_limitazione = NOW(), motivo_limitazione = $1 WHERE id = $2',
+        [motivo || 'Attivata da amministratore', userId]
+      );
+      req.flash('success', 'Limitazione del trattamento attivata');
+    } else {
+      await pool.query(
+        'UPDATE utenti SET limitazione_trattamento = FALSE, data_limitazione = NULL, motivo_limitazione = NULL WHERE id = $1',
+        [userId]
+      );
+      req.flash('success', 'Limitazione del trattamento disattivata');
+    }
+    
+    res.redirect('/admin/users');
+  } catch (error) {
+    logger.error('Errore nella gestione limitazione:', error);
+    req.flash('error', 'Errore nella gestione della limitazione');
+    res.redirect('/admin/users');
   }
 });
 
