@@ -118,7 +118,6 @@ JOIN ruoli r ON u.ruolo_id = r.id
     
     // Esegui la query finale
     const usersResult = await pool.query(query, queryParams);
-    const usersResult = await pool.query(query, queryParams);
 console.log("DEBUG QUERY:", query);
 console.log("DEBUG USERS:", JSON.stringify(usersResult.rows[0], null, 2));
     logger.debug("Dati utenti dal database:", usersResult.rows);
