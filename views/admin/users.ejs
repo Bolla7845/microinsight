@@ -197,7 +197,13 @@ if (typeof itemsPerPage !== 'undefined') items = itemsPerPage;
     <% } %>
 </td>
 <td>
-                                <!-- DEBUG: <%= user.nome %> - limitazione: <%= user.limitazione_trattamento %> - tipo: <%= typeof user.limitazione_trattamento %> -->
+                                <td>
+    <% if (user.limitazione_trattamento == true) { %>
+        <span class="badge bg-warning">Limitato</span>
+    <% } else { %>
+        <span class="badge bg-success">Normale</span>
+    <% } %>
+</td>
                                     DEBUG: <%= user.limitazione_trattamento %><br>
                                     TIPO: <%= typeof user.limitazione_trattamento %><br>
                                     <% if (user.limitazione_trattamento === true) { %>
@@ -216,7 +222,7 @@ if (typeof itemsPerPage !== 'undefined') items = itemsPerPage;
                                             <i class="fas fa-eye"></i>
                                         </a>
 
-<% if (user.limitazione_trattamento === true || user.limitazione_trattamento === 't' || user.limitazione_trattamento === 'true') { %>
+<% if (user.limitazione_trattamento == true) { %>
     <button class="btn btn-sm btn-success toggleLimitazioneBtn" 
             data-id="<%= user.id %>" data-nome="<%= user.nome %>" 
             data-attiva="false" title="Disattiva Limitazione">
