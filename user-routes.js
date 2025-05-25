@@ -368,31 +368,44 @@ res.redirect('/profile');
 });
 
 // Aggiornamento privacy e consensi
-// Aggiornamento privacy e consensi
 router.post('/update-privacy', ensureAuthenticated, async (req, res) => {
   try {
-    const { newsletter } = req.body;
+    const { newsletter, data_processing, limitazione_trattamento, motivo_limitazione } = req.body;
     
-    // Aggiorna solo le preferenze newsletter nel database
+    // Verifica che il consenso al trattamento dati sia dato (obbligatorio)
+    if (!data_processing) {
+      req.flash('error', 'Il consenso al trattamento dei dati è obbligatorio per utilizzare il servizio');
+      return res.redirect('/profile#privacy');
+    }
+    
+    // Aggiorna le preferenze dell'utente nel database
     await pool.query(
-      'UPDATE utenti SET consenso_newsletter = $1 WHERE id = $2',
-      [newsletter === 'on', req.user.id]
-    );
+  'UPDATE utenti SET consenso_newsletter = $1, consenso_trattamento = $2, limitazione_trattamento = $3, data_limitazione = $4, motivo_limitazione = $5 WHERE id = $6',
+  [
+    newsletter === 'on', 
+    data_processing === 'on', 
+    limitazione_trattamento === 'on',
+    limitazione_trattamento === 'on' ? 'NOW()' : null,
+    motivo_limitazione || null,
+    req.user.id
+  ]
+);
     
     // Aggiorna l'oggetto utente nella sessione
     req.user.consenso_newsletter = newsletter === 'on';
+    req.user.consenso_trattamento = data_processing === 'on';
     
     // Registra l'attività
     await pool.query(
       'INSERT INTO log_attivita (utente_id, tipo_attivita, descrizione) VALUES ($1, $2, $3)',
-      [req.user.id, 'aggiornamento-privacy', 'Aggiornamento preferenze newsletter']
+      [req.user.id, 'aggiornamento-privacy', 'Aggiornamento preferenze privacy']
     );
     
-    req.flash('success', 'Le tue preferenze sono state aggiornate con successo');
+    req.flash('success', 'Le tue preferenze sulla privacy sono state aggiornate con successo');
     res.redirect('/profile#privacy');
   } catch (error) {
-    logger.error('Errore nell\'aggiornamento delle preferenze:', error);
-    req.flash('error', 'Si è verificato un errore nell\'aggiornamento delle preferenze');
+    logger.error('Errore nell\'aggiornamento delle preferenze privacy:', error);
+    req.flash('error', 'Si è verificato un errore nell\'aggiornamento delle preferenze privacy');
     res.redirect('/profile#privacy');
   }
 });
