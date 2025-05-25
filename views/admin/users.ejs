@@ -197,21 +197,19 @@ if (typeof itemsPerPage !== 'undefined') items = itemsPerPage;
     <% } %>
 </td>
 <td>
-    <% 
-    const isLimited = user.limitazione_trattamento === true || user.limitazione_trattamento === 't' || user.limitazione_trattamento === 'true';
-    %>
-    <% if (isLimited) { %>
-        <span class="badge bg-warning">Limitato</span>
-        <small class="d-block" style="font-size: 0.7rem;"><%= user.motivo_limitazione || 'N/A' %></small>
-        <% if (user.data_limitazione) { %>
-            <small class="d-block" style="font-size: 0.6rem; color: #666;">
-                dal <%= new Date(user.data_limitazione).toLocaleDateString('it-IT') %>
-            </small>
-        <% } %>
-    <% } else { %>
-        <span class="badge bg-success">Normale</span>
-    <% } %>
-</td>
+                                <!-- DEBUG: <%= user.nome %> - limitazione: <%= user.limitazione_trattamento %> - tipo: <%= typeof user.limitazione_trattamento %> -->
+                                    DEBUG: <%= user.limitazione_trattamento %><br>
+                                    TIPO: <%= typeof user.limitazione_trattamento %><br>
+                                    <% if (user.limitazione_trattamento === true) { %>
+                                        <span class="badge bg-warning">TRUE</span>
+                                    <% } else if (user.limitazione_trattamento === 't') { %>
+                                        <span class="badge bg-warning">T</span>
+                                    <% } else if (user.limitazione_trattamento === 'true') { %>
+                                        <span class="badge bg-warning">STRING TRUE</span>
+                                    <% } else { %>
+                                        <span class="badge bg-success">ALTRO: <%= user.limitazione_trattamento %></span>
+                                    <% } %>
+                                </td>
 <td>
                                     <div class="action-buttons">
                                         <a href="/admin/user/<%= user.id %>" class="btn btn-sm btn-info" title="Visualizza">
