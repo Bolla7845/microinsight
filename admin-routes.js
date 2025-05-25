@@ -69,7 +69,9 @@ router.get('/admin/users', ensureAdmin, async (req, res) => {
     SELECT u.id, u.nome, u.email, 
        CASE WHEN u.email_verificata = true THEN true ELSE false END as email_verificata,
        u.ultimo_accesso, u.data_creazione, u.attivo, r.nome as ruolo,
-       u.limitazione_trattamento, u.data_limitazione, u.motivo_limitazione
+       COALESCE(u.limitazione_trattamento, false) as limitazione_trattamento, 
+       u.data_limitazione, 
+       u.motivo_limitazione
 FROM utenti u 
 JOIN ruoli r ON u.ruolo_id = r.id
   `;
@@ -116,6 +118,9 @@ JOIN ruoli r ON u.ruolo_id = r.id
     
     // Esegui la query finale
     const usersResult = await pool.query(query, queryParams);
+    const usersResult = await pool.query(query, queryParams);
+console.log("DEBUG QUERY:", query);
+console.log("DEBUG USERS:", JSON.stringify(usersResult.rows[0], null, 2));
     logger.debug("Dati utenti dal database:", usersResult.rows);
 
     res.render('admin/users', {
