@@ -66,14 +66,11 @@ router.get('/admin/users', ensureAdmin, async (req, res) => {
     
     // Costruisci la query di base
     let query = `
-    SELECT u.id, u.nome, u.email, 
-       CASE WHEN u.email_verificata = true THEN true ELSE false END as email_verificata,
-       u.ultimo_accesso, u.data_creazione, u.attivo, r.nome as ruolo,
-       COALESCE(u.limitazione_trattamento, false) as limitazione_trattamento, 
-       u.data_limitazione, 
-       u.motivo_limitazione
+   SELECT u.*, 
+       CASE WHEN r.id = 1 THEN 'admin' ELSE 'user' END as ruolo,
+       COALESCE(u.limitazione_trattamento, false) as limitazione_trattamento
 FROM utenti u 
-JOIN ruoli r ON u.ruolo_id = r.id
+LEFT JOIN ruoli r ON u.ruolo_id = r.id
   `;
     
     // Gestione dei filtri
