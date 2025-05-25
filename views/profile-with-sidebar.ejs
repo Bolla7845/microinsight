@@ -674,6 +674,17 @@
                     }, 1000);
                 }
             }, 3000);
+
+            // Gestione tab da URL
+const urlParams = new URLSearchParams(window.location.search);
+const tabParam = urlParams.get('tab');
+if (tabParam) {
+    const tabButton = document.querySelector(`.profile-tab-btn[data-tab="${tabParam}"]`);
+    if (tabButton) {
+        tabButton.click();
+    }
+}
+
         </script>
     <% } %>
     

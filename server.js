@@ -375,9 +375,22 @@ app.get('/pacchetti', async (req, res) => {
   }
 });
 
-// Rotta per la pagina di caricamento di un'immagine per un pacchetto specifico
+
+// Controllo preventivo limitazione prima di mostrare form upload
 app.get('/pacchetti/:id/upload', ensureAuthenticated, async (req, res) => {
   try {
+    // Controlla limitazione
+    const userResult = await pool.query(
+      'SELECT limitazione_trattamento FROM utenti WHERE id = $1',
+      [req.user.id]
+    );
+    
+    if (userResult.rows[0]?.limitazione_trattamento) {
+      req.flash('error', 'Non puoi utilizzare il servizio di analisi mentre la limitazione del trattamento è attiva. Disattivala dalle impostazioni privacy.');
+      return res.redirect('/profile?tab=privacy#privacy');
+    }
+
+    // Se ok, procedi normale
     const pacchetto = await pool.query('SELECT * FROM pacchetti WHERE id = $1', [req.params.id]);
     
     if (pacchetto.rows.length === 0) {
@@ -386,8 +399,8 @@ app.get('/pacchetti/:id/upload', ensureAuthenticated, async (req, res) => {
     
     res.render('upload', { pacchetto: pacchetto.rows[0] });
   } catch (error) {
-    logger.error('Errore nel recuperare il pacchetto:', error);
-    res.status(500).send('Errore nel recuperare il pacchetto: ' + error.message);
+    console.error('Errore nel controllo upload:', error);
+    res.status(500).send('Errore: ' + error.message);
   }
 });
 
