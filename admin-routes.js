@@ -64,60 +64,17 @@ router.get('/admin/users', ensureAdmin, async (req, res) => {
     const itemsPerPage = 10;
     const offset = (page - 1) * itemsPerPage;
     
-    // Costruisci la query di base
-    let query = `
-   SELECT u.*, 
-       CASE WHEN r.id = 1 THEN 'admin' ELSE 'user' END as ruolo,
-       COALESCE(u.limitazione_trattamento, false) as limitazione_trattamento
-FROM utenti u 
-LEFT JOIN ruoli r ON u.ruolo_id = r.id
-  `;
+// Query semplificata
+    const usersResult = await pool.query(`
+      SELECT id, nome, email, data_creazione, ultimo_accesso,
+             limitazione_trattamento, data_limitazione, motivo_limitazione,
+             CASE WHEN ruolo_id = 1 THEN 'admin' ELSE 'user' END as ruolo
+      FROM utenti 
+      ORDER BY id DESC
+    `);
     
-    // Gestione dei filtri
-    const searchTerm = req.query.search || '';
-    const roleFilter = req.query.role || '';
-    const statusFilter = req.query.status || '';
-    
-    const queryParams = [];
-    let whereConditions = [];
-    
-    if (searchTerm) {
-      queryParams.push(`%${searchTerm}%`);
-      whereConditions.push(`(u.nome ILIKE $${queryParams.length} OR u.email ILIKE $${queryParams.length})`);
-    }
-    
-    if (roleFilter) {
-      if (roleFilter === 'admin') {
-        queryParams.push(1);
-      } else if (roleFilter === 'user') {
-        queryParams.push(2);
-      }
-      
-      if (roleFilter === 'admin' || roleFilter === 'user') {
-        whereConditions.push(`u.ruolo_id = $${queryParams.length}`);
-      }
-    }
-    
-    // Aggiungi le condizioni WHERE alla query
-    if (whereConditions.length > 0) {
-      query += ` WHERE ${whereConditions.join(' AND ')}`;
-    }
-    
-    // Conta il totale di utenti per la paginazione
-    const countQuery = `SELECT COUNT(*) FROM (${query}) AS filtered_users`;
-    const countResult = await pool.query(countQuery, queryParams);
-    const totalUsers = parseInt(countResult.rows[0].count);
-    const totalPages = Math.ceil(totalUsers / itemsPerPage);
-    
-    // Aggiunge ordinamento e paginazione
-    query += ` ORDER BY u.id DESC LIMIT $${queryParams.length + 1} OFFSET $${queryParams.length + 2}`;
-    queryParams.push(itemsPerPage, offset);
-    
-    // Esegui la query finale
-    const usersResult = await pool.query(query, queryParams);
-    const usersResult = await
-console.log("DEBUG QUERY:", query);
-console.log("DEBUG USERS:", JSON.stringify(usersResult.rows[0], null, 2));
+    const totalUsers = usersResult.rows.length;
+    const totalPages = 1;
     logger.debug("Dati utenti dal database:", usersResult.rows);
 
     res.render('admin/users', {
