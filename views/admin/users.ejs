@@ -217,9 +217,7 @@ if (typeof itemsPerPage !== 'undefined') items = itemsPerPage;
                                         <a href="/admin/user/<%= user.id %>" class="btn btn-sm btn-info" title="Visualizza">
                                             <i class="fas fa-eye"></i>
                                         </a>
-   <% 
-const isLimited = user.limitazione_trattamento === true || user.limitazione_trattamento === 't' || user.limitazione_trattamento === 'true';
-%>
+
 <% if (isLimited) { %>
     <button class="btn btn-sm btn-success toggleLimitazioneBtn" 
             data-id="<%= user.id %>" data-nome="<%= user.nome %>" 
