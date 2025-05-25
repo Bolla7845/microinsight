@@ -411,7 +411,7 @@ router.post('/update-privacy', ensureAuthenticated, async (req, res) => {
 });
 
 // Eliminazione di una singola analisi
-router.post('/elimina-analisi', ensureAuthenticated, checkLimitazioneTrattamento, async (req, res) => {
+router.post('/elimina-analisi', ensureAuthenticated, async (req, res) => {
   const client = await pool.connect();
   
   try {

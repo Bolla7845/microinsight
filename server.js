@@ -306,6 +306,27 @@ function ensureAdmin(req, res, next) {
   res.redirect('/dashboard');
 }
 
+// Middleware per verificare limitazione trattamento
+async function checkLimitazioneTrattamento(req, res, next) {
+  try {
+    if (req.user) {
+      const userResult = await pool.query(
+        'SELECT limitazione_trattamento FROM utenti WHERE id = $1',
+        [req.user.id]
+      );
+      
+      if (userResult.rows[0]?.limitazione_trattamento) {
+        req.flash('error', 'Non puoi utilizzare il servizio di analisi mentre la limitazione del trattamento è attiva. Disattivala dalle impostazioni privacy.');
+        return res.redirect('/profile#privacy');
+      }
+    }
+    next();
+  } catch (error) {
+    console.error('Errore nel controllo limitazione:', error);
+    next();
+  }
+}
+
 // Rotta principale - Pagina di caricamento
 app.get('/', async (req, res) => {
   try {
@@ -376,7 +397,7 @@ app.get('/upload', ensureAuthenticated, (req, res) => {
 });
 
 // Rotta per caricare multiple immagini e creare un collage
-app.post('/upload-multiple', upload.array('immagini', 20), ensureAuthenticated, async (req, res) => {
+app.post('/upload-multiple', upload.array('immagini', 20), ensureAuthenticated, checkLimitazioneTrattamento, async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).send('Nessun file caricato.');
@@ -582,7 +603,7 @@ app.post('/upload-multiple', upload.array('immagini', 20), ensureAuthenticated, 
 });
 
 // Rotta per caricare un'immagine con un pacchetto specifico
-app.post('/upload', upload.single('immagine'), ensureAuthenticated, async (req, res) => {
+app.post('/upload', upload.single('immagine'), ensureAuthenticated, checkLimitazioneTrattamento, async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).send('Nessun file caricato.');
