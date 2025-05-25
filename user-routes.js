@@ -16,6 +16,27 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 
+// Middleware per verificare limitazione trattamento
+async function checkLimitazioneTrattamento(req, res, next) {
+  try {
+    if (req.user) {
+      const userResult = await pool.query(
+        'SELECT limitazione_trattamento FROM utenti WHERE id = $1',
+        [req.user.id]
+      );
+      
+      if (userResult.rows[0]?.limitazione_trattamento) {
+        req.flash('error', 'Non puoi utilizzare questa funzione mentre la limitazione del trattamento è attiva. Disattivala dalle impostazioni privacy.');
+        return res.redirect('/profile#privacy');
+      }
+    }
+    next();
+  } catch (error) {
+    console.error('Errore nel controllo limitazione:', error);
+    next();
+  }
+}
+
 // Pagina impostazioni privacy
 router.get('/privacy-settings', ensureAuthenticated, (req, res) => {
   res.render('user/privacy-settings', {
@@ -349,7 +370,7 @@ res.redirect('/profile');
 // Aggiornamento privacy e consensi
 router.post('/update-privacy', ensureAuthenticated, async (req, res) => {
   try {
-    const { newsletter, data_processing } = req.body;
+    const { newsletter, data_processing, limitazione_trattamento, motivo_limitazione } = req.body;
     
     // Verifica che il consenso al trattamento dati sia dato (obbligatorio)
     if (!data_processing) {
@@ -359,9 +380,16 @@ router.post('/update-privacy', ensureAuthenticated, async (req, res) => {
     
     // Aggiorna le preferenze dell'utente nel database
     await pool.query(
-      'UPDATE utenti SET consenso_newsletter = $1, consenso_trattamento = $2 WHERE id = $3',
-      [newsletter === 'on', data_processing === 'on', req.user.id]
-    );
+  'UPDATE utenti SET consenso_newsletter = $1, consenso_trattamento = $2, limitazione_trattamento = $3, data_limitazione = $4, motivo_limitazione = $5 WHERE id = $6',
+  [
+    newsletter === 'on', 
+    data_processing === 'on', 
+    limitazione_trattamento === 'on',
+    limitazione_trattamento === 'on' ? 'NOW()' : null,
+    motivo_limitazione || null,
+    req.user.id
+  ]
+);
     
     // Aggiorna l'oggetto utente nella sessione
     req.user.consenso_newsletter = newsletter === 'on';
@@ -383,7 +411,7 @@ router.post('/update-privacy', ensureAuthenticated, async (req, res) => {
 });
 
 // Eliminazione di una singola analisi
-router.post('/elimina-analisi', ensureAuthenticated, async (req, res) => {
+router.post('/elimina-analisi', ensureAuthenticated, checkLimitazioneTrattamento, async (req, res) => {
   const client = await pool.connect();
   
   try {

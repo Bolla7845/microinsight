@@ -618,6 +618,21 @@
                                 </div>
                                 <small class="form-text text-muted">Questo consenso è necessario per l'utilizzo del servizio</small>
                             </div>
+
+                            <div style="margin-bottom: 1.5rem;">
+                        <h4>Limitazione del Trattamento</h4>
+                        <div class="form-check" style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                            <input class="form-check-input" type="checkbox" id="limitazione_trattamento" name="limitazione_trattamento" <%= user.limitazione_trattamento ? 'checked' : '' %>>
+                            <label class="form-check-label" for="limitazione_trattamento" style="margin-left: 0.5rem;">
+                                Limita il trattamento dei miei dati (sospende temporaneamente l'utilizzo del servizio)
+                            </label>
+                        </div>
+                        <div class="form-group" style="margin-left: 1.5rem;">
+                            <label for="motivo_limitazione" style="font-size: 0.875rem;">Motivo (opzionale):</label>
+                            <input type="text" id="motivo_limitazione" name="motivo_limitazione" class="form-control" style="font-size: 0.875rem;" placeholder="Es: Contestazione analisi, pausa temporanea..." value="<%= user.motivo_limitazione || '' %>">
+                        </div>
+                        <small class="form-text text-muted">Attivando questa opzione non potrai utilizzare il servizio fino alla disattivazione</small>
+                    </div>
                             
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Salva Preferenze
@@ -673,7 +688,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f3f4f6;">
             <div>
                 <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Esporta Dati Personali</h4>
-                <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">Scarica una copia di tutti i tuoi dati personali e analisi in formato ZIP.</p>
+                <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">Scarica una copia di tutti i tuoi dati personali e analisi.</p>
             </div>
             <a href="/export-data" class="btn btn-primary btn-sm">
                 <i class="fas fa-download"></i> Esporta
